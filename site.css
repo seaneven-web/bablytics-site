@@ -384,7 +384,83 @@ html[data-single] .page.landing { max-width: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+/* ---- print (also the PDF edition: site/build_pdf.py prints every page with
+   headless Chrome against these rules) — day palette forced, paper-friendly
+   ground, no chrome, no breaks inside figures/cards/rows, URLs after external
+   links only ---- */
 @media print {
-  .topbar, .sidebar, .toc, .pager, .footer .meta, pre .copy { display: none !important; }
-  .doc { display: block; } body::before { display: none; } body { font-size: 12pt; }
+  :root[data-theme="night"], :root:not([data-theme="night"]) {
+    color-scheme: light;
+    --bg: #fbf3dc; --panel: #f9efd6; --panel2: #fffaeb;
+    --text: #2f1c10; --muted: #745c3f;
+    --accent: #6f2130; --accent-hover: #8a3245; --on-accent: #fdf6e3;
+    --green: #1d6f54; --red: #a32c2c; --amber: #83560f;
+    --line: rgba(111,33,48,.18); --line-hi: rgba(111,33,48,.34);
+    --wash: rgba(111,33,48,.045); --wash-2: rgba(111,33,48,.08);
+    --accent-dim: rgba(111,33,48,.10); --green-dim: rgba(29,111,84,.12);
+    --red-dim: rgba(163,44,44,.12); --amber-dim: rgba(131,86,15,.14);
+    --input-bg: #fffaeb; --code-bg: #fffaeb; --shadow: none; --shadow-card: none;
+  }
+  .topbar, .sidebar, .toc, .pager, .footer .meta, pre .copy, .skip, .nav-toggle, .search, .search-results,
+  .theme-toggle, .open-app, .lightbox, .drawer-backdrop, .hero-ctas, .btn, a.anchor, .toc-top { display: none !important; }
+  .mark-night { display: none !important; } .mark-day { display: inline !important; }
+  html { scroll-behavior: auto; }
+  body { font-size: 12pt; line-height: 1.5; background: var(--bg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body::before { display: none; }
+  .doc { display: block; max-width: none; padding: 0; }
+  .kicker, .eyebrow, .land-sec > .kicker, .land-sec > h2, .land-sec > .lede { break-after: avoid; page-break-after: avoid; }
+  .land-sec { break-before: auto; }
+  .doc-main { padding: 0; }
+  .page, .page-head, .pager { max-width: none; }
+  .page-head { margin-bottom: 20px; padding-bottom: 14px; break-after: avoid; }
+  .page-head h1 { font-size: 30px; }
+  .page-head .summary { font-size: 17px; }
+  .article > * { max-width: 76ch; }
+  .article > figure, .article > .cards, .article > .members, .article > .table-wrap, .article > table, .article > .os-cards,
+  .article > .grid-2, .article > .wide, .article > .timeline, .article > pre, .article > .spec { max-width: none; }
+  .article h2 { margin: 1.6em 0 .5em; font-size: 23px; }
+  .article h3 { margin: 1.3em 0 .4em; font-size: 17px; }
+  h1, h2, h3, h4 { break-after: avoid; page-break-after: avoid; break-inside: avoid; }
+  p, li, dd { orphans: 3; widows: 3; }
+  figure, .shot, .diagram, .card, .member, .os-card, .callout, .callout-note, .callout-warn, .callout-rule, aside.tip,
+  .spec, pre, tr, .tl-item, ol.steps > li, blockquote, .grid-2 > * { break-inside: avoid; page-break-inside: avoid; }
+  figcaption { break-before: avoid; }
+  thead { display: table-header-group; }
+  .table-wrap { max-height: none; overflow: visible; }
+  table.data thead th { position: static; }
+  table { font-size: 12px; }
+  th, td { padding: 5px 8px; overflow-wrap: anywhere; }
+  .article > table { display: table; overflow: visible; }
+  pre { white-space: pre-wrap; overflow-wrap: anywhere; overflow: visible; font-size: 12px; }
+  .shot img { box-shadow: none; cursor: auto; width: auto; height: auto; max-width: 100%; max-height: 7.2in; margin: 0 auto; }
+  .shot.missing .ph { aspect-ratio: 16 / 6; }
+  .diagram svg { max-height: 7.2in; }
+  .article a[href^="http"]:not(.btn):not(.card-link)::after {
+    content: " (" attr(href) ")"; font: 10px/1.3 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+  .os-card a[href^="http"]::after, .members a::after, .hero a::after, .cards a::after { content: none !important; }
+  a { text-decoration: none; }
+  .member h3 a::before, .card .card-link::before { display: none; }
+  .callout, .callout-note, .callout-warn, .callout-rule, aside.tip { font-size: 14px; }
+  .card, .member { font-size: 14px; }
+  .members { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .member { padding: 12px 14px; }
+  .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .os-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .os-card { padding: 14px 16px; }
+  /* landing page */
+  .landing { padding-bottom: 0; }
+  .hero { padding: 8px 0 20px; }
+  .hero .lockup { margin-bottom: 18px; } .hero .lockup .mark { width: 64px; height: 64px; } .hero .wordmark { font-size: 32px; }
+  .hero h1, .hero h2, .hero .hero-thesis { font-size: 32px; max-width: 28ch; }
+  .hero .hero-sub, .hero p { font-size: 15px; max-width: 70ch; }
+  .hero figure { margin-top: 20px; }
+  .land-sec { padding: 22px 0; }
+  .land-sec h2 { font-size: 24px; }
+  .land-sec .lede { font-size: 14px; }
+  #features { break-before: page; }
+  #board { break-before: page; }
+  .wrap { max-width: none; padding: 0; }
+  /* footer: keep the one-line notice, drop the version meta */
+  .footer { margin-top: 24px; padding: 12px 0 0; background: transparent; border-top: 1px solid var(--line); break-inside: avoid; }
+  .footer .notice { font-weight: 500; font-size: 11px; color: var(--muted); }
 }
