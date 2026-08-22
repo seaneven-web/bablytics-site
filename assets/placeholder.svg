@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-label="Screenshot pending">
+  <!-- Stand-in for a screenshot that has not been captured yet (site/build.py
+       points missing assets/screens/*.png images here). Honey ground, maroon ink. -->
+  <rect width="1440" height="900" fill="#f9efd6"/>
+  <rect x="1" y="1" width="1438" height="898" fill="none" stroke="#6f2130" stroke-opacity=".35" stroke-width="2" stroke-dasharray="10 8"/>
+  <g fill="none" stroke="#6f2130" stroke-opacity=".55" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" transform="translate(640 330) scale(2.5)">
+    <rect x="6" y="12" width="52" height="40" rx="4"/>
+    <path d="M6 42l14-14 12 12 8-8 18 18"/>
+    <circle cx="44" cy="24" r="4"/>
+  </g>
+  <text x="720" y="560" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="28" letter-spacing="6" fill="#6f2130" fill-opacity=".8">SCREENSHOT PENDING</text>
+  <text x="720" y="604" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="22" fill="#745c3f">captured from the live app at 1440 × 900</text>
+</svg>
