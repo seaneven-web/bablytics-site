@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Dashboard Workspace · Bablytics Guide</title>
-<meta name="description" content="The live morning book as a grid of panels you arrange: lead cards with live levels and the board&#x27;s range, the expanded lead with its consensus strip, the Morning | Evening toggle that is also the day/night switch, the bell, and the memo read aloud.">
+<meta name="description" content="The live morning book as a grid of panels you arrange: lead cards with live levels, a time-horizon chip and the board&#x27;s range, the expanded lead with its consensus strip and read-across table, the Evidence locker, the Morning | Evening toggle that is also the day/night switch, the bell, and the memo read aloud.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -73,6 +73,7 @@
 <li><a href="broker.html">Broker</a></li>
 <li><a href="news-library-archive.html">News · Library · Archive</a></li>
 <li><a href="settings.html">Settings</a></li>
+<li><a href="evidence-locker.html">Evidence locker</a></li>
 </ul></details>
 <details open data-group="reference"><summary>Reference</summary><ul>
 <li><a href="download-and-install.html">Download &amp; install</a></li>
@@ -85,10 +86,10 @@
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-dashboard-workspace" data-slug="dashboard-workspace" data-title="The Dashboard Workspace">
-<header class="page-head"><p class="eyebrow">Desk · the home screen</p><h1>The Dashboard Workspace</h1><p class="summary">The live morning book as a grid of panels you arrange: lead cards with live levels and the board&#x27;s range, the expanded lead with its consensus strip, the Morning | Evening toggle that is also the day/night switch, the bell, and the memo read aloud.</p></header>
+<header class="page-head"><p class="eyebrow">Desk · the home screen</p><h1>The Dashboard Workspace</h1><p class="summary">The live morning book as a grid of panels you arrange: lead cards with live levels, a time-horizon chip and the board&#x27;s range, the expanded lead with its consensus strip and read-across table, the Evidence locker, the Morning | Evening toggle that is also the day/night switch, the bell, and the memo read aloud.</p></header>
 <div class="article">
 
-<p>The Dashboard is the first thing you see after you sign in and the page the rest of the app points back to. It shows the <strong>latest morning run</strong> — the memo, the twenty leads split into a stock desk and an options desk, and the day's context panels — laid out on a grid you control. A segmented toggle at the top switches the same route between the <strong>Morning briefing</strong> and the <strong>Evening court</strong>; that toggle is also the app's day/night theme switch. Everything on this page is read from the local database and repainted in place; nothing on it places, stages or routes an order.</p>
+<p>The Dashboard is the first thing you see after you sign in and the page the rest of the app points back to. It shows the <strong>latest morning run</strong> — the memo, the twenty leads split into a stock desk and an options desk, and the day's context panels — laid out on a grid you control. A segmented toggle at the top switches the same route between the <strong>Morning briefing</strong> and the <strong>Evening court</strong>; that toggle is also the app's day/night theme switch. Since round 24 every lead also carries a <strong>time horizon</strong> (how long the board expects the target to take) and a <strong>read-across</strong> (what else moves when this name moves), and the grid carries the <a href="evidence-locker.html">Evidence locker</a>, where you hand the committee your own documents. Everything on this page is read from the local database and repainted in place; nothing on it places, stages or routes an order.</p>
 
 <figure class="shot">
   <img src="assets/screens/dashboard-morning.png" alt="The morning dashboard in day theme: a Morning briefing | Evening court toggle and a Layout menu above a grid of panels — Morning memo, Pyramid leader, Pre-open check, Midday check-in and The Bailiff collapsed to their headers, with the Stock desk and Options desk open side by side showing lead cards for MRK, NEM, XOM, ROST, GLD, WDAY, CVX and CVS, each with a grade, a board-range rail and an entry / now / stop / target strip." loading="lazy" width="1440" height="900" decoding="async">
@@ -103,15 +104,21 @@
   <li><strong>TAKE chip</strong> (top-left corner) — marks the lead as a trade you actually took; see <a href="positions-and-trades.html#the-take-toggle">Positions &amp; trades</a>. A taken card gets an accent ring.</li>
   <li><strong>Pre-open action chip</strong> (corner) — after the 9:15 <a href="pre-open-check.html">Pre-Open Check</a>, the Executive's per-lead order (hold / exit / trim / upgrade / watch) sits on the card.</li>
   <li><strong>Rank, direction badge, final grade</strong> — <span class="pill pill-green">LONG</span> or <span class="pill pill-red">SHORT</span>, and the Executive's final grade 0–100 coloured on the grade ramp.</li>
+  <li><strong>Horizon chip</strong> — next to the stance chip, in mono: <code>SWING · ≈5 sessions</code>. The class sets the colour: intraday amber, swing accent, position green, long-term muted (below).</li>
   <li><strong>Ticker</strong>, and on the options desk the <strong>selected contract line</strong> (expiry, strike, C/P) with its days-to-expiry.</li>
   <li><strong>Grade bar</strong>, then the <strong>board-range rail</strong> (below).</li>
   <li><strong>Thesis</strong> — the one-line auto-generated setup, clamped to two lines.</li>
-  <li><strong>Stats</strong> — <code>VOL</code> (option volume ÷ open interest), <code>C/P</code> (call/put volume ratio), <code>5D</code> (five-day price change).</li>
+  <li><strong>Stats</strong> — <code>VOL</code> (option volume ÷ open interest), <code>C/P</code> (call/put volume ratio), <code>5D</code> (five-day price change) — and, when the lead's coupling has been computed, a tiny <strong>read-across tag</strong> such as <code>β 1.3 · XLK</code>: beta to SPY and the sector ETF (below).</li>
   <li><strong>Levels strip</strong> — <code>ENTRY · NOW · STOP · TARGET</code>, plus <code>PREM</code> on option cards (below).</li>
   <li><strong>Realized outcomes</strong> — <code>1d</code> / <code>5d</code> chips once the 16:45 outcomes job has recorded them.</li>
 </ul>
 
 <p>A card is a button: click it, or focus it and press <span class="kbd">Enter</span> or <span class="kbd">Space</span>, to open the expanded lead.</p>
+
+<h3 id="the-horizon-chip">The horizon chip: how long this is supposed to take<a class="anchor" href="#the-horizon-chip" aria-label="Link to The horizon chip: how long this is supposed to take">#</a></h3>
+
+<p>Every lead carries a <strong>time horizon</strong>: a <em>class</em> — <code>intraday</code>, <code>swing</code>, <code>position</code> or <code>long_term</code> — the expected number of <em>sessions</em> to reach the target (0.5 means the same day), a human window ("today", "2–5 sessions", "3–8 weeks") and a one-sentence <em>basis</em> (the option's days to expiry, the ATR-per-day distance to the target, a catalyst date). In AI mode the Executive states all three per lead and is told to respect an option's DTE — never longer than DTE − 1 sessions — and to be honest that "a 60-day thesis is a position, not a swing"; in mock mode, and whenever a lead has no stated horizon, <code>horizon_estimate.estimate()</code> fills it from the numbers and labels the basis <em>estimated</em>. The card shows the class and the window; the expanded lead adds the band and the basis. The chip's colours are tokens in both themes: intraday amber, swing the accent, position green, long-term muted — never colour alone, the class is always printed. The mechanism is on the <a href="morning-briefing.html#time-horizon">Morning Briefing</a> page; the values travel with the live levels from <code>GET /api/levels</code>, so past runs get a chip too. On the <a href="the-pulse.html">Pulse</a> tab, a book card for a lead with a horizon reads "held 3 of ≈5".</p>
+<figure class="shot"><img src="assets/screens/lead-horizon.png" alt="An expanded lead in the overlay: the SWING · ≈3 SESSIONS chip beside the stance, the levels rail, the Expected hold row with its basis, the executive summary, and the start of the Read-across table" width="1440" height="900" loading="lazy" decoding="async"><figcaption>The expanded lead: horizon chip in the header, the Expected hold row under the levels, and the Read-across section below the summary.</figcaption></figure>
 
 <h3 id="live-levels">Live levels: entry, now, stop, target<a class="anchor" href="#live-levels" aria-label="Link to Live levels: entry, now, stop, target">#</a></h3>
 
@@ -122,6 +129,7 @@
   <dt>Now</dt><dd>The live last print, with the signed percentage from entry.</dd>
   <dt>Stop / Target</dt><dd>An <strong>ATR exit zone</strong>, not a forecast and not the board's written invalidation. It is arithmetic: entry ± a multiple of ATR(14), direction-signed, using the same <code>EXIT_ZONE_ATR</code> table the Pulse uses for your risk profile — conservative 1.0 / 1.5, moderate 1.5 / 2.5, aggressive 2.0 / 4.0 ATR for stop / target. The tooltip on the strip says so and shows the ATR.</dd>
   <dt>Prem</dt><dd>Option cards only: the contract's own live premium from the chain. On an option card entry / now / stop / target describe the <em>underlying</em>, because those are the invalidation prices; Prem is the contract mark.</dd>
+  <dt>Horizon</dt><dd>Since round 24 the same payload carries each lead's <code>horizon</code> — <code>{class, days, window, basis}</code> — from the lead row when the board stated one, or from the estimator (basis labelled <em>estimated</em>) when it did not, so the chip and the Expected-hold row render for past runs as well.</dd>
 </dl>
 
 <p>The payload is cached in-process for about 45 seconds per run, so repaints, tab switches and a second window do not re-hammer the market-data source. A ticker or contract that fails to price degrades that cell to a dash; the rest of the strip still renders.</p>
@@ -132,12 +140,34 @@
 
 <h2 id="the-expanded-lead">The expanded lead<a class="anchor" href="#the-expanded-lead" aria-label="Link to The expanded lead">#</a></h2>
 
-<p>Opening a card raises an overlay with everything the board said about that one name, in this order: the header (rank, ticker, direction and instrument badges, briefing price, the TAKE toggle, the final grade), the grade bar and board-range rail, the levels strip, the thesis, the <strong>Executive summary</strong>, the selected contract row on option leads, a <strong>Snapshot</strong> of stat tiles (price, 1d, 5d, RSI 14, vol/OI, C/P), the technicals block, the <strong>notable contracts</strong> table from the scan, the <strong>consensus strip</strong>, the <strong>Board grades</strong> list (one row per grader: emoji, name, stance, grade chip, comment, key-risk tags), the Skeptic's rebuttal callout, the matched news links, and realized outcomes when they exist. <span class="kbd">Esc</span> closes it.</p>
+<p>Opening a card raises an overlay with everything the board said about that one name, in this order: the header (rank, ticker, direction and instrument badges, briefing price, the TAKE toggle, the final grade), the grade bar and board-range rail, the levels strip with the <strong>Expected hold</strong> row under it, the thesis, the <strong>Executive summary</strong>, the <strong>Read-across</strong> section, the selected contract row on option leads, a <strong>Snapshot</strong> of stat tiles (price, 1d, 5d, RSI 14, vol/OI, C/P), the technicals block, the <strong>notable contracts</strong> table from the scan, the <strong>consensus strip</strong>, the <strong>Board grades</strong> list (one row per grader: emoji, name, stance, grade chip, comment, key-risk tags), the Skeptic's rebuttal callout, the matched news links, and realized outcomes when they exist. <span class="kbd">Esc</span> closes it.</p>
 
 <figure class="shot">
   <img src="assets/screens/dashboard-lead.png" alt="The expanded lead overlay for MRK, rank 1, LONG, STOCK, $144.69, final grade 63: the board-range rail reads 47–76, the levels strip shows entry $144.69, now $153.49 +6.1%, stop $136.10, target $161.87, followed by the thesis paragraph, the Executive summary panel and the start of the Snapshot tiles." loading="lazy" width="1440" height="900" decoding="async">
   <figcaption>One lead, expanded. The rail and the levels strip are the same components the card shows, at full width.</figcaption>
 </figure>
+
+<h3 id="expected-hold">Expected hold<a class="anchor" href="#expected-hold" aria-label="Link to Expected hold">#</a></h3>
+
+<p>Directly under the levels rail, one row: "<strong>Expected hold:</strong> swing · ≈5 sessions (3–7) — <em>basis</em>". The class and the expected sessions are the card chip's numbers; the bracket is the window's band (the mock and fallback estimator uses ±40% around the expected count); the basis is the one sentence the board gave, or the estimator's templated reason — "distance 3.4 ATR at ≈0.8 ATR per session", "DTE 9: options must resolve inside the contract", or "default (no levels)" when neither target nor ATR was available. One honesty rule: when the only target is the house ATR bracket (entry ± 1.5 / 2.5 / 4.0 ATR by risk profile) the count is the same for every share lead at that profile, and the basis says so — "house bracket — … the same count for every share lead at this risk profile" — rather than dressing the constant up as a lead-specific read; a board-stated horizon keeps its own wording. Read it beside the exit zone: the zone says <em>where</em> the trade is wrong, the hold says <em>when</em> it has taken too long.</p>
+
+<h3 id="read-across">Read-across: what moves with this name<a class="anchor" href="#read-across" aria-label="Link to Read-across: what moves with this name">#</a></h3>
+
+<p>After the Executive summary the overlay carries a <strong>Read-across</strong> section — the round-24 coupling feature, computed by <code>bablytics/collectors/coupling.py</code> from 90 sessions of daily returns (a one-year window of yfinance closes) and written up by <code>bablytics/boardroom/readacross.py</code>:</p>
+
+<figure class="shot">
+  <img src="assets/screens/lead-readacross.png" alt="The Read-across section of an expanded lead: a compact table with rows for SPY, the sector ETF and five peers showing correlation, beta and the implied move if the lead rises one percent; a Watch also chip row; a two-to-three-sentence read-across paragraph in the Executive's voice with a macro line under it; and the footnote 90-session daily returns; statistical coupling, not causation." loading="lazy" width="762" height="574" decoding="async">
+  <figcaption>One lead's read-across: the numbers, who to watch, and what a confirmed move here would say about the tape.</figcaption>
+</figure>
+
+<ul>
+  <li><strong>The coupling table</strong> — <code>Symbol · corr · beta · if +1% →</code> for SPY, the lead's sector ETF (from the <code>SECTOR_ETF</code> map: Information Technology → XLK, Health Care → XLV, Financials → XLF, and so on across the eleven sectors) and the top five peers in the same sector by correlation. "if +1% →" is the implied move in that symbol when the lead moves one percent — that symbol's beta <em>on the lead</em>, times 1%. A pair with fewer than 60 overlapping sessions shows no number rather than a weak one.</li>
+  <li><strong>Watch also</strong> — a chip row of the top three peers and the sector ETF; clicking a chip opens the <a href="charts-and-terminal.html">Charts</a> tab on that ticker.</li>
+  <li><strong>The read-across paragraph</strong> — two to three sentences in the Executive's voice: what a move in this name usually drags with it, what a confirmed move would say about the market and the economy ("if this goes up, what else happens"), and who to watch — followed by a one-line <em>macro</em> read. In AI mode it is one structured call for the whole book; in mock mode it is templated from the numbers and the sector.</li>
+  <li><strong>The footnote</strong> — "90-session daily returns; statistical coupling, not causation." It is printed under every table, because a beta is a regression slope over ninety sessions and nothing more.</li>
+</ul>
+
+<p>Coupling is attached after grading — <code>attach_coupling(run_id)</code> computes it for the twenty leads (eight threads, budgeted at under a minute for a whole run) and stores it in each lead's <code>features_json</code> under <code>coupling</code> and <code>read_across</code>, so the overlay reads it from the run; it is idempotent and can be run over an old run as a backfill. A lead whose coupling could not be computed (too little history, a failed fetch) shows the section with a note and no table; the rest of the overlay is unaffected. API: <code>GET /api/coupling/{ticker}</code> computes on demand (cached per day under <code>data/cache/</code>); <code>GET /api/coupling/lead/{lead_id}</code> returns the stored pair with a fallback compute. What each number means is in the <a href="faq-and-glossary.html#g-beta">glossary</a>.</p>
 
 <h3 id="the-consensus-strip">The consensus strip: where the room fell<a class="anchor" href="#the-consensus-strip" aria-label="Link to The consensus strip: where the room fell">#</a></h3>
 
@@ -152,7 +182,7 @@
 
 <h2 id="morning-and-evening">Morning briefing | Evening court<a class="anchor" href="#morning-and-evening" aria-label="Link to Morning briefing | Evening court">#</a></h2>
 
-<p>The segmented toggle at the top of the live dashboard switches between two views of the same day. <strong>Morning briefing</strong> is the grid above. <strong>Evening court</strong> shows the close-of-day index strip and regime line, a <span class="pill pill-green">best call</span> and <span class="pill pill-red">worst call</span>, the <strong>scoreboard</strong> of the day's leads (briefing price → close, direction-adjusted day return, the contract's last price on option leads), and "The Court Speaks" — one card per member with their ON BASE / OFF BASE / LESSON entry. Before the first review it says the court has not yet convened and offers <strong>Run evening review</strong>; both views carry a <strong>Download PDF</strong> button. What the court does is on the <a href="evening-court.html">Evening Court</a> page; the PDFs are password-encrypted (see <a href="reviews-and-horizons.html">Reviews &amp; horizons</a>).</p>
+<p>The segmented toggle at the top of the live dashboard switches between two views of the same day. <strong>Morning briefing</strong> is the grid above. <strong>Evening court</strong> shows the close-of-day index strip and regime line, a <span class="pill pill-green">best call</span> and <span class="pill pill-red">worst call</span>, the <strong>scoreboard</strong> of the day's leads (briefing price → close, direction-adjusted day return, the contract's last price on option leads), and "The Court Speaks" — one card per member with their ON BASE / OFF BASE / LESSON entry. Before the first review it says the court has not yet convened and offers <strong>Run evening review</strong>; both views carry a <strong>Download PDF</strong> button, and both carry the <a href="evidence-locker.html">Evidence locker</a> — the court reads the documents flagged <em>Evening</em>, so the panel is where you put tonight's evidence in front of it. What the court does is on the <a href="evening-court.html">Evening Court</a> page; the PDFs are password-encrypted (see <a href="reviews-and-horizons.html">Reviews &amp; horizons</a>).</p>
 
 <figure class="shot">
   <img src="assets/screens/dashboard-evening.png" alt="The Evening court view in night theme: index chips for SPY, QQQ, IWM and VIX with a risk-off regime line, a Run evening review button and Download PDF, a best-call callout for NEM +8.99% and a worst-call callout for BABA −6.16%, then a scoreboard table of the day's leads with briefing → close prices and signed day returns." loading="lazy" width="1440" height="900" decoding="async">
@@ -180,16 +210,17 @@
     <tr><td>Pre-open check</td><td><code>preopen</code></td><td class="num">span 4 · collapsed</td><td>The 9:15 verdict and memo update.</td></tr>
     <tr><td>Midday check-in</td><td><code>midday</code></td><td class="num">span 4 · collapsed</td><td>The 12:30 card with its own Run button.</td></tr>
     <tr><td>The Bailiff</td><td><code>bailiff</code></td><td class="num">span 4 · collapsed</td><td>Today's rulings and their status.</td></tr>
+    <tr><td>Evidence locker</td><td><code>evidence</code></td><td class="num">span 3 · open</td><td>The drop zone and the list of documents the committee reads — round 24; see <a href="evidence-locker.html">The Evidence Locker</a>. Also shown on the Evening view.</td></tr>
     <tr><td>Stock desk</td><td><code>stocks</code></td><td class="num">span 6 · two row-shares</td><td>The ten stock leads.</td></tr>
     <tr><td>Options desk</td><td><code>options</code></td><td class="num">span 6 · two row-shares</td><td>The ten option leads.</td></tr>
   </tbody>
 </table></div>
 
-<p>A section with nothing to show today is simply not registered; when it comes back it slots in again without corrupting the saved layout. Nothing is hidden by default — a hidden panel is a panel you do not know exists.</p>
+<p>A section with nothing to show today is simply not registered; when it comes back it slots in again without corrupting the saved layout. Nothing is hidden by default — a hidden panel is a panel you do not know exists. The Evidence locker is the exception to "nothing to show": it is always registered, because an empty locker is an invitation, not an absence.</p>
 
 <h3 id="fit-to-window-and-flowing-page">Fit to window and flowing page<a class="anchor" href="#fit-to-window-and-flowing-page" aria-label="Link to Fit to window and flowing page">#</a></h3>
 
-<p><strong>Fit to window</strong> (the default) sizes the grid to the viewport minus the header, footer and a small bottom margin; the page does not scroll, and each panel body scrolls internally with a fade when there is more below. Rows are not uniform: a row whose panels are all collapsed shrinks to its headers and hands its height to the rows that still hold something open — collapse six of seven panels and the survivor gets nearly the whole window. <strong>Flowing page</strong> is the classic document: panels stack full-width and the page scrolls. The Evening court view and archived runs always use the flowing layout.</p>
+<p><strong>Fit to window</strong> (the default) sizes the grid to the viewport minus the header, footer and a small bottom margin; the page does not scroll, and each panel body scrolls internally with a fade when there is more below. Rows are not uniform: a row whose panels are all collapsed shrinks to its headers and hands its height to the rows that still hold something open — collapse seven of eight panels and the survivor gets nearly the whole window. <strong>Flowing page</strong> is the classic document: panels stack full-width and the page scrolls. The Evening court view and archived runs always use the flowing layout.</p>
 
 <h3 id="moving-and-sizing-panels">Moving and sizing panels<a class="anchor" href="#moving-and-sizing-panels" aria-label="Link to Moving and sizing panels">#</a></h3>
 
@@ -258,13 +289,13 @@
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="learning-loops.html"><small>← Previous</small><b>Learning Loops</b></a><a class="next" rel="next" href="charts-and-terminal.html"><small>Next →</small><b>Charts &amp; Terminal</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#anatomy-of-a-lead-card">Anatomy of a lead card</a></li><li class="l3"><a href="#live-levels">Live levels: entry, now, stop, target</a></li><li class="l3"><a href="#the-board-range-rail">The board-range rail</a></li><li class="l2"><a href="#the-expanded-lead">The expanded lead</a></li><li class="l3"><a href="#the-consensus-strip">The consensus strip: where the room fell</a></li><li class="l2"><a href="#morning-and-evening">Morning briefing | Evening court</a></li><li class="l2"><a href="#day-and-night">Day and night</a></li><li class="l2"><a href="#the-workspace-grid">The workspace grid</a></li><li class="l3"><a href="#fit-to-window-and-flowing-page">Fit to window and flowing page</a></li><li class="l3"><a href="#moving-and-sizing-panels">Moving and sizing panels</a></li><li class="l3"><a href="#the-layout-menu">The Layout menu</a></li><li class="l2"><a href="#the-header">The header</a></li><li class="l2"><a href="#listen-the-memo-read-aloud">Listen: the memo, read aloud</a></li><li class="l2"><a href="#keyboard-summary">Keyboard summary</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#anatomy-of-a-lead-card">Anatomy of a lead card</a></li><li class="l3"><a href="#the-horizon-chip">The horizon chip: how long this is supposed to take</a></li><li class="l3"><a href="#live-levels">Live levels: entry, now, stop, target</a></li><li class="l3"><a href="#the-board-range-rail">The board-range rail</a></li><li class="l2"><a href="#the-expanded-lead">The expanded lead</a></li><li class="l3"><a href="#expected-hold">Expected hold</a></li><li class="l3"><a href="#read-across">Read-across: what moves with this name</a></li><li class="l3"><a href="#the-consensus-strip">The consensus strip: where the room fell</a></li><li class="l2"><a href="#morning-and-evening">Morning briefing | Evening court</a></li><li class="l2"><a href="#day-and-night">Day and night</a></li><li class="l2"><a href="#the-workspace-grid">The workspace grid</a></li><li class="l3"><a href="#fit-to-window-and-flowing-page">Fit to window and flowing page</a></li><li class="l3"><a href="#moving-and-sizing-panels">Moving and sizing panels</a></li><li class="l3"><a href="#the-layout-menu">The Layout menu</a></li><li class="l2"><a href="#the-header">The header</a></li><li class="l2"><a href="#listen-the-memo-read-aloud">Listen: the memo, read aloud</a></li><li class="l2"><a href="#keyboard-summary">Keyboard summary</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-22 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-23 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Data & privacy · Bablytics Guide</title>
-<meta name="description" content="Local-first by construction: one SQLite file and a folder on your disk, no telemetry, and a truthful list of the seven external sources the app talks to and exactly what crosses the wire.">
+<meta name="description" content="Local-first by construction: one SQLite file and a folder on your disk — your uploaded evidence included — no telemetry, and a truthful list of the seven external sources the app talks to and exactly what crosses the wire.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -73,6 +73,7 @@
 <li><a href="broker.html">Broker</a></li>
 <li><a href="news-library-archive.html">News · Library · Archive</a></li>
 <li><a href="settings.html">Settings</a></li>
+<li><a href="evidence-locker.html">Evidence locker</a></li>
 </ul></details>
 <details open data-group="reference"><summary>Reference</summary><ul>
 <li><a href="download-and-install.html">Download &amp; install</a></li>
@@ -85,14 +86,14 @@
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-data-and-privacy" data-slug="data-and-privacy" data-title="Data &amp; privacy">
-<header class="page-head"><p class="eyebrow">Reference · local-first</p><h1>Data &amp; privacy</h1><p class="summary">Local-first by construction: one SQLite file and a folder on your disk, no telemetry, and a truthful list of the seven external sources the app talks to and exactly what crosses the wire.</p></header>
+<header class="page-head"><p class="eyebrow">Reference · local-first</p><h1>Data &amp; privacy</h1><p class="summary">Local-first by construction: one SQLite file and a folder on your disk — your uploaded evidence included — no telemetry, and a truthful list of the seven external sources the app talks to and exactly what crosses the wire.</p></header>
 <div class="article">
 
 <p>Bablytics is a single-user program that runs on your own computer. It listens on <code>127.0.0.1</code>, writes everything to one folder, and has no server of its own anywhere. The only traffic it generates is the traffic the features need — market data, headlines, and, if you give it a key, the Anthropic API. This page lists all of it, because a privacy page that says “we take your privacy seriously” and stops is not one.</p>
 
 <h2 id="the-picture">The whole picture<a class="anchor" href="#the-picture" aria-label="Link to The whole picture">#</a></h2>
 <figure class="diagram">
-<svg viewBox="0 0 960 560" role="img" aria-label="Data-flow diagram: on your machine the Bablytics app reads and writes a local data directory; seven external sources are reached over the network — Yahoo Finance, news RSS feeds, BLS/BEA/Census feeds, Quiver Quantitative (only with a key), the Anthropic API (only with a key), the Schwab API (only if connected) and Wikipedia (only on a manual universe refresh) — each arrow labelled with what leaves and what returns." xmlns="http://www.w3.org/2000/svg" font-family="inherit" font-size="12" fill="currentColor" stroke="currentColor">
+<svg viewBox="0 0 960 560" role="img" aria-label="Data-flow diagram: on your machine the Bablytics app reads and writes a local data directory, which holds the database, caches, models, dossiers, your uploaded evidence files and your keys; seven external sources are reached over the network — Yahoo Finance, news RSS feeds, BLS/BEA/Census feeds, Quiver Quantitative (only with a key), the Anthropic API (only with a key), the Schwab API (only if connected) and Wikipedia (only on a manual universe refresh) — each arrow labelled with what leaves and what returns." xmlns="http://www.w3.org/2000/svg" font-family="inherit" font-size="12" fill="currentColor" stroke="currentColor">
   <title>What stays on your machine and what crosses the wire</title>
   <!-- your machine -->
   <rect x="20" y="36" width="324" height="496" rx="10" fill="none" stroke-width="1.5"/>
@@ -111,6 +112,7 @@
   <text x="182" y="390" text-anchor="middle" stroke="none">boardroom/ (close packets)</text>
   <text x="182" y="410" text-anchor="middle" stroke="none">.env (your API key) · schwab_tokens.json</text>
   <text x="182" y="430" text-anchor="middle" stroke="none">logs/bablytics.log</text>
+  <text x="182" y="450" text-anchor="middle" stroke="none">uploads/ (your evidence files)</text>
   <text x="182" y="470" text-anchor="middle" font-style="italic" stroke="none" opacity="0.8">nothing in here is uploaded anywhere</text>
   <text x="182" y="490" text-anchor="middle" font-style="italic" stroke="none" opacity="0.8">copy the folder = a full backup</text>
   <!-- app <-> data -->
@@ -142,7 +144,7 @@
   <text x="406" y="297" font-size="11" stroke="none">in: congressional disclosures</text>
   <line x1="390" y1="357" x2="640" y2="357" stroke-width="1.2" stroke-dasharray="5 4"/>
   <path d="M640,357 l-9,-5 v10 z" stroke="none"/><path d="M394,357 l9,-5 v10 z" stroke="none"/>
-  <text x="406" y="351" font-size="11" stroke="none">out: prompts — context, candidates, book</text>
+  <text x="406" y="351" font-size="11" stroke="none">out: prompts — candidates, book, evidence</text>
   <text x="406" y="370" font-size="11" stroke="none">in: JSON grades · memos · journals</text>
   <line x1="390" y1="430" x2="640" y2="430" stroke-width="1.2" stroke-dasharray="5 4"/>
   <path d="M640,430 l-9,-5 v10 z" stroke="none"/><path d="M394,430 l9,-5 v10 z" stroke="none"/>
@@ -188,7 +190,8 @@
 <h2 id="what-stays-local">What stays on your machine<a class="anchor" href="#what-stays-local" aria-label="Link to What stays on your machine">#</a></h2>
 <p>Everything the app produces or remembers. Concretely, inside the data folder (<a href="download-and-install.html#where-data-lives">paths per OS</a>):</p>
 <dl class="spec">
-  <dt>bablytics.db</dt><dd>One SQLite file, WAL mode. Tables: users and sessions (one account, PBKDF2-SHA256 with 200 000 iterations, 30-day httponly session cookie), runs, leads, grades, outcomes, evening_reviews, preopen_reviews, midday_reviews, horizon_reviews, member_journal, pyramid_scores, positions and position_reviews (your uploaded holdings and the board’s reviews of them), user_trades and user_reflections (leads you marked TAKEN, trades you logged by hand, what you wrote about them), staged_orders (the Broker queue), paper_positions and paper_equity (the League), pulse_updates and rl_reports (the Pulse), lead_triggers and bailiff_events (the Bailiff), curry_cycles, settings (schedule times, Pulse goals, Schwab app key/secret if you typed them in — masked in the UI, stored in this file).</dd>
+  <dt>bablytics.db</dt><dd>One SQLite file, WAL mode. Tables: users and sessions (one account, PBKDF2-SHA256 with 200 000 iterations, 30-day httponly session cookie), runs, leads, grades, outcomes, evening_reviews, preopen_reviews, midday_reviews, horizon_reviews, member_journal, pyramid_scores, positions and position_reviews (your uploaded holdings and the board’s reviews of them), user_trades and user_reflections (leads you marked TAKEN, trades you logged by hand, what you wrote about them), staged_orders (the Broker queue), paper_positions and paper_equity (the League), pulse_updates and rl_reports (the Pulse), lead_triggers and bailiff_events (the Bailiff), curry_cycles, user_documents (the Evidence locker: one row per uploaded file with its note, flags, expiry and the text extracted from it), settings (schedule times, Pulse goals, Schwab app key/secret if you typed them in — masked in the UI, stored in this file).</dd>
+  <dt>uploads/</dt><dd>The files you drop into the <a href="evidence-locker.html">Evidence locker</a>, stored as <code>&lt;id&gt;-&lt;safe_filename&gt;</code>. They are written here and read back from here — for extraction once at upload, and for your own Download button; <a href="#evidence-locker">nothing sends the file anywhere</a>. Remove deletes the file with the row.</dd>
   <dt>rl/</dt><dd>The Pulse’s numpy models and their roster, evaluation split and generation log. Trained on your machine from public daily bars.</dd>
   <dt>model.joblib · model.json</dt><dd>The small outcome model the Executive reads, trained from your own record once it has 25 realized outcomes.</dd>
   <dt>members/*.md</dt><dd>Human-readable dossiers per board member: journal entries, grading history with realized returns, pyramid standing, calibration.</dd>
@@ -203,11 +206,11 @@
 <table class="data">
   <thead><tr><th>Source</th><th>When</th><th>What leaves your machine</th><th>What comes back</th></tr></thead>
   <tbody>
-    <tr><td>Yahoo Finance, through the <code>yfinance</code> library</td><td>Every session and every chart: the morning scan over the S&amp;P 500 universe, per-candidate technicals, pre-market prints, analyst sweeps, the Pulse’s live prints, the League’s marks, outcomes, Charts Pro, Positions quotes</td><td>Ticker symbols and date ranges. Yahoo sees which symbols you look at; it does not see your holdings’ sizes</td><td>Quotes, daily and intraday bars, option chains, upgrades/downgrades</td></tr>
+    <tr><td>Yahoo Finance, through the <code>yfinance</code> library</td><td>Every session and every chart: the morning scan over the S&amp;P 500 universe, per-candidate technicals, pre-market prints, analyst sweeps, the Pulse’s live prints, the League’s marks, outcomes, Charts Pro, Positions quotes — and, since round 24, the read-across collector’s daily closes for each lead, SPY/QQQ/IWM, its sector ETF and up to forty sector peers (cached per day)</td><td>Ticker symbols and date ranges. Yahoo sees which symbols you look at; it does not see your holdings’ sizes</td><td>Quotes, daily and intraday bars, option chains, upgrades/downgrades</td></tr>
     <tr><td>News RSS — CNBC, MarketWatch, Yahoo Finance, CNN Business, BBC Business, BBC World, Al Jazeera, The Guardian</td><td>Morning briefing, Pre-Open, Midday, the News tab (10-minute cache)</td><td>A plain feed request, nothing else</td><td>Headlines, summaries, links</td></tr>
     <tr><td>BLS · BEA · Census release feeds</td><td>The 9:15 Pre-Open Check’s econ tape</td><td>A plain feed request</td><td>Release headlines matched against an economic-print keyword list</td></tr>
     <tr><td>Quiver Quantitative</td><td>Morning briefing, only if <code>QUIVER_API_KEY</code> is set (24-hour cache). Without a key the collector tries the legacy public S3 dumps, which currently answer 403, and the Watchdog degrades to “no signal”</td><td>Your Quiver key</td><td>Congressional trade disclosures</td></tr>
-    <tr><td>Anthropic API</td><td>Only with <code>ANTHROPIC_API_KEY</code>; see <a href="#anthropic">below</a></td><td>Prompt text: the persona’s system prompt and the material it grades</td><td>Structured JSON: grades, comments, memos, journal entries, rationales</td></tr>
+    <tr><td>Anthropic API</td><td>Only with <code>ANTHROPIC_API_KEY</code>; see <a href="#anthropic">below</a></td><td>Prompt text: the persona’s system prompt and the material it grades — including the USER EVIDENCE section: the notes and extracted text of the documents you filed in the Evidence locker, never the files themselves</td><td>Structured JSON: grades, comments, memos, journal entries, rationales, read-across paragraphs</td></tr>
     <tr><td>Schwab API</td><td>Only after you connect a Schwab developer app in the Broker view</td><td>OAuth authorisation and token refreshes; account reads; the single order you click Submit on, after a confirmation</td><td>Balances, positions, order status</td></tr>
     <tr><td>Wikipedia</td><td>Only when you run <code>python -m bablytics.universe refresh</code> from a checkout. Normal operation uses a constituent list baked into the code (503 tickers, snapshot 2026-08-18)</td><td>A plain page request</td><td>The S&amp;P 500 constituent table</td></tr>
   </tbody>
@@ -216,7 +219,7 @@
 <p>That is the complete list of hosts in the code. There is no update check, no crash reporter, no analytics, no usage ping, and no account with Bablytics itself — there is nothing to have an account with.</p>
 
 <h2 id="anthropic">What the Anthropic API sees, exactly<a class="anchor" href="#anthropic" aria-label="Link to What the Anthropic API sees, exactly">#</a></h2>
-<p>Real mode means the board is a language model. Each seat is one API call with a persona system prompt and a user prompt built from what that seat needs to read. Across a weekday that is roughly: fifteen calls for the morning briefing (thirteen graders, the Skeptic, the Executive), fifteen for the Pre-Open Check, fifteen for the Midday Check-In, fifteen for the Evening Court, one per Pulse cycle (fourteen cycles between 9:30 and 16:00), plus the weekend horizon panels and anything you trigger by hand. The prompts carry:</p>
+<p>Real mode means the board is a language model. Each seat is one API call with a persona system prompt and a user prompt built from what that seat needs to read. Across a weekday that is roughly: fifteen calls for the morning briefing (thirteen graders, the Skeptic, the Executive) plus one for the book’s read-across paragraphs, fifteen for the Pre-Open Check, fifteen for the Midday Check-In, fifteen for the Evening Court, one per Pulse cycle (fourteen cycles between 9:30 and 16:00), plus the weekend horizon panels and anything you trigger by hand. The prompts carry:</p>
 <ul>
   <li>the market context (index prices, VIX, regime line, cycle read) and the day’s candidates — tickers, prices, option-flow statistics, technicals, value stats, matched headlines and congressional-disclosure summaries;</li>
   <li>each member’s own recent journal lessons, pyramid rank and calibration statistics — text the app generated earlier;</li>
@@ -225,8 +228,20 @@
   <li><strong>your book</strong> in the Pulse — the tickers, entries and P&amp;L of leads you marked TAKEN, trades you logged by hand, and your uploaded holdings — so the single per-cycle call can write the “your book” paragraph;</li>
   <li><strong>your reflections</strong>, verbatim, in the Executive’s Evening Court prompt, once you have written one since the last court;</li>
   <li>each member’s own open paper positions at the Midday Check-In (paper money, not yours).</li>
+  <li><strong>your evidence</strong> — the USER EVIDENCE section: for every document in the <a href="evidence-locker.html">Evidence locker</a> that is active, not expired and flagged for that session, its filename, kind, upload date, your note and the text extracted from it (PDF and text kinds; nothing is extracted from images or audio), up to 12 000 characters per prompt. It rides every grader prompt and the Executive’s prompt in the morning, and every court prompt in the evening. Details below.</li>
 </ul>
 <p>Nothing else: not your username, not your password, not your Schwab balances (the board never reads the broker), not the database. The model name is <code>BABLYTICS_MODEL</code> (default <code>claude-opus-4-8</code>); calls are made directly from your machine to <code>api.anthropic.com</code> with your key, under your Anthropic account and its terms. In mock mode none of this leaves the machine, because no call is made.</p>
+
+<h2 id="evidence-locker">The Evidence locker, exactly<a class="anchor" href="#evidence-locker" aria-label="Link to The Evidence locker, exactly">#</a></h2>
+<p>The locker is the one place you hand the app documents of your own, so it gets its own paragraph. What happens to a file you drop:</p>
+<ol class="steps">
+  <li><strong>It is written to <code>uploads/</code> in your data folder</strong> under a name built server-side from the new row’s id and a sanitised copy of the filename. The type is checked against the accepted list (PDF, text/markdown/CSV/JSON, PNG/JPEG/GIF/WebP, MP3/M4A/WAV/OGG/WebM/MP4 audio) and the 25 MB limit; the path cannot point outside the folder.</li>
+  <li><strong>Text is extracted once, locally.</strong> PDFs through pypdf (first 60 pages, 20 000 characters), text kinds as-is with the same cap. Nothing is extracted from images or audio in v1; no third-party OCR, vision or transcription service is called — there is no such call in the code.</li>
+  <li><strong>The row goes into <code>user_documents</code></strong> in <code>bablytics.db</code>: filename, stored path, MIME type, size, kind, note, extracted text and status, the Morning/Evening flags, <code>active</code>, upload time, optional expiry.</li>
+  <li><strong>Only the note and the extracted text ever enter a prompt</strong> — and therefore reach <code>api.anthropic.com</code> only in AI mode, only for documents that are active, unexpired and flagged for that session, and only up to the 12 000-character block. The file bytes never do. In mock mode nothing leaves the machine, because no call is made; the mock memo merely lists the filenames.</li>
+  <li><strong>Download</strong> serves the file back to your signed-in session and nobody else; <strong>Remove</strong> deletes the row and unlinks the file. An expired or switched-off document stays on disk until you remove it.</li>
+</ol>
+<p>A backup of the data folder includes <code>uploads/</code>; so does a move to another machine. The <strong>Preview what the committee sees</strong> link on the panel shows, character for character, what would be sent — it is the same string the prompts carry.</p>
 
 <h2 id="network-posture">Network posture<a class="anchor" href="#network-posture" aria-label="Link to Network posture">#</a></h2>
 <ul>
@@ -240,7 +255,7 @@
 
 <h2 id="backups">Backups, moves and resets<a class="anchor" href="#backups" aria-label="Link to Backups, moves and resets">#</a></h2>
 <ol class="steps">
-  <li><strong>Back up:</strong> quit the app, copy the whole data folder somewhere safe. That is a complete backup — account, record, journals, models, secrets. If you must copy while it is running, include <code>bablytics.db-wal</code> and <code>bablytics.db-shm</code> with the database.</li>
+  <li><strong>Back up:</strong> quit the app, copy the whole data folder somewhere safe. That is a complete backup — account, record, journals, models, secrets, uploaded evidence. If you must copy while it is running, include <code>bablytics.db-wal</code> and <code>bablytics.db-shm</code> with the database.</li>
   <li><strong>Move to a new machine:</strong> install the app there, copy the folder into the new machine’s data location (or point <code>BABLYTICS_DATA_DIR</code> at wherever you put it), start. Your password is the one you set before; the record continues.</li>
   <li><strong>Reset:</strong> rename or delete the data folder; the next start creates a fresh one and asks you to create an account again. Deleting only <code>bablytics.db</code> resets the record but keeps the trained Pulse models.</li>
   <li><strong>Forgot the password?</strong> There is no reset flow, by design — nobody else holds a copy. The only way back in is a fresh data folder, which is why the password is worth writing down.</li>
@@ -254,13 +269,13 @@
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="run-from-source.html"><small>← Previous</small><b>Run from source</b></a><a class="next" rel="next" href="faq-and-glossary.html"><small>Next →</small><b>FAQ &amp; glossary</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#the-picture">The whole picture</a></li><li class="l2"><a href="#what-stays-local">What stays on your machine</a></li><li class="l2"><a href="#what-goes-out">What goes out, source by source</a></li><li class="l2"><a href="#anthropic">What the Anthropic API sees, exactly</a></li><li class="l2"><a href="#network-posture">Network posture</a></li><li class="l2"><a href="#pdfs">PDF exports</a></li><li class="l2"><a href="#backups">Backups, moves and resets</a></li><li class="l2"><a href="#third-parties">Third parties, briefly</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#the-picture">The whole picture</a></li><li class="l2"><a href="#what-stays-local">What stays on your machine</a></li><li class="l2"><a href="#what-goes-out">What goes out, source by source</a></li><li class="l2"><a href="#anthropic">What the Anthropic API sees, exactly</a></li><li class="l2"><a href="#evidence-locker">The Evidence locker, exactly</a></li><li class="l2"><a href="#network-posture">Network posture</a></li><li class="l2"><a href="#pdfs">PDF exports</a></li><li class="l2"><a href="#backups">Backups, moves and resets</a></li><li class="l2"><a href="#third-parties">Third parties, briefly</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-22 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-23 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">

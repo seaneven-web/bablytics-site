@@ -17,6 +17,7 @@ positions-and-trades.html
 broker.html
 news-library-archive.html
 settings.html
+evidence-locker.html
 download-and-install.html
 run-from-source.html
 data-and-privacy.html
