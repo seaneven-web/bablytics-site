@@ -11,6 +11,7 @@ the-pulse.html
 the-bailiff.html
 paper-league.html
 learning-loops.html
+the-fund.html
 dashboard-workspace.html
 charts-and-terminal.html
 positions-and-trades.html

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Learning Loops · Bablytics Guide</title>
-<meta name="description" content="The four ways the room learns — journal lessons fed back into prompts, per-member dossiers, an outcome model the Executive reads, and the RL population&#x27;s nightly generation — and, just as exactly, what none of them learns yet.">
+<meta name="description" content="The five ways the room learns — journal lessons fed back into prompts, per-member dossiers, an outcome model the Executive reads, the RL population&#x27;s nightly generation, and the Fund&#x27;s allocation transformer — and, just as exactly, what none of them learns yet.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -66,6 +66,7 @@
 <li><a href="the-bailiff.html">The Bailiff</a></li>
 <li><a href="paper-league.html">Paper League</a></li>
 <li><a href="learning-loops.html" aria-current="page">Learning Loops</a></li>
+<li><a href="the-fund.html">The Fund</a></li>
 </ul></details>
 <details open data-group="desk"><summary>The Desk</summary><ul>
 <li><a href="dashboard-workspace.html">Dashboard</a></li>
@@ -90,12 +91,14 @@
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-learning-loops" data-slug="learning-loops" data-title="Learning Loops">
-<header class="page-head"><p class="eyebrow">Engine · the feedback loops</p><h1>Learning Loops</h1><p class="summary">The four ways the room learns — journal lessons fed back into prompts, per-member dossiers, an outcome model the Executive reads, and the RL population&#x27;s nightly generation — and, just as exactly, what none of them learns yet.</p></header>
+<header class="page-head"><p class="eyebrow">Engine · the feedback loops</p><h1>Learning Loops</h1><p class="summary">The five ways the room learns — journal lessons fed back into prompts, per-member dossiers, an outcome model the Executive reads, the RL population&#x27;s nightly generation, and the Fund&#x27;s allocation transformer — and, just as exactly, what none of them learns yet.</p></header>
 <div class="article">
 
-<h2 id="four-loops-one-day">Four loops, one day<a class="anchor" href="#four-loops-one-day" aria-label="Link to Four loops, one day">#</a></h2>
+<h2 id="five-loops-one-day">Five loops, one day<a class="anchor" href="#five-loops-one-day" aria-label="Link to Five loops, one day">#</a></h2>
 
-<p>Bablytics learns in four places, and they close at different speeds. Two are in words and two are in numbers. All four are fed by the same two facts the day produces: the grades the board wrote in the morning, and what the tape did afterwards — the 16:45 realized outcomes and the close the Evening Court scores against.</p>
+<p>Bablytics learns in five places, and they close at different speeds. Two are in words and three are in numbers. All five are fed by the same two facts the day produces: the grades the board wrote in the morning, and what the tape did afterwards — the 16:45 realized outcomes and the close the Evening Court scores against.</p>
+
+<p>The first four are drawn below. The fifth — the <a href="the-fund.html#the-allocation-model">Fund's allocation transformer</a>, added in round 27 — hangs off the same court night and is described in <a href="#loop-5-the-fund">its own section</a>; its diagram is the <a href="the-fund.html#the-daily-cycle">Fund's daily cycle</a>, because what it learns is a portfolio decision, not a grade.</p>
 
 <figure class="diagram">
 <svg width="100%" viewBox="0 0 960 560" role="img" aria-label="The four learning loops around one trading day: the morning briefing's grades and the 16:45 realized outcomes feed the Evening Court; the court writes journals, which feed loop one (each seat's last five lessons into the next morning's prompt) and loop two (the per-member dossier files); outcomes plus grades train loop three (the sklearn outcome MLP, whose predictions and calibration reach the Executive's prompt); the court's last step runs loop four (one generation of the RL population, gated by a frozen held-out split), which the Pulse reads the next session" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13">
@@ -167,7 +170,7 @@
 
   <text x="30" y="545" fill="currentColor" stroke="none" font-size="12" font-weight="600">Not in any loop: exit zones, the blend overrides, the Bailiff's parser, the League's rules, the grading rubric.</text>
 </svg>
-<figcaption>What each loop reads, what it writes, and where it lands the next morning. Loops ① and ② are words; ③ and ④ are weights.</figcaption>
+<figcaption>What each loop reads, what it writes, and where it lands the next morning. Loops ① and ② are words; ③ and ④ are weights. Loop ⑤, the Fund's allocation transformer, hangs off the same court night and is drawn on <a href="the-fund.html#the-daily-cycle">the Fund page</a>.</figcaption>
 </figure>
 
 <h2 id="loop-1-lessons-into-prompts">Loop 1 — lessons into prompts<a class="anchor" href="#loop-1-lessons-into-prompts" aria-label="Link to Loop 1 — lessons into prompts">#</a></h2>
@@ -190,7 +193,15 @@
 
 <h2 id="loop-4-the-population">Loop 4 — the RL population<a class="anchor" href="#loop-4-the-population" aria-label="Link to Loop 4 — the RL population">#</a></h2>
 
-<p>The fourth loop is the Pulse's five actor-critic models, and it is the only one that runs a selection step. The court's last act, after journals and dossiers, is one <strong>generation</strong>: score every member, train every member on the day's fresh episodes, breed one mutated child from the elite, and admit the child only if its fitness on a frozen held-out split beats the worst member's — the elite is never replaced, the population never shrinks, and a generation that changes nothing is recorded with the same fields as one that does. The first generation (2026-08-21) refused its child and left m1–m5 standing. The full mechanism — the fitness formula, the held-out split, the rejection record, the model card's caveats — is on <a href="the-pulse.html#evolution">the Pulse page</a>.</p>
+<p>The fourth loop is the Pulse's five actor-critic models, and it is the only one that breeds: it retires and replaces members rather than just refitting one. The court's last act, after journals and dossiers, is one <strong>generation</strong>: score every member, train every member on the day's fresh episodes, breed one mutated child from the elite, and admit the child only if its fitness on a frozen held-out split beats the worst member's — the elite is never replaced, the population never shrinks, and a generation that changes nothing is recorded with the same fields as one that does. The first generation (2026-08-21) refused its child and left m1–m5 standing. The full mechanism — the fitness formula, the held-out split, the rejection record, the model card's caveats — is on <a href="the-pulse.html#evolution">the Pulse page</a>.</p>
+
+<h2 id="loop-5-the-fund">Loop 5 — the Fund's allocation transformer<a class="anchor" href="#loop-5-the-fund" aria-label="Link to Loop 5 — the Fund&#x27;s allocation transformer">#</a></h2>
+
+<p>The fifth loop learns a different kind of thing. Loops ③ and ④ learn about a <em>position</em> — what a lead will return, what to do about one you hold. The Fund's transformer learns about the <em>book as a whole</em>: given the last twenty sessions of book statistics, realized feedback and regime, what fraction <code>a ∈ [0, 1]</code> of the portfolio belongs in the board's ≥60 book today, and how should that fraction be split across the open lots. It is hand-written numpy — embedding, two causal self-attention blocks, an allocation head and a shared per-lot scoring head — and it imports the same <code>Adam</code> the Pulse's population uses. The full mechanism is on <a href="the-fund.html#the-allocation-model">The Fund</a>.</p>
+
+<p>Like loop ④ it trains <strong>inside the Evening Court</strong> (<code>fund.train.nightly()</code>, gated by <code>fund_train_enabled</code>, with a deeper weekly pass on Sunday), and like loop ④ it deploys only through a gate: a candidate checkpoint must beat the incumbent on a frozen held-out slice — the last 20 % of sessions by date — on <em>both</em> the allocation loss and the weight ranking, and be no more than 10 % worse on any risk profile. Deployments and rejections alike, with their numbers, land in <code>data/fund/meta.json</code> and <code>data/fund/self-court.jsonl</code>, and the Fund's Model card shows the recent decisions as dated chips. A stale feature hash raises instead of loading, the same rule as the Pulse's.</p>
+
+<div class="callout callout-warn"><strong>Two honesty devices this loop needs and the others do not.</strong> First, <strong>shrinkage</strong>: while the effective training days sit below <code>fund_min_train_days</code> (default 60), the deployed allocation is pulled halfway toward a prior derived from your stated risk and size goals, and the payload says <code>"shrunk": true</code> and why. Second, the <strong>simulacrum label</strong>: the board has only ever produced on the order of fifteen live runs, so training is extended backwards with reconstructed pseudo-runs built from numeric features alone — momentum, ATR, RSI, volume ratio, sector. Those days are not the board and are labelled as such in the checkpoint. Half of what the dial shows you, at this sample size, is your own goal setting.</div>
 
 <h2 id="what-is-learned-and-what-is-not">What is learned — and what is not<a class="anchor" href="#what-is-learned-and-what-is-not" aria-label="Link to What is learned — and what is not">#</a></h2>
 
@@ -204,6 +215,7 @@
       <li>The outcome MLP's weights, retrained twice a day.</li>
       <li>The five RL members' weights, their fitness, and the roster's lineage.</li>
       <li>The fitness-weighted consensus weights the Pulse votes with.</li>
+      <li>The Fund's allocation transformer: how much of the portfolio belongs in the ≥60 book, and the relative weight of each lot in it.</li>
     </ul>
   </div>
   <div>
@@ -216,6 +228,7 @@
       <li>The grading rubric and each persona's system prompt.</li>
       <li>The pyramid's scoring formula and its ten-session span.</li>
       <li>Inside the RL state: the written-kill distance, session progress and board grade — silenced because training has never seen them vary.</li>
+      <li>The Fund's admission bar (60), its position cap (20), its exit rules and horizon slack, and every tax rate and threshold in its tax lens — all settings and arithmetic.</li>
     </ul>
   </div>
 </div>
@@ -226,6 +239,7 @@
   <li><strong>Loop 1 only closes in real mode.</strong> Mock personas are rules; a lesson can be filed but cannot change a rule. In mock mode the journals are a record, not a feedback.</li>
   <li><strong>Loop 3 has sixty rows.</strong> R² 0.05 on hold-out is not a forecast. The predicted-return column in the Executive's prompt is labelled as model output and the Executive's own track record — the final grades' correlation to realized return — is what the court grades.</li>
   <li><strong>Loop 4's objective is shaped reward, not money.</strong> Every member's fitness is negative; "beats buy-and-hold" means "cuts exposure"; the ensemble does not beat its best single member; the most predictive column the system has found is one the networks have never been trained on. The model card says all of this in full and this site does not soften it.</li>
+  <li><strong>Loop 5 has the smallest real sample of all of them.</strong> A transformer on a few dozen genuine sessions is a transformer on nothing; the honest parts of it are the shrinkage toward your stated goals, the label on the reconstructed history, and the gate that rejects most candidates. Read its dial as a temperament, not a forecast.</li>
   <li><strong>None of the loops touches the rules that decide what happens to a position</strong> — zones, overrides, kills, sizing. Those are read off the page; that is a design choice, so that what is learned is always the opinion and never the safety rail.</li>
   <li><strong>Nothing learned anywhere can reach an order.</strong> The Pulse and the Bailiff have no execution path; the only code that submits a real order is the one-order-per-click Broker flow, and no loop calls it.</li>
 </ul>
@@ -237,15 +251,16 @@
   <dt>#/member/&lt;key&gt;</dt><dd>overview, grading history with realized returns, analysis archive, journal, paper book</dd>
   <dt>Dashboard → Evening view · the Evening Court PDF</dt><dd>the court's scoreboard and every seat's ON BASE / OFF BASE / LESSON; the MODELS AND TRAINING appendix with the night's generation lives in the live-board court document (<code>data/boardroom/&lt;date&gt;/</code>) and in <code>data/boardroom/&lt;date&gt;/generation.json</code>, not in the in-app PDF</dd>
   <dt>Pulse → Model card</dt><dd>the population panel, the last self-court verdict, the decision strip</dd>
+  <dt>Fund → Model card</dt><dd>the checkpoint, the honestly-labelled training data, the held-out numbers and the last gate decisions — deployed and rejected alike (<a href="the-fund.html#the-gate">the gate</a>)</dd>
   <dt>Archive · Reviews</dt><dd>run history with 1-day and 5-day columns; the week review's per-member accuracy</dd>
-  <dt>data/members/ · data/rl/self-court.jsonl · data/model.json</dt><dd>the dossiers, the generation ledger, the outcome model's metrics</dd>
+  <dt>data/members/ · data/rl/self-court.jsonl · data/model.json · data/fund/self-court.jsonl</dt><dd>the dossiers, the generation ledger, the outcome model's metrics, the Fund's gate history</dd>
 </dl>
 
 </div>
-<nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="paper-league.html"><small>← Previous</small><b>Paper League</b></a><a class="next" rel="next" href="dashboard-workspace.html"><small>Next →</small><b>Dashboard</b></a></nav>
+<nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="paper-league.html"><small>← Previous</small><b>Paper League</b></a><a class="next" rel="next" href="the-fund.html"><small>Next →</small><b>The Fund</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#four-loops-one-day">Four loops, one day</a></li><li class="l2"><a href="#loop-1-lessons-into-prompts">Loop 1 — lessons into prompts</a></li><li class="l2"><a href="#loop-2-dossiers">Loop 2 — dossiers</a></li><li class="l2"><a href="#loop-3-outcome-mlp">Loop 3 — the outcome model the Executive reads</a></li><li class="l2"><a href="#loop-4-the-population">Loop 4 — the RL population</a></li><li class="l2"><a href="#what-is-learned-and-what-is-not">What is learned — and what is not</a></li><li class="l3"><a href="#learned">Learned</a></li><li class="l3"><a href="#not-learned">Not learned — fixed by code</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#where-to-see-it">Where to see each loop</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#five-loops-one-day">Five loops, one day</a></li><li class="l2"><a href="#loop-1-lessons-into-prompts">Loop 1 — lessons into prompts</a></li><li class="l2"><a href="#loop-2-dossiers">Loop 2 — dossiers</a></li><li class="l2"><a href="#loop-3-outcome-mlp">Loop 3 — the outcome model the Executive reads</a></li><li class="l2"><a href="#loop-4-the-population">Loop 4 — the RL population</a></li><li class="l2"><a href="#loop-5-the-fund">Loop 5 — the Fund&#x27;s allocation transformer</a></li><li class="l2"><a href="#what-is-learned-and-what-is-not">What is learned — and what is not</a></li><li class="l3"><a href="#learned">Learned</a></li><li class="l3"><a href="#not-learned">Not learned — fixed by code</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#where-to-see-it">Where to see each loop</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">

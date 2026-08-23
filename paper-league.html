@@ -66,6 +66,7 @@
 <li><a href="the-bailiff.html">The Bailiff</a></li>
 <li><a href="paper-league.html" aria-current="page">Paper League</a></li>
 <li><a href="learning-loops.html">Learning Loops</a></li>
+<li><a href="the-fund.html">The Fund</a></li>
 </ul></details>
 <details open data-group="desk"><summary>The Desk</summary><ul>
 <li><a href="dashboard-workspace.html">Dashboard</a></li>
@@ -159,6 +160,28 @@
 
 <p>The Bot has no persona and no opinions. It is the room's control group: the Executive's signed book, executed mechanically — top five by final grade at or above 60, same direction as ranked, same 10 % sizing, same five-day hold. When a philosophy's book beats The Bot over a window, that seat's convictions added something the Executive's synthesis did not; when The Bot leads, the room's own ranking was the better trade. It is highlighted in the table so the comparison is never more than one glance away.</p>
 
+<h2 id="fund-versus-league">The League and the Fund<a class="anchor" href="#fund-versus-league" aria-label="Link to The League and the Fund">#</a></h2>
+
+<p>Round 27 added a second paper engine, <a href="the-fund.html">The Fund</a>, and the two are deliberately not merged: they answer different questions. The League asks <em>which philosophy makes money</em>, so it needs fifteen books and rules crude enough that every seat is scored on the same yardstick. The Fund asks <em>how the board's signed book behaves as one managed portfolio</em>, so it needs one book, the board's own risk terms, and something deciding how much of it to hold.</p>
+
+<div class="table-wrap">
+<table class="data">
+  <thead><tr><th></th><th>The Paper League</th><th>The Fund</th></tr></thead>
+  <tbody>
+    <tr><td>Books</td><td>fifteen — one per grading seat, plus the Skeptic and The Bot</td><td>one</td></tr>
+    <tr><td>What gets in</td><td>each seat's own top three by conviction; The Bot takes the Executive's top five at ≥ 60</td><td>every lead the board finally grades <strong>≥ 60</strong>, one slot per underlying, capped at 20</td></tr>
+    <tr><td>Sizing</td><td>a house constant: 10 % of the seat's equity per leg</td><td>a <strong>model</strong>: a transformer's allocation 0–1 of the portfolio, split into per-lot weights</td></tr>
+    <tr><td>Exits</td><td>a flat five-trading-day hold, plus a midday close by the seat and a Bailiff kill</td><td>the lead's <strong>real stop and target</strong>, its stated <strong>horizon</strong> (plus 25 % slack), the Bailiff kill, grade decay below 50, and option expiry — all on a close</td></tr>
+    <tr><td>Options</td><td>traded as the underlying; the League does not price contracts</td><td>filled at the contract's mark when the chain gives one, else the underlying with a <code>proxy_underlying</code> flag on the lot</td></tr>
+    <tr><td>Rebalancing</td><td>none — a position is opened and then left alone</td><td>a daily reweight at 17:10 ET, idempotent per date</td></tr>
+    <tr><td>Tax</td><td>not modelled</td><td>a <strong>tax lens</strong>: lot terms, estimated tax on every proposed trim, an after-tax hysteresis that can veto the model, and a wash-sale flag — <em>estimates, not tax advice</em></td></tr>
+    <tr><td>The question</td><td>whose philosophy was right</td><td>whether the room's ≥ 60 book, held on its own written terms, was worth holding</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Both are paper by construction and neither has an execution path. Where they overlap they share code rather than agreeing by accident: the Fund fills through the same daily-bar history helpers this module uses, and both take the Bailiff's rule that an intraday touch never closes anything.</p>
+
 <h2 id="where-it-feeds">Where the League feeds<a class="anchor" href="#where-it-feeds" aria-label="Link to Where the League feeds">#</a></h2>
 
 <ul>
@@ -191,7 +214,7 @@
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="the-bailiff.html"><small>← Previous</small><b>The Bailiff</b></a><a class="next" rel="next" href="learning-loops.html"><small>Next →</small><b>Learning Loops</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-league-is">What the League is</a></li><li class="l2"><a href="#the-rules">The rules, exactly</a></li><li class="l3"><a href="#opening-books">How a book opens</a></li><li class="l3"><a href="#marking-and-closing">Marking and closing</a></li><li class="l3"><a href="#exit-reasons">Why a leg closes</a></li><li class="l2"><a href="#a-day-in-the-league">A day in the League</a></li><li class="l2"><a href="#windows-and-the-table">Windows, win rate and the table</a></li><li class="l2"><a href="#the-bot">The Bot</a></li><li class="l2"><a href="#where-it-feeds">Where the League feeds</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-league-is">What the League is</a></li><li class="l2"><a href="#the-rules">The rules, exactly</a></li><li class="l3"><a href="#opening-books">How a book opens</a></li><li class="l3"><a href="#marking-and-closing">Marking and closing</a></li><li class="l3"><a href="#exit-reasons">Why a leg closes</a></li><li class="l2"><a href="#a-day-in-the-league">A day in the League</a></li><li class="l2"><a href="#windows-and-the-table">Windows, win rate and the table</a></li><li class="l2"><a href="#the-bot">The Bot</a></li><li class="l2"><a href="#fund-versus-league">The League and the Fund</a></li><li class="l2"><a href="#where-it-feeds">Where the League feeds</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
