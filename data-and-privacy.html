@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Data & privacy · Bablytics Guide</title>
-<meta name="description" content="Local-first by construction: one SQLite file and a folder on your disk — your uploaded evidence included — no telemetry, and a truthful list of the seven external sources the app talks to and exactly what crosses the wire.">
+<meta name="description" content="Local-first by construction: one SQLite file and a folder on your disk — your uploaded evidence included — no telemetry, and a truthful list of the nine external endpoints the app can talk to — seven for the research, two only if you set up the mailing list (your own mail provider, and the list&#x27;s Firebase database) — and exactly what crosses the wire.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -36,6 +36,7 @@
         <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
+      <a class="btn btn-sm get-reports" href="subscribe.html" aria-label="Get the reports by email"><span class="full">Get the reports</span><span class="short" aria-hidden="true">Reports</span></a>
       <a class="btn btn-primary btn-sm" href="download-and-install.html">Download</a>
       <a class="btn btn-ghost btn-sm open-app" href="/" hidden>Open the app ↗</a>
     </div>
@@ -74,6 +75,7 @@
 <li><a href="news-library-archive.html">News · Library · Archive</a></li>
 <li><a href="settings.html">Settings</a></li>
 <li><a href="evidence-locker.html">Evidence locker</a></li>
+<li><a href="mailing-list.html">Mailing list</a></li>
 </ul></details>
 <details open data-group="reference"><summary>Reference</summary><ul>
 <li><a href="download-and-install.html">Download &amp; install</a></li>
@@ -81,22 +83,24 @@
 <li><a href="data-and-privacy.html" aria-current="page">Data &amp; privacy</a></li>
 <li><a href="faq-and-glossary.html">FAQ &amp; glossary</a></li>
 <li><a href="not-financial-advice.html">Not financial advice</a></li>
+<li><a href="subscribe.html">Get the reports</a></li>
+<li><a href="unsubscribe.html">Unsubscribe</a></li>
 </ul></details>
 </nav>
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-data-and-privacy" data-slug="data-and-privacy" data-title="Data &amp; privacy">
-<header class="page-head"><p class="eyebrow">Reference · local-first</p><h1>Data &amp; privacy</h1><p class="summary">Local-first by construction: one SQLite file and a folder on your disk — your uploaded evidence included — no telemetry, and a truthful list of the seven external sources the app talks to and exactly what crosses the wire.</p></header>
+<header class="page-head"><p class="eyebrow">Reference · local-first</p><h1>Data &amp; privacy</h1><p class="summary">Local-first by construction: one SQLite file and a folder on your disk — your uploaded evidence included — no telemetry, and a truthful list of the nine external endpoints the app can talk to — seven for the research, two only if you set up the mailing list (your own mail provider, and the list&#x27;s Firebase database) — and exactly what crosses the wire.</p></header>
 <div class="article">
 
-<p>Bablytics is a single-user program that runs on your own computer. It listens on <code>127.0.0.1</code>, writes everything to one folder, and has no server of its own anywhere. The only traffic it generates is the traffic the features need — market data, headlines, and, if you give it a key, the Anthropic API. This page lists all of it, because a privacy page that says “we take your privacy seriously” and stops is not one.</p>
+<p>Bablytics is a single-user program that runs on your own computer. It listens on <code>127.0.0.1</code>, writes everything to one folder, and has no server of its own anywhere. The only traffic it generates is the traffic the features need — market data, headlines, if you give it a key the Anthropic API, and, if you set up the <a href="mailing-list.html">mailing list</a>, your own mail provider when you click Send and the list's Firebase database when you click Sync. This page lists all of it, because a privacy page that says “we take your privacy seriously” and stops is not one.</p>
 
 <h2 id="the-picture">The whole picture<a class="anchor" href="#the-picture" aria-label="Link to The whole picture">#</a></h2>
 <figure class="diagram">
-<svg viewBox="0 0 960 560" role="img" aria-label="Data-flow diagram: on your machine the Bablytics app reads and writes a local data directory, which holds the database, caches, models, dossiers, your uploaded evidence files and your keys; seven external sources are reached over the network — Yahoo Finance, news RSS feeds, BLS/BEA/Census feeds, Quiver Quantitative (only with a key), the Anthropic API (only with a key), the Schwab API (only if connected) and Wikipedia (only on a manual universe refresh) — each arrow labelled with what leaves and what returns." xmlns="http://www.w3.org/2000/svg" font-family="inherit" font-size="12" fill="currentColor" stroke="currentColor">
+<svg viewBox="0 0 960 706" role="img" aria-label="Data-flow diagram: on your machine the Bablytics app reads and writes a local data directory, which holds the database, caches, models, dossiers, the report PDFs, your uploaded evidence files and your keys; nine external endpoints are reached over the network — Yahoo Finance, news RSS feeds, BLS/BEA/Census feeds, Quiver Quantitative (only with a key), the Anthropic API (only with a key), the Schwab API (only if connected), Wikipedia (only on a manual universe refresh), your SMTP provider (only when you confirm a mailing-list send) and Firebase (only when you click Sync on the mailing list) — each arrow labelled with what leaves and what returns." xmlns="http://www.w3.org/2000/svg" font-family="inherit" font-size="12" fill="currentColor" stroke="currentColor">
   <title>What stays on your machine and what crosses the wire</title>
   <!-- your machine -->
-  <rect x="20" y="36" width="324" height="496" rx="10" fill="none" stroke-width="1.5"/>
+  <rect x="20" y="36" width="324" height="642" rx="10" fill="none" stroke-width="1.5"/>
   <text x="182" y="62" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="1.5" stroke="none">YOUR MACHINE</text>
   <!-- app box -->
   <rect x="40" y="80" width="284" height="112" rx="8" fill="none" stroke-width="1.2"/>
@@ -105,16 +109,18 @@
   <text x="182" y="150" text-anchor="middle" stroke="none">desktop window or your browser</text>
   <text x="182" y="170" text-anchor="middle" stroke="none" opacity="0.8">scheduler · boardroom · Pulse · Bailiff</text>
   <!-- data box -->
-  <rect x="40" y="300" width="284" height="212" rx="8" fill="none" stroke-width="1.2"/>
+  <rect x="40" y="300" width="284" height="252" rx="8" fill="none" stroke-width="1.2"/>
   <text x="182" y="326" text-anchor="middle" font-size="15" font-weight="700" stroke="none">Data folder</text>
   <text x="182" y="350" text-anchor="middle" stroke="none">bablytics.db — SQLite, every table</text>
   <text x="182" y="370" text-anchor="middle" stroke="none">cache/ · rl/ (models) · members/</text>
   <text x="182" y="390" text-anchor="middle" stroke="none">boardroom/ (close packets)</text>
-  <text x="182" y="410" text-anchor="middle" stroke="none">.env (your API key) · schwab_tokens.json</text>
-  <text x="182" y="430" text-anchor="middle" stroke="none">logs/bablytics.log</text>
-  <text x="182" y="450" text-anchor="middle" stroke="none">uploads/ (your evidence files)</text>
-  <text x="182" y="470" text-anchor="middle" font-style="italic" stroke="none" opacity="0.8">nothing in here is uploaded anywhere</text>
-  <text x="182" y="490" text-anchor="middle" font-style="italic" stroke="none" opacity="0.8">copy the folder = a full backup</text>
+  <text x="182" y="410" text-anchor="middle" stroke="none">reports/ (the PDFs you may email)</text>
+  <text x="182" y="430" text-anchor="middle" stroke="none">.env (API key · the two mail passwords)</text>
+  <text x="182" y="450" text-anchor="middle" stroke="none">schwab_tokens.json · logs/bablytics.log</text>
+  <text x="182" y="470" text-anchor="middle" stroke="none">uploads/ (your evidence files)</text>
+  <text x="182" y="490" text-anchor="middle" font-style="italic" stroke="none" opacity="0.8">nothing in here is uploaded anywhere</text>
+  <text x="182" y="510" text-anchor="middle" font-style="italic" stroke="none" opacity="0.8">except a PDF whose send you confirm</text>
+  <text x="182" y="530" text-anchor="middle" font-style="italic" stroke="none" opacity="0.8">copy the folder = a full backup</text>
   <!-- app <-> data -->
   <line x1="182" y1="192" x2="182" y2="300" stroke-width="1.5"/>
   <path d="M182,192 l-5,9 h10 z" stroke="none"/>
@@ -122,8 +128,8 @@
   <text x="192" y="250" stroke="none" opacity="0.85">reads &amp; writes everything</text>
   <!-- trunk to the network -->
   <line x1="324" y1="136" x2="390" y2="136" stroke-width="1.5"/>
-  <line x1="390" y1="65" x2="390" y2="503" stroke-width="1.5"/>
-  <text x="390" y="540" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="1.2" stroke="none">THE NETWORK</text>
+  <line x1="390" y1="65" x2="390" y2="649" stroke-width="1.5"/>
+  <text x="390" y="686" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="1.2" stroke="none">THE NETWORK</text>
   <!-- branches: always-on sources (solid) -->
   <line x1="390" y1="65" x2="640" y2="65" stroke-width="1.2"/>
   <path d="M640,65 l-9,-5 v10 z" stroke="none"/><path d="M394,65 l9,-5 v10 z" stroke="none"/>
@@ -154,6 +160,14 @@
   <path d="M640,503 l-9,-5 v10 z" stroke="none"/><path d="M394,503 l9,-5 v10 z" stroke="none"/>
   <text x="406" y="497" font-size="11" stroke="none">out: plain GET (manual refresh only)</text>
   <text x="406" y="516" font-size="11" stroke="none">in: S&amp;P 500 constituent list</text>
+  <line x1="390" y1="576" x2="640" y2="576" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <path d="M640,576 l-9,-5 v10 z" stroke="none"/><path d="M394,576 l9,-5 v10 z" stroke="none"/>
+  <text x="406" y="570" font-size="11" stroke="none">out: the approved message + PDF, Bcc</text>
+  <text x="406" y="589" font-size="11" stroke="none">in: accepted / refused per address</text>
+  <line x1="390" y1="649" x2="640" y2="649" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <path d="M640,649 l-9,-5 v10 z" stroke="none"/><path d="M394,649 l9,-5 v10 z" stroke="none"/>
+  <text x="406" y="643" font-size="11" stroke="none">out: owner sign-in, then two reads</text>
+  <text x="406" y="662" font-size="11" stroke="none">in: sign-ups · unsubscribe requests</text>
   <!-- source boxes -->
   <rect x="640" y="34" width="300" height="62" rx="8" fill="none" stroke-width="1.2"/>
   <text x="790" y="54" text-anchor="middle" font-weight="700" stroke="none">Yahoo Finance (via yfinance)</text>
@@ -183,6 +197,14 @@
   <text x="790" y="492" text-anchor="middle" font-weight="700" stroke="none">Wikipedia</text>
   <text x="790" y="510" text-anchor="middle" font-size="10.5" stroke="none">only when you run “universe refresh” by hand</text>
   <text x="790" y="525" text-anchor="middle" font-size="10.5" stroke="none">normal runs use the baked S&amp;P 500 snapshot</text>
+  <rect x="640" y="545" width="300" height="62" rx="8" fill="none" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="790" y="565" text-anchor="middle" font-weight="700" stroke="none">Your SMTP provider</text>
+  <text x="790" y="583" text-anchor="middle" font-size="10.5" stroke="none">only on a confirmed Mailing-list send</text>
+  <text x="790" y="598" text-anchor="middle" font-size="10.5" stroke="none">your own mail account (smtp_host in Settings)</text>
+  <rect x="640" y="618" width="300" height="62" rx="8" fill="none" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="790" y="638" text-anchor="middle" font-weight="700" stroke="none">Firebase (Google) — identity + Firestore</text>
+  <text x="790" y="656" text-anchor="middle" font-size="10.5" stroke="none">only when you click Sync on the Mailing list</text>
+  <text x="790" y="671" text-anchor="middle" font-size="10.5" stroke="none">reads what the website stored; writes nothing</text>
 </svg>
 <figcaption>Solid arrows are what every run does; dashed arrows only exist once you configure the thing on the right. No arrow goes anywhere else.</figcaption>
 </figure>
@@ -190,13 +212,14 @@
 <h2 id="what-stays-local">What stays on your machine<a class="anchor" href="#what-stays-local" aria-label="Link to What stays on your machine">#</a></h2>
 <p>Everything the app produces or remembers. Concretely, inside the data folder (<a href="download-and-install.html#where-data-lives">paths per OS</a>):</p>
 <dl class="spec">
-  <dt>bablytics.db</dt><dd>One SQLite file, WAL mode. Tables: users and sessions (one account, PBKDF2-SHA256 with 200 000 iterations, 30-day httponly session cookie), runs, leads, grades, outcomes, evening_reviews, preopen_reviews, midday_reviews, horizon_reviews, member_journal, pyramid_scores, positions and position_reviews (your uploaded holdings and the board’s reviews of them), user_trades and user_reflections (leads you marked TAKEN, trades you logged by hand, what you wrote about them), staged_orders (the Broker queue), paper_positions and paper_equity (the League), pulse_updates and rl_reports (the Pulse), lead_triggers and bailiff_events (the Bailiff), curry_cycles, user_documents (the Evidence locker: one row per uploaded file with its note, flags, expiry and the text extracted from it), settings (schedule times, Pulse goals, Schwab app key/secret if you typed them in — masked in the UI, stored in this file).</dd>
+  <dt>bablytics.db</dt><dd>One SQLite file, WAL mode. Tables: users and sessions (one account, PBKDF2-SHA256 with 200 000 iterations, 30-day httponly session cookie), runs, leads, grades, outcomes, evening_reviews, preopen_reviews, midday_reviews, horizon_reviews, member_journal, pyramid_scores, positions and position_reviews (your uploaded holdings and the board’s reviews of them), user_trades and user_reflections (leads you marked TAKEN, trades you logged by hand, what you wrote about them), staged_orders (the Broker queue), paper_positions and paper_equity (the League), pulse_updates and rl_reports (the Pulse), lead_triggers and bailiff_events (the Bailiff), curry_cycles, user_documents (the Evidence locker: one row per uploaded file with its note, flags, expiry and the text extracted from it), subscribers and mail_log (the <a href="mailing-list.html">mailing list</a>: who asked for the reports — address, first name, trading style, report flags, status, source, consent time — and one row per send you confirmed: when, what kind, the subject, how many addresses, which PDF, ok / partial / failed, who clicked), settings (schedule times, Pulse goals, Schwab app key/secret if you typed them in — masked in the UI, stored in this file; the mailing list's SMTP host, port, user, From address, TLS flag and the Firebase project id, web API key and owner email — <em>never</em> the passwords).</dd>
   <dt>uploads/</dt><dd>The files you drop into the <a href="evidence-locker.html">Evidence locker</a>, stored as <code>&lt;id&gt;-&lt;safe_filename&gt;</code>. They are written here and read back from here — for extraction once at upload, and for your own Download button; <a href="#evidence-locker">nothing sends the file anywhere</a>. Remove deletes the file with the row.</dd>
   <dt>rl/</dt><dd>The Pulse’s numpy models and their roster, evaluation split and generation log. Trained on your machine from public daily bars.</dd>
   <dt>model.joblib · model.json</dt><dd>The small outcome model the Executive reads, trained from your own record once it has 25 realized outcomes.</dd>
   <dt>members/*.md</dt><dd>Human-readable dossiers per board member: journal entries, grading history with realized returns, pyramid standing, calibration.</dd>
   <dt>cache/</dt><dd>Short-lived downloads (analyst sweeps, disclosure dumps) so a repaint does not re-fetch.</dd>
-  <dt>.env · schwab_tokens.json</dt><dd>Your secrets, in files you control. The token file is written with mode 0600. Neither is ever sent anywhere but to the service it belongs to.</dd>
+  <dt>reports/</dt><dd>The report PDFs the app generates and keeps — the Morning Briefing, the Evening Court, the weekend pair. This folder (and <code>runs/</code> in a checkout) is the <em>only</em> place a mailing-list attachment may come from; a send with a path outside it is refused before a message is built.</dd>
+  <dt>.env · schwab_tokens.json</dt><dd>Your secrets, in files you control: the API key, and since round 26 <code>SMTP_PASSWORD</code> and <code>FIREBASE_OWNER_PASSWORD</code>, which the app reads at the moment of a send or a sync and never copies into the database or any API response. The token file is written with mode 0600. None of it is ever sent anywhere but to the service it belongs to.</dd>
   <dt>logs/bablytics.log</dt><dd>The desktop build’s rotating log. It records start-up, scheduler activity and errors, which includes ticker symbols; treat it as private if you share it for debugging.</dd>
 </dl>
 <p>Theme, dashboard layout, chart templates, bell and voice preferences live in your browser’s <code>localStorage</code> (keys prefixed <code>bablytics_</code>), not in the database.</p>
@@ -213,10 +236,12 @@
     <tr><td>Anthropic API</td><td>Only with <code>ANTHROPIC_API_KEY</code>; see <a href="#anthropic">below</a></td><td>Prompt text: the persona’s system prompt and the material it grades — including the USER EVIDENCE section: the notes and extracted text of the documents you filed in the Evidence locker, never the files themselves</td><td>Structured JSON: grades, comments, memos, journal entries, rationales, read-across paragraphs</td></tr>
     <tr><td>Schwab API</td><td>Only after you connect a Schwab developer app in the Broker view</td><td>OAuth authorisation and token refreshes; account reads; the single order you click Submit on, after a confirmation</td><td>Balances, positions, order status</td></tr>
     <tr><td>Wikipedia</td><td>Only when you run <code>python -m bablytics.universe refresh</code> from a checkout. Normal operation uses a constituent list baked into the code (503 tickers, snapshot 2026-08-18)</td><td>A plain page request</td><td>The S&amp;P 500 constituent table</td></tr>
+    <tr><td>Your SMTP provider (<code>smtp_host</code> in Settings — Gmail, Fastmail, whoever holds your mail account)</td><td>Only when you confirm a send on the <a href="mailing-list.html">Mailing list</a> tab — never on a schedule, never from a dry run; see <a href="#the-mailing-list">below</a></td><td>Your SMTP login and <code>SMTP_PASSWORD</code>; one message per batch of fifty: your From address, the subject and plain-text body you approved, the report PDF(s), and the recipients in <code>Bcc</code></td><td>Accepted or refused, per address</td></tr>
+    <tr><td>Firebase — Google Identity Toolkit and Firestore (<code>identitytoolkit.googleapis.com</code>, <code>firestore.googleapis.com</code>)</td><td>Only when you click <em>Sync</em> on the Mailing list tab, and only once the project exists and its four values are set</td><td>The owner email and <code>FIREBASE_OWNER_PASSWORD</code> to sign in, then the returned ID token on two read requests</td><td>The <code>subscribers</code> and <code>unsubscribe_requests</code> documents the website stored — the addresses people typed on bablytics.com. Nothing is written back</td></tr>
   </tbody>
 </table>
 </div>
-<p>That is the complete list of hosts in the code. There is no update check, no crash reporter, no analytics, no usage ping, and no account with Bablytics itself — there is nothing to have an account with.</p>
+<p>That is the complete list of hosts in the code — the last two exist only if you set the mailing list up. There is no update check, no crash reporter, no analytics, no usage ping, and no account with Bablytics itself — there is nothing to have an account with.</p>
 
 <h2 id="anthropic">What the Anthropic API sees, exactly<a class="anchor" href="#anthropic" aria-label="Link to What the Anthropic API sees, exactly">#</a></h2>
 <p>Real mode means the board is a language model. Each seat is one API call with a persona system prompt and a user prompt built from what that seat needs to read. Across a weekday that is roughly: fifteen calls for the morning briefing (thirteen graders, the Skeptic, the Executive) plus one for the book’s read-across paragraphs, fifteen for the Pre-Open Check, fifteen for the Midday Check-In, fifteen for the Evening Court, one per Pulse cycle (fourteen cycles between 9:30 and 16:00), plus the weekend horizon panels and anything you trigger by hand. The prompts carry:</p>
@@ -243,6 +268,16 @@
 </ol>
 <p>A backup of the data folder includes <code>uploads/</code>; so does a move to another machine. The <strong>Preview what the committee sees</strong> link on the panel shows, character for character, what would be sent — it is the same string the prompts carry.</p>
 
+<h2 id="the-mailing-list">The mailing list, exactly<a class="anchor" href="#the-mailing-list" aria-label="Link to The mailing list, exactly">#</a></h2>
+<p>The <a href="mailing-list.html">mailing list</a> is the one feature whose purpose is to send something off the machine, so it gets the same treatment. Three things cross the wire, each on a click of yours and nothing else:</p>
+<ol class="steps">
+  <li><strong>When someone subscribes</strong>, it is <em>their</em> browser that talks to Google: the form on bablytics.com writes one document — email, first name, how they trade, which reports, a consent flag and a timestamp — no user-agent string, no IP address — into the Firestore collection <code>subscribers</code> under rules that allow <em>create</em> only. The unsubscribe page writes <code>{emailLower, createdAt}</code> to <code>unsubscribe_requests</code>, same rules. Your app is not involved, and nobody — no browser, not even theirs — can read, list, change or delete those records; the only account the rules let read is yours.</li>
+  <li><strong>When you click Sync</strong>, the app signs in to Firebase as that owner account (owner email from Settings, <code>FIREBASE_OWNER_PASSWORD</code> from <code>.env</code>) and reads both collections with the ID token it gets back. Google sees the sign-in and two reads. The rows land in <code>subscribers</code> in <code>bablytics.db</code>; nothing is written back to Firestore, ever. No service account, no admin key on your disk.</li>
+  <li><strong>When you confirm a send</strong>, the app connects to the SMTP host in Settings with your login and <code>SMTP_PASSWORD</code> and hands it one message per fifty addresses: <code>From</code> and <code>To</code> are your own From address, the subscribers are in <code>Bcc</code>, the body is the plain text you read in the dry run with the research-tool footer appended, and the attachment is the report PDF from <code>data/reports/</code> or <code>runs/</code>. Your provider — and only your provider — therefore sees the subscriber addresses, the way it sees the recipients of any email you send; each recipient sees your From address and nobody else's. The dry run before it opens no connection at all.</li>
+</ol>
+<p>Where a subscriber's address lives, in total: the Firestore document they created (Google's servers, your project, readable by you alone), the <code>subscribers</code> row on your disk after a sync, a CSV if you export one, and the <code>Bcc</code> of the messages your provider relays. It goes nowhere else — there is no third-party list service, no analytics on opens or clicks (the emails are plain text with no pixel and no tracked link), no sharing and no selling, and the board never reads the list: no subscriber detail enters any prompt. The footer on every email tells the recipient exactly this and how to stop — reply <code>STOP</code> or use the unsubscribe page — and both are honoured by you, by hand, before the next send. What the list <em>sends</em> is the same PDF you could export yourself, with the same disclaimer on every page; it is not personalised, because nothing in the pipeline knows who is on the list.</p>
+<p>And the rule that governs all of it: <strong>nothing is sent automatically</strong>. The send function has one caller — the Send button's confirmed request — the dry run is the default, the scheduler never imports the module, and every real send is logged to <code>mail_log</code> with who clicked. The <a href="mailing-list.html#the-daily-send">Mailing list page</a> walks the flow; the <a href="settings.html#the-mailing-list">Settings page</a> lists the nine connection keys and the two <code>.env</code>-only passwords.</p>
+
 <h2 id="network-posture">Network posture<a class="anchor" href="#network-posture" aria-label="Link to Network posture">#</a></h2>
 <ul>
   <li>The server binds <code>127.0.0.1</code>. Other machines on your network cannot reach it unless you change <code>BABLYTICS_HOST</code> — and if you do, remember the whole app sits behind a single password.</li>
@@ -263,13 +298,13 @@
 <p>Uninstalling the app on any OS leaves the data folder in place; see <a href="download-and-install.html#uninstall">Uninstalling</a>.</p>
 
 <h2 id="third-parties">Third parties, briefly<a class="anchor" href="#third-parties" aria-label="Link to Third parties, briefly">#</a></h2>
-<p>Yahoo Finance, the news publishers, the statistical agencies, Quiver, Anthropic and Schwab each have their own terms and privacy policies; the app is a client of theirs on your behalf and can only be as private as they are about the requests they receive. The two that can learn something specific about you are Anthropic (the prompt contents above) and Schwab (your account — but only if you connect it). Both are opt-in, both are off until you add a key or complete an OAuth flow, and both stop the moment you remove the key or the token file.</p>
+<p>Yahoo Finance, the news publishers, the statistical agencies, Quiver, Anthropic and Schwab — and, if you set up the mailing list, your mail provider and Google's Firebase — each have their own terms and privacy policies; the app is a client of theirs on your behalf and can only be as private as they are about the requests they receive. The ones that can learn something specific about you are Anthropic (the prompt contents above), Schwab (your account — but only if you connect it), your mail provider (the messages you send and their Bcc lists — as with any email you send) and Firebase (the sign-up records your subscribers created, and your owner sign-in). All are opt-in, all are off until you add a key, complete an OAuth flow or fill in the mailing-list settings, and all stop the moment you remove the key, the token file or the settings. The subscribers themselves have a page of their own about what they gave and how to take it back: <a href="subscribe.html#privacy">Get the reports by email → Privacy</a>.</p>
 
 </div>
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="run-from-source.html"><small>← Previous</small><b>Run from source</b></a><a class="next" rel="next" href="faq-and-glossary.html"><small>Next →</small><b>FAQ &amp; glossary</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#the-picture">The whole picture</a></li><li class="l2"><a href="#what-stays-local">What stays on your machine</a></li><li class="l2"><a href="#what-goes-out">What goes out, source by source</a></li><li class="l2"><a href="#anthropic">What the Anthropic API sees, exactly</a></li><li class="l2"><a href="#evidence-locker">The Evidence locker, exactly</a></li><li class="l2"><a href="#network-posture">Network posture</a></li><li class="l2"><a href="#pdfs">PDF exports</a></li><li class="l2"><a href="#backups">Backups, moves and resets</a></li><li class="l2"><a href="#third-parties">Third parties, briefly</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#the-picture">The whole picture</a></li><li class="l2"><a href="#what-stays-local">What stays on your machine</a></li><li class="l2"><a href="#what-goes-out">What goes out, source by source</a></li><li class="l2"><a href="#anthropic">What the Anthropic API sees, exactly</a></li><li class="l2"><a href="#evidence-locker">The Evidence locker, exactly</a></li><li class="l2"><a href="#the-mailing-list">The mailing list, exactly</a></li><li class="l2"><a href="#network-posture">Network posture</a></li><li class="l2"><a href="#pdfs">PDF exports</a></li><li class="l2"><a href="#backups">Backups, moves and resets</a></li><li class="l2"><a href="#third-parties">Third parties, briefly</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">

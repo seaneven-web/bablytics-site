@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Settings · Bablytics Guide</title>
-<meta name="description" content="Every setting Bablytics has and where it actually lives: the Settings page (schedule and Curry cycles), the settings that sit on other pages, the database keys with no form, the environment file that holds the API key, and the preferences your browser keeps.">
+<meta name="description" content="Every setting Bablytics has and where it actually lives: the Settings page (schedule, the trading mandate — day trade, swing, long-term or mix — and Curry cycles), the mailing list&#x27;s SMTP and Firebase fields — whose two passwords live only in .env — the settings that sit on other pages, the database keys with no form, the environment file that holds the API key, and the preferences your browser keeps.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -36,6 +36,7 @@
         <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
+      <a class="btn btn-sm get-reports" href="subscribe.html" aria-label="Get the reports by email"><span class="full">Get the reports</span><span class="short" aria-hidden="true">Reports</span></a>
       <a class="btn btn-primary btn-sm" href="download-and-install.html">Download</a>
       <a class="btn btn-ghost btn-sm open-app" href="/" hidden>Open the app ↗</a>
     </div>
@@ -74,6 +75,7 @@
 <li><a href="news-library-archive.html">News · Library · Archive</a></li>
 <li><a href="settings.html" aria-current="page">Settings</a></li>
 <li><a href="evidence-locker.html">Evidence locker</a></li>
+<li><a href="mailing-list.html">Mailing list</a></li>
 </ul></details>
 <details open data-group="reference"><summary>Reference</summary><ul>
 <li><a href="download-and-install.html">Download &amp; install</a></li>
@@ -81,15 +83,17 @@
 <li><a href="data-and-privacy.html">Data &amp; privacy</a></li>
 <li><a href="faq-and-glossary.html">FAQ &amp; glossary</a></li>
 <li><a href="not-financial-advice.html">Not financial advice</a></li>
+<li><a href="subscribe.html">Get the reports</a></li>
+<li><a href="unsubscribe.html">Unsubscribe</a></li>
 </ul></details>
 </nav>
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-settings" data-slug="settings" data-title="Settings">
-<header class="page-head"><p class="eyebrow">Desk · every switch, honestly</p><h1>Settings</h1><p class="summary">Every setting Bablytics has and where it actually lives: the Settings page (schedule and Curry cycles), the settings that sit on other pages, the database keys with no form, the environment file that holds the API key, and the preferences your browser keeps.</p></header>
+<header class="page-head"><p class="eyebrow">Desk · every switch, honestly</p><h1>Settings</h1><p class="summary">Every setting Bablytics has and where it actually lives: the Settings page (schedule, the trading mandate — day trade, swing, long-term or mix — and Curry cycles), the mailing list&#x27;s SMTP and Firebase fields — whose two passwords live only in .env — the settings that sit on other pages, the database keys with no form, the environment file that holds the API key, and the preferences your browser keeps.</p></header>
 <div class="article">
 
-<p>Bablytics keeps its settings in four places, and the <strong>Settings</strong> page is only one of them. This page lists all four so you can find any switch: the Settings page itself; settings that live on the page they affect (Pulse goals, Schwab keys, the theme toggle, the bell, the voice); keys in the database <strong>settings table</strong> that have no form yet; and the <strong>environment file</strong>, which is where the API key goes. Nothing in any of them places an order or changes what the app is allowed to do with money — there is no such setting.</p>
+<p>Bablytics keeps its settings in four places, and the <strong>Settings</strong> page is only one of them. This page lists all four so you can find any switch: the Settings page itself (the schedule, the <a href="#the-mandate">mandate</a> that tells the board what kind of trading to generate leads for, Curry cycles, and since round 26 the <a href="#the-mailing-list">mailing list</a>'s SMTP and Firebase fields); settings that live on the page they affect (Pulse goals, Schwab keys, the theme toggle, the bell, the voice); keys in the database <strong>settings table</strong> that have no form yet; and the <strong>environment file</strong>, which is where the API key goes. Nothing in any of them places an order or changes what the app is allowed to do with money — there is no such setting.</p>
 
 <figure class="shot">
   <img src="assets/screens/settings.png" alt="The Settings page: a Schedule panel with hour and minute inputs for Morning briefing (ET) 7:00, Evening review (ET) 19:00 and Pre-open check (ET) 9:15, a Save schedule button, and an info row reading Model claude-opus-4-8, Mock mode on, Universe 503 tickers; below it a Curry cycles panel with Author, Target date, Forecast and Notes fields." loading="lazy" width="1440" height="900" decoding="async">
@@ -104,9 +108,59 @@
 
 <p>Under the form, three read-only facts: the <strong>Model</strong> name the board would use (<code>BABLYTICS_MODEL</code>), whether <strong>Mock mode</strong> is on, and the <strong>Universe</strong> size — 503 tickers, the S&amp;P 500 snapshot baked into <code>bablytics/universe.py</code>, overridable by <code>data/universe.json</code> (regenerate with <code>python -m bablytics.universe refresh</code>).</p>
 
+<h3 id="the-mandate">The mandate: what kind of trading the board generates<a class="anchor" href="#the-mandate" aria-label="Link to The mandate: what kind of trading the board generates">#</a></h3>
+
+<p>Since round 25 the Settings page carries the same four-way segmented control the dashboard header shows — <strong>MANDATE  Day · Swing · Long-term · Mix</strong> (the Day button is short for Day trade; every option's tooltip carries its hold) — with one line under it: <em>the next briefing will be generated for this style</em>. It is the setting <code>trading_style</code> in the settings table (default <code>mix</code>), and it changes what the morning board is asked to produce: how every candidate is graded for fit, which option expiries may be picked, and how the ten-plus-ten book is filled. The mechanism, step by step, is on the <a href="morning-briefing.html#the-mandate">Morning Briefing</a> page; the dashboard knob and the off-mandate chip are on the <a href="dashboard-workspace.html#the-mandate-knob">Dashboard</a> page.</p>
+
+<figure class="shot">
+  <img src="assets/screens/mandate-knob.png" alt="The MANDATE segmented control — Day, Swing, Long-term, Mix — in the dashboard header to the right of the Morning briefing | Evening court toggle, with Swing selected and a toast reading Next briefing will be generated for Swing; the briefing header below reads Generated under Mix · next run: Swing." loading="lazy" width="1440" height="900" decoding="async">
+  <figcaption>The mandate knob. The Settings page shows the same control; both save the same key.</figcaption>
+</figure>
+
+<div class="table-wrap"><table class="data">
+  <thead><tr><th>Value</th><th>Label</th><th>Expected hold</th><th>Horizon classes the book may hold</th><th>Option DTE window</th></tr></thead>
+  <tbody>
+    <tr><td><code>intraday</code></td><td>Day trade</td><td>same session</td><td><code>intraday</code></td><td class="num">0–5 days</td></tr>
+    <tr><td><code>swing</code></td><td>Swing</td><td>2–10 sessions</td><td><code>swing</code> (<code>intraday</code> tolerated)</td><td class="num">6–30 days</td></tr>
+    <tr><td><code>long_term</code></td><td>Long-term</td><td>weeks to months</td><td><code>position</code>, <code>long_term</code></td><td class="num">45–180 days</td></tr>
+    <tr><td><code>mix</code> (default)</td><td>Mix</td><td>any</td><td>all four — and the book is <em>spread</em>: at least 3 intraday, 8 swing, 4 position / long-term when the candidates allow</td><td class="num">per lead, from its own class: intraday 0–5, swing 6–30, position / long-term 45–180</td></tr>
+  </tbody>
+</table></div>
+
+<p>The table is <code>config.STYLES</code> — one entry per value with <code>label</code>, <code>hold</code>, <code>horizon_classes</code> and <code>dte</code> — and <code>config.style_label(value)</code> gives the label. The pipeline reads the key with <code>db.get_setting("trading_style")</code> <em>at run time</em>, never at import, so a change made at 6:59 shapes the 7:00 run; every run also stores the mandate it was generated under in its own context (<code>mandate</code>: style, label, hold, and after selection the <code>book_split</code> — how many leads of each class the book ended with), which is how the dashboard can say "Generated under Swing" on an old run after you have moved the knob to Mix. The manual live-session briefing reads the same key and states it in the memo's first line (<code>BRIEFING-SPEC.md</code> § Mandate).</p>
+
+<dl class="spec">
+  <dt>GET /api/settings</dt><dd>Now also returns <code>trading_style</code> and <code>trading_style_label</code> beside the hour and minute fields.</dd>
+  <dt>POST /api/settings</dt><dd>Accepts an optional <code>trading_style</code> (one of the four values; anything else is rejected) together with the schedule fields, which keep working unchanged.</dd>
+  <dt>PUT / POST /api/settings/mandate</dt><dd>Body <code>{"trading_style": "swing"}</code> — the tiny endpoint the dashboard knob calls on every click, same validation. The toast "Next briefing will be generated for Swing" is the confirmation; nothing re-runs on its own.</dd>
+</dl>
+
+<p>What the mandate is not: it is not a filter on the universe — the scan still ranks the same 503 names by the same score under every mandate (no style hint; the mandate acts at grading and selection); it does not re-grade a briefing that already ran; and it moves nothing anywhere — it is an instruction to a research committee about the kind of book to write, and the committee is graded on whether it obeyed.</p>
+
 <h3 id="curry-cycles">Curry cycles<a class="anchor" href="#curry-cycles" aria-label="Link to Curry cycles">#</a></h3>
 
 <p>Hand-posted market-cycle forecasts from an outside analyst you follow. Fields: <strong>Author</strong>, <strong>Target date</strong>, <strong>Forecast</strong> (required) and <strong>Notes</strong>; the list below shows each one with a delete button. The five most recent are handed to the Timekeeper every morning alongside the FFT decomposition, and the persona is told to weigh them against their track record. API: <code>GET/POST /api/curry</code>, <code>DELETE /api/curry/{id}</code>.</p>
+
+<h3 id="the-mailing-list">The mailing list: SMTP and Firebase<a class="anchor" href="#the-mailing-list" aria-label="Link to The mailing list: SMTP and Firebase">#</a></h3>
+
+<p>Since round 26 the Settings page carries the connection details for the <a href="mailing-list.html">Mailing list</a> tab — one panel, <em>Mailing list — SMTP &amp; Firebase</em>, with an SMTP block and a Firebase block, a <em>Save mailing-list settings</em> button, and two pills that only say whether <code>SMTP_PASSWORD</code> and <code>FIREBASE_OWNER_PASSWORD</code> are set in <code>.env</code> — saved together through <code>PUT /api/maillist/settings</code>, read back by <code>GET /api/maillist/settings</code>. Nine keys, all in the <code>settings</code> table; the eight connection keys also take an <code>.env</code> default of the same name in capitals (<code>SMTP_HOST</code>, <code>FIREBASE_PROJECT_ID</code> …) that the saved value wins over — the same pattern as the Schwab keys:</p>
+
+<div class="table-wrap"><table class="data">
+  <thead><tr><th>Key</th><th>Default</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><code>smtp_host</code></td><td class="num">—</td><td>Your mail provider's SMTP server, e.g. <code>smtp.gmail.com</code>. Empty means <em>SMTP not configured</em>: dry runs still render, a real send answers <code>409</code>.</td></tr>
+    <tr><td><code>smtp_port</code></td><td class="num">587</td><td>587 with STARTTLS is the usual; 465 with TLS on uses implicit TLS (<code>SMTP_SSL</code>).</td></tr>
+    <tr><td><code>smtp_user</code></td><td class="num">—</td><td>The login name; empty means no login step (a local relay).</td></tr>
+    <tr><td><code>smtp_from</code></td><td class="num">—</td><td>The address every email is sent <em>from</em> — and <em>to</em>: recipients ride in <code>Bcc</code>, so this is the only address on the visible headers. Replies (and STOPs) land here.</td></tr>
+    <tr><td><code>smtp_tls</code></td><td class="num">on</td><td>STARTTLS (or implicit TLS on 465). Off only for a local test sink.</td></tr>
+    <tr><td><code>firebase_project_id</code> · <code>firebase_api_key</code> · <code>firebase_owner_email</code></td><td class="num">—</td><td>The project created by <code>site/firebase/README.md</code>, its public web API key (the same one the sign-up page ships — it is not a secret; the rules are) and the email of the one Firebase Auth user the rules allow to read. All three plus the password below make <em>Sync</em> work; anything missing and Sync names it.</td></tr>
+    <tr><td><code>mail_unsubscribe_url</code></td><td class="num">https://bablytics.com/unsubscribe.html</td><td>Quoted in every email's footer and <code>List-Unsubscribe</code> header. Change it only if the site moves.</td></tr>
+  </tbody>
+</table></div>
+
+<p>What the forms will not take: <strong>the two passwords</strong>. <code>SMTP_PASSWORD</code> (a Gmail <em>app password</em>, or whatever your provider issues) and <code>FIREBASE_OWNER_PASSWORD</code> (the owner account's Firebase Auth password, used for nothing else) are read from the environment at the moment a send or a sync happens — the <a href="#the-environment-file">environment file</a>, below — and are never written to the database; <code>PUT /api/maillist/settings</code> refuses any key with <em>password</em> or <em>secret</em> in its name, and <code>GET</code> reports only <code>smtp_password_set</code> / <code>firebase_password_set</code> — true or false, never the value. The page says so next to the fields. Because they are environment, a password added or changed in <code>.env</code> needs an app restart, like the API key.</p>
+
+<p>Two things are not settings at all and are worth saying: the batch size (fifty BCC recipients per message) is a constant, and there is no "send automatically" switch — see <a href="mailing-list.html#leaving-the-list">the Mailing list page</a> for why there never will be.</p>
 
 <p>The page closes with the disclaimer panel — the same research-tool statement the footer carries everywhere.</p>
 
@@ -116,6 +170,8 @@
   <thead><tr><th>Setting</th><th>Where you change it</th><th>Stored as</th><th>What it does</th></tr></thead>
   <tbody>
     <tr><td>Pulse goals: risk &amp; size</td><td><a href="the-pulse.html">Pulse</a> tab, two segmented controls</td><td><code>pulse_risk</code> (conservative / moderate / aggressive, default moderate), <code>pulse_size</code> (small / medium / large, default medium) — settings table</td><td>Shapes the Pulse's opinions and the ATR exit-zone brackets (1.0/1.5, 1.5/2.5, 2.0/4.0 ATR) used on the dashboard levels strip. Saving re-fetches the latest cycle.</td></tr>
+    <tr><td>The mandate (trading style)</td><td><a href="dashboard-workspace.html#the-mandate-knob">Dashboard</a> header knob — and <a href="#the-mandate">this page</a></td><td><code>trading_style</code> (intraday / swing / long_term / mix, default mix) — settings table</td><td>Tells the morning board what kind of trading to generate leads for: grading for fit, the option DTE window, the 10+10 split (mix spreads the book). Saves immediately; takes effect on the next run.</td></tr>
+    <tr><td>Mailing list: SMTP &amp; Firebase</td><td><a href="#the-mailing-list">This page</a>; the list itself is the <a href="mailing-list.html">Mailing list</a> tab</td><td><code>smtp_host</code>, <code>smtp_port</code>, <code>smtp_user</code>, <code>smtp_from</code>, <code>smtp_tls</code>, <code>firebase_project_id</code>, <code>firebase_api_key</code>, <code>firebase_owner_email</code>, <code>mail_unsubscribe_url</code> — settings table; the passwords <code>.env</code> only</td><td>Where a confirmed send goes out through, and which Firebase project Sync reads. No value here sends anything by itself.</td></tr>
     <tr><td>Schwab app key &amp; secret</td><td><a href="broker.html#connecting">Broker</a> page, connection card</td><td><code>schwab_app_key</code>, <code>schwab_app_secret</code> — settings table, masked on display</td><td>Signs the OAuth flow. Env <code>SCHWAB_*</code> values are the fallback.</td></tr>
     <tr><td>Day / night theme</td><td><a href="dashboard-workspace.html#morning-and-evening">Dashboard</a>, the Morning briefing | Evening court toggle</td><td><code>bablytics_theme_mode</code> — browser localStorage</td><td>Morning = day (hive), Evening = night (owls). The only theme control.</td></tr>
     <tr><td>Market bell</td><td>Header toggle 🔔</td><td><code>bablytics_bell</code> — localStorage</td><td>Rings at 9:30 and 16:00 ET on weekdays. Off until you turn it on.</td></tr>
@@ -166,17 +222,20 @@
   <dt>BABLYTICS_DATA_DIR</dt><dd>Overrides where the database, caches, model files, tokens and logs live (otherwise <code>data/</code> in a checkout, or the per-OS app-data folder when packaged).</dd>
   <dt>QUIVER_API_KEY</dt><dd>Quiver Quantitative key for live congressional-trade data; without it the Watchdog degrades to "no signal".</dd>
   <dt>SCHWAB_APP_KEY · SCHWAB_APP_SECRET · SCHWAB_CALLBACK_URL</dt><dd>Broker credentials, used only when the settings-table values are empty. Callback default <code>https://127.0.0.1:8421/schwab/callback</code>.</dd>
+  <dt>SMTP_PASSWORD</dt><dd>The mailing list's SMTP login password — a Gmail <em>app password</em> when <code>smtp_host</code> is <code>smtp.gmail.com</code>. <strong>Environment only</strong>: there is no field for it, the settings API refuses it, and it is read at the moment of a confirmed send (<a href="#the-mailing-list">above</a>).</dd>
+  <dt>FIREBASE_OWNER_PASSWORD</dt><dd>The Firebase Auth password of the owner account that may read the list — used only to sign in for <em>Sync</em>. Environment only, same rules. Pick a password used for nothing else.</dd>
+  <dt>SMTP_HOST · SMTP_PORT · SMTP_USER · SMTP_FROM · SMTP_TLS · FIREBASE_PROJECT_ID · FIREBASE_API_KEY · FIREBASE_OWNER_EMAIL</dt><dd>Optional defaults for the nine mailing-list settings; a value saved on the Settings page wins.</dd>
 </dl>
 
 <p>Legacy <code>STONKS_MODEL</code>, <code>STONKS_MOCK</code>, <code>STONKS_HOST</code> and <code>STONKS_PORT</code> spellings still work as fallbacks. The full list with examples is on <a href="run-from-source.html">Run from source</a>.</p>
 
-<div class="callout callout-rule"><strong>What you will not find.</strong> There is no setting that submits orders, no "auto-trade", no toggle that lets the Bailiff or the Pulse touch a brokerage, and no way to hand the app a password for anything but your own local sign-in. The Broker page's Submit button is the only real-money action in the product, and it is a click, not a setting — see <a href="broker.html">Broker</a>.</div>
+<div class="callout callout-rule"><strong>What you will not find.</strong> There is no setting that submits orders, no "auto-trade", no toggle that lets the Bailiff or the Pulse touch a brokerage, no "send the reports automatically" switch, and no form that takes a password for anything but your own local sign-in — the mail and Firebase passwords live in <code>.env</code>, where the app reads them and never copies them. The Broker page's Submit button is the only real-money action in the product, and the Mailing list's confirmed Send is the only way a report leaves the machine; both are clicks, not settings — see <a href="broker.html">Broker</a> and <a href="mailing-list.html">The Mailing List</a>.</div>
 
 </div>
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="news-library-archive.html"><small>← Previous</small><b>News · Library · Archive</b></a><a class="next" rel="next" href="evidence-locker.html"><small>Next →</small><b>Evidence locker</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#the-settings-page">The Settings page</a></li><li class="l3"><a href="#schedule">Schedule</a></li><li class="l3"><a href="#curry-cycles">Curry cycles</a></li><li class="l2"><a href="#settings-on-other-pages">Settings that live on other pages</a></li><li class="l2"><a href="#keys-without-a-form">Keys in the settings table with no form</a></li><li class="l2"><a href="#the-environment-file">The environment file</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#the-settings-page">The Settings page</a></li><li class="l3"><a href="#schedule">Schedule</a></li><li class="l3"><a href="#the-mandate">The mandate: what kind of trading the board generates</a></li><li class="l3"><a href="#curry-cycles">Curry cycles</a></li><li class="l3"><a href="#the-mailing-list">The mailing list: SMTP and Firebase</a></li><li class="l2"><a href="#settings-on-other-pages">Settings that live on other pages</a></li><li class="l2"><a href="#keys-without-a-form">Keys in the settings table with no form</a></li><li class="l2"><a href="#the-environment-file">The environment file</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">

@@ -18,9 +18,12 @@ broker.html
 news-library-archive.html
 settings.html
 evidence-locker.html
+mailing-list.html
 download-and-install.html
 run-from-source.html
 data-and-privacy.html
 faq-and-glossary.html
 not-financial-advice.html
+subscribe.html
+unsubscribe.html
 bablytics-guide.html
