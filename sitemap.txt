@@ -20,6 +20,7 @@ news-library-archive.html
 settings.html
 evidence-locker.html
 mailing-list.html
+the-spotlight.html
 download-and-install.html
 run-from-source.html
 data-and-privacy.html

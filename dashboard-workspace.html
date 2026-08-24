@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Dashboard Workspace · Bablytics Guide</title>
-<meta name="description" content="The live morning book as a grid of panels you arrange: lead cards with live levels, a time-horizon chip and the board&#x27;s range, the expanded lead with its consensus strip and read-across table, the Evidence locker, the mandate knob (day trade · swing · long-term · mix) and the off-mandate chip, the Morning | Evening toggle that is also the day/night switch, the bell, and the memo read aloud.">
+<meta name="description" content="The live morning book as a grid of panels you arrange: the big date block that says which day you are reading, lead cards with live levels, a time-horizon chip, the SPOTLIGHT chip on every lead graded 60 or better and the board&#x27;s range, the expanded lead with its consensus strip and read-across table, the Evidence locker, the mandate knob (day trade · swing · long-term · mix) and the off-mandate chip, the Morning | Evening toggle that is also the day/night switch, the bell, and the memo read aloud.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -77,6 +77,7 @@
 <li><a href="settings.html">Settings</a></li>
 <li><a href="evidence-locker.html">Evidence locker</a></li>
 <li><a href="mailing-list.html">Mailing list</a></li>
+<li><a href="the-spotlight.html">The Spotlight</a></li>
 </ul></details>
 <details open data-group="reference"><summary>Reference</summary><ul>
 <li><a href="download-and-install.html">Download &amp; install</a></li>
@@ -91,7 +92,7 @@
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-dashboard-workspace" data-slug="dashboard-workspace" data-title="The Dashboard Workspace">
-<header class="page-head"><p class="eyebrow">Desk · the home screen</p><h1>The Dashboard Workspace</h1><p class="summary">The live morning book as a grid of panels you arrange: lead cards with live levels, a time-horizon chip and the board&#x27;s range, the expanded lead with its consensus strip and read-across table, the Evidence locker, the mandate knob (day trade · swing · long-term · mix) and the off-mandate chip, the Morning | Evening toggle that is also the day/night switch, the bell, and the memo read aloud.</p></header>
+<header class="page-head"><p class="eyebrow">Desk · the home screen</p><h1>The Dashboard Workspace</h1><p class="summary">The live morning book as a grid of panels you arrange: the big date block that says which day you are reading, lead cards with live levels, a time-horizon chip, the SPOTLIGHT chip on every lead graded 60 or better and the board&#x27;s range, the expanded lead with its consensus strip and read-across table, the Evidence locker, the mandate knob (day trade · swing · long-term · mix) and the off-mandate chip, the Morning | Evening toggle that is also the day/night switch, the bell, and the memo read aloud.</p></header>
 <div class="article">
 
 <p>The Dashboard is the first thing you see after you sign in and the page the rest of the app points back to. It shows the <strong>latest morning run</strong> — the memo, the twenty leads split into a stock desk and an options desk, and the day's context panels — laid out on a grid you control. A segmented toggle at the top switches the same route between the <strong>Morning briefing</strong> and the <strong>Evening court</strong>; that toggle is also the app's day/night theme switch. Since round 24 every lead also carries a <strong>time horizon</strong> (how long the board expects the target to take) and a <strong>read-across</strong> (what else moves when this name moves), and the grid carries the <a href="evidence-locker.html">Evidence locker</a>, where you hand the committee your own documents. Since round 25 the header also carries the <a href="#the-mandate-knob">mandate knob</a> — Day · Swing · Long-term · Mix — which tells the next briefing what kind of trading to generate leads for, and the briefing header says which mandate the run you are looking at was generated under. Everything on this page is read from the local database and repainted in place; nothing on it places, stages or routes an order.</p>
@@ -101,6 +102,27 @@
   <figcaption>The morning dashboard at 1440×900. Five context panels ship collapsed; the two lead desks take the height they give up.</figcaption>
 </figure>
 
+<h2 id="the-date-block">The date, said out loud<a class="anchor" href="#the-date-block" aria-label="Link to The date, said out loud">#</a></h2>
+
+<p>The very top of the dashboard — <strong>above</strong> the Morning briefing | Evening court toggle — states which day you are looking at, in display type large enough to read from across the room: the weekday and date of the <strong>run being displayed</strong>, in the app's serif, on a tokenised colour so it reads in both themes. Under it, smaller, the <strong>session kind</strong>: <em>Morning briefing</em>, <em>Midday session</em> or <em>Evening court</em>.</p>
+
+<p>This exists because the app now carries morning briefings, midday sessions, evening courts, weekly prospectuses and week-in-reviews, and it had become far too easy to read Friday's book on a Monday. So when the run on screen is <strong>not today's</strong>, the block adds a maroon/amber chip that spells the mismatch out in words rather than leaving you to do date arithmetic:</p>
+
+<p><span class="pill pill-amber">not today — this is Friday 21 August, today is Monday 24 August</span></p>
+
+<figure class="shot">
+  <img src="assets/screens/dashboard-date.png" alt="The top of the dashboard: a large serif date reading Monday, 24 August 2026 with a smaller Morning briefing line beneath it, then the Morning briefing | Evening court toggle and the mandate knob; on an archived day the same block carries an amber chip reading not today — this is Friday 21 August, today is Monday 24 August" loading="lazy" width="1440" height="900" decoding="async">
+  <figcaption>The date block sits above the toggle. On a stale book the amber chip names both days in full, so a past run can never be mistaken for a live one.</figcaption>
+</figure>
+
+<dl class="spec">
+  <dt>Type</dt><dd><code>clamp(28px, 4vw, 44px)</code> in the app's serif, tokenised colour — it scales with the window and stays legible at a distance.</dd>
+  <dt>The date shown</dt><dd>Always the <em>displayed run's</em> date, never the wall clock. Opening an archived run at <code>#/run/&lt;id&gt;</code> repaints the block to that run's day.</dd>
+  <dt>The stale chip</dt><dd>Rendered only when the displayed run's date differs from today's; it names both days in full — never colour alone, and never a relative phrase like "2 days ago".</dd>
+  <dt>Where else it appears</dt><dd>At the top of the <a href="news-library-archive.html#the-day-view">Archive's</a> day view, and on the <a href="the-spotlight.html#what-triggers-a-spotlight">Spotlight</a> page, where it carries the spotlight's own as-of date — a spotlight priced on Friday's marks is a different document by Monday.</dd>
+  <dt>In the Guide</dt><dd>Every page of this guide already carries its build date in the footer; the guide's home page now says the same thing at the top — "This guide describes Bablytics as of <em>version</em> — built <em>date</em>" — so a printed page can be dated too.</dd>
+</dl>
+
 <h2 id="anatomy-of-a-lead-card">Anatomy of a lead card<a class="anchor" href="#anatomy-of-a-lead-card" aria-label="Link to Anatomy of a lead card">#</a></h2>
 
 <p>Each lead in the morning book is one card. Reading top to bottom, a card carries exactly these parts (from <code>leadCardHTML</code> in <code>web/app.js</code>):</p>
@@ -109,6 +131,7 @@
   <li><strong>TAKE chip</strong> (top-left corner) — marks the lead as a trade you actually took; see <a href="positions-and-trades.html#the-take-toggle">Positions &amp; trades</a>. A taken card gets an accent ring.</li>
   <li><strong>Pre-open action chip</strong> (corner) — after the 9:15 <a href="pre-open-check.html">Pre-Open Check</a>, the Executive's per-lead order (hold / exit / trim / upgrade / watch) sits on the card.</li>
   <li><strong>Rank, direction badge, final grade</strong> — <span class="pill pill-green">LONG</span> or <span class="pill pill-red">SHORT</span>, and the Executive's final grade 0–100 coloured on the grade ramp.</li>
+  <li><strong>SPOTLIGHT chip</strong> — on a lead graded 60 or better, next to the grade (below).</li>
   <li><strong>Horizon chip</strong> — next to the stance chip, in mono: <code>SWING · ≈5 sessions</code>. The class sets the colour: intraday amber, swing accent, position green, long-term muted (below). When the lead's class falls outside the mandate the run was generated under, the chip is muted and titled <em>off-mandate</em> (<code>.hz-off</code>) — never under Mix, which admits every class.</li>
   <li><strong>Ticker</strong>, and on the options desk the <strong>selected contract line</strong> (expiry, strike, C/P) with its days-to-expiry.</li>
   <li><strong>Grade bar</strong>, then the <strong>board-range rail</strong> (below).</li>
@@ -143,6 +166,12 @@
 <h3 id="the-board-range-rail">The board-range rail<a class="anchor" href="#the-board-range-rail" aria-label="Link to The board-range rail">#</a></h3>
 
 <p>Under the grade bar sits a thin 0–100 track with a gold band from the room's <strong>lowest to highest grade</strong> and a pin at the Executive's <strong>final grade</strong>, captioned <code>board range 47–76</code>. The numbers come from a per-lead <code>grade_stats</code> aggregate (min, max, mean, n, spread) that rides on the run payload. Older runs recorded before that aggregate existed simply show no rail. The rail's accessible label reads the range, the final grade and the grader count aloud.</p>
+
+<h3 id="the-spotlight-badge">The SPOTLIGHT chip<a class="anchor" href="#the-spotlight-badge" aria-label="Link to The SPOTLIGHT chip">#</a></h3>
+
+<p>A card whose final grade is <strong>60 or better</strong> carries a small <span class="pill">SPOTLIGHT</span> chip beside the grade, titled <em>"graded above 60 — a full strategy profile exists"</em>. Click it and the <a href="the-spotlight.html">Spotlight</a> opens at <code>#/spotlight/&lt;lead_id&gt;</code>: the setup and the dated catalyst, what the options market is pricing against what the name actually does, a structure table priced off the real chain, and the <a href="the-spotlight.html#the-nine-conditions">nine conditions</a> — intraday · swing · long-term against conservative · moderate · aggressive — with your own cell ringed and the other eight still readable. Sixty is the same line the <a href="the-fund.html#admission">Fund</a> admits on (<code>fund_min_grade</code>), which is why most Fund lots carry the chip too; the spotlight's own threshold is <code>spotlight_min_grade</code>.</p>
+
+<p>The chip is not colour alone — it prints the word — and it appears wherever the lead does: the morning book, the <a href="news-library-archive.html#the-day-view">Archive's</a> day view, the Fund's holdings table and the briefing PDF. Above the desks, a <strong>Spotlights strip</strong> lists the day's spotlighted names with their grades. The chip opens a document; it does nothing else, and nothing on the page it opens places, stages or routes an order.</p>
 
 <h2 id="the-expanded-lead">The expanded lead<a class="anchor" href="#the-expanded-lead" aria-label="Link to The expanded lead">#</a></h2>
 
@@ -315,13 +344,13 @@
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="the-fund.html"><small>← Previous</small><b>The Fund</b></a><a class="next" rel="next" href="charts-and-terminal.html"><small>Next →</small><b>Charts &amp; Terminal</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#anatomy-of-a-lead-card">Anatomy of a lead card</a></li><li class="l3"><a href="#the-horizon-chip">The horizon chip: how long this is supposed to take</a></li><li class="l3"><a href="#live-levels">Live levels: entry, now, stop, target</a></li><li class="l3"><a href="#the-board-range-rail">The board-range rail</a></li><li class="l2"><a href="#the-expanded-lead">The expanded lead</a></li><li class="l3"><a href="#expected-hold">Expected hold</a></li><li class="l3"><a href="#read-across">Read-across: what moves with this name</a></li><li class="l3"><a href="#the-consensus-strip">The consensus strip: where the room fell</a></li><li class="l2"><a href="#morning-and-evening">Morning briefing | Evening court</a></li><li class="l2"><a href="#the-mandate-knob">The mandate knob: day trade, swing, long-term or mix</a></li><li class="l2"><a href="#day-and-night">Day and night</a></li><li class="l2"><a href="#the-workspace-grid">The workspace grid</a></li><li class="l3"><a href="#fit-to-window-and-flowing-page">Fit to window and flowing page</a></li><li class="l3"><a href="#moving-and-sizing-panels">Moving and sizing panels</a></li><li class="l3"><a href="#the-layout-menu">The Layout menu</a></li><li class="l2"><a href="#the-header">The header</a></li><li class="l2"><a href="#listen-the-memo-read-aloud">Listen: the memo, read aloud</a></li><li class="l2"><a href="#keyboard-summary">Keyboard summary</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#the-date-block">The date, said out loud</a></li><li class="l2"><a href="#anatomy-of-a-lead-card">Anatomy of a lead card</a></li><li class="l3"><a href="#the-horizon-chip">The horizon chip: how long this is supposed to take</a></li><li class="l3"><a href="#live-levels">Live levels: entry, now, stop, target</a></li><li class="l3"><a href="#the-board-range-rail">The board-range rail</a></li><li class="l3"><a href="#the-spotlight-badge">The SPOTLIGHT chip</a></li><li class="l2"><a href="#the-expanded-lead">The expanded lead</a></li><li class="l3"><a href="#expected-hold">Expected hold</a></li><li class="l3"><a href="#read-across">Read-across: what moves with this name</a></li><li class="l3"><a href="#the-consensus-strip">The consensus strip: where the room fell</a></li><li class="l2"><a href="#morning-and-evening">Morning briefing | Evening court</a></li><li class="l2"><a href="#the-mandate-knob">The mandate knob: day trade, swing, long-term or mix</a></li><li class="l2"><a href="#day-and-night">Day and night</a></li><li class="l2"><a href="#the-workspace-grid">The workspace grid</a></li><li class="l3"><a href="#fit-to-window-and-flowing-page">Fit to window and flowing page</a></li><li class="l3"><a href="#moving-and-sizing-panels">Moving and sizing panels</a></li><li class="l3"><a href="#the-layout-menu">The Layout menu</a></li><li class="l2"><a href="#the-header">The header</a></li><li class="l2"><a href="#listen-the-memo-read-aloud">Listen: the memo, read aloud</a></li><li class="l2"><a href="#keyboard-summary">Keyboard summary</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-23 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-24 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
