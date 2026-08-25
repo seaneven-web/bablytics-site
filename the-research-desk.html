@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Research Desk · Bablytics Guide</title>
-<meta name="description" content="Name any ticker and get what a desk wants in front of it before an opinion exists: the fundamentals, and the whole listed options chain — every expiry, every strike, both sides, including the strikes that have never traded. The chain comes with its own summary (the implied move, max pain, the put/call ratios, where the open interest sits) and any of it can be thrown onto the chart as price levels. Read-only; nothing here places an order.">
+<meta name="description" content="Name any ticker and COMMISSION a special issue — the same fourteen seats, on a horizon you choose. Plus what a desk wants in front of it before an opinion exists: the fundamentals, and the whole listed options chain — every expiry, every strike, both sides, including the strikes that have never traded. The chain comes with its own summary (the implied move, max pain, the put/call ratios, where the open interest sits) and any of it can be thrown onto the chart as price levels. Read-only; nothing here places an order.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -93,7 +93,7 @@
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-the-research-desk" data-slug="the-research-desk" data-title="The Research Desk">
-<header class="page-head"><p class="eyebrow">Desk · any ticker, on demand</p><h1>The Research Desk</h1><p class="summary">Name any ticker and get what a desk wants in front of it before an opinion exists: the fundamentals, and the whole listed options chain — every expiry, every strike, both sides, including the strikes that have never traded. The chain comes with its own summary (the implied move, max pain, the put/call ratios, where the open interest sits) and any of it can be thrown onto the chart as price levels. Read-only; nothing here places an order.</p></header>
+<header class="page-head"><p class="eyebrow">Desk · any ticker, on demand</p><h1>The Research Desk</h1><p class="summary">Name any ticker and COMMISSION a special issue — the same fourteen seats, on a horizon you choose. Plus what a desk wants in front of it before an opinion exists: the fundamentals, and the whole listed options chain — every expiry, every strike, both sides, including the strikes that have never traded. The chain comes with its own summary (the implied move, max pain, the put/call ratios, where the open interest sits) and any of it can be thrown onto the chart as price levels. Read-only; nothing here places an order.</p></header>
 <div class="article">
 
 <p>Every other surface in this app looks at names <em>the board already chose</em>. The morning book hands you twenty leads; the <a href="the-spotlight.html">Spotlight</a> writes up the ones above sixty; the <a href="the-fund.html">Fund</a> buys them. All of it flows one way, and none of it answers the question you actually ask most often: <em>what about this one?</em></p>
@@ -204,11 +204,58 @@
   <li><strong>No such ticker</strong> is a normal answer, and so is <em>this name has no listed options</em> — both are said plainly rather than rendered as an error.</li>
 </ul>
 
+<h2 id="commission-a-special-issue">Commission a special issue<a class="anchor" href="#commission-a-special-issue" aria-label="Link to Commission a special issue">#</a></h2>
+
+<p>A <a href="the-spotlight.html">Spotlight</a> is triggered <em>by</em> the board: a lead clears sixty and the system writes it up. A <strong>special issue</strong> is the other direction. <em>You</em> name the ticker and the horizon, and the same fourteen seats write a study on it — whether or not the board has ever looked at that name.</p>
+
+<figure class="shot">
+  <img src="assets/screens/special-issue-commission.png" alt="The Research Desk with AMD loaded, showing the Commission a special issue panel: an explanatory line, a row of horizon buttons reading 3 sessions, 1 week, 2 weeks, 1 month, 2 months and 1 quarter with 2 weeks selected, a Commission the issue button, and a Filed studies list showing an AMD five-session study graded 48.1 and an MU ten-session study graded 49.3, each with Read and Discard controls" loading="lazy" width="2880" height="1800" decoding="async">
+  <figcaption>The panel sits directly under the ticker you looked up. Filed studies accumulate underneath.</figcaption>
+</figure>
+
+<dl class="spec">
+  <dt>The horizon is yours</dt><dd>Three sessions, a week, two weeks, a month, two months or a quarter — and the API accepts any integer from 2 to 120. The horizon is not decoration: it selects which expiry the chain analysis anchors on, which forward-return distribution is measured, and how the realized volatility is matched.</dd>
+  <dt>It runs in the background</dt><dd>Fourteen seats, one at a time, so it takes a few minutes. The panel shows live progress — which seat is being asked, or which expiry is being pulled — and one study runs at a time.</dd>
+  <dt>Studies accumulate</dt><dd>Issues <strong>append</strong> rather than replace. The same ticker over the same horizon on a different day is a different study, and so is a re-run after the tape moves. Every one keeps its own PDF, named with its row id so nothing can overwrite anything.</dd>
+</dl>
+
+<h3 id="the-house-arithmetic">The house does the arithmetic before the board sits<a class="anchor" href="#the-house-arithmetic" aria-label="Link to The house does the arithmetic before the board sits">#</a></h3>
+
+<p>This is the part that makes an issue worth reading, and it is the direct product of the first one ever written. That study — Micron over ten sessions — was only useful <em>after</em> its own framing had been audited, and <strong>every error the audit found was mechanical</strong>. Mechanical errors belong in code, not in a prompt where a model may or may not notice them. So they are computed on every issue now, before any seat sees anything:</p>
+
+<dl class="spec">
+  <dt>Drift decomposition</dt><dd>A "base rate" measured over a period in which the stock tripled is <em>the trend restated</em>. The packet reports how much of a forward-return median is simply the sample path's own drift, and what is left once it is removed. On the first AMD study it found that <strong>118% of the five-session median was drift</strong> — a residual of −0.18%.</dd>
+  <dt>Honest standard error</dt><dd>N overlapping k-session windows contain roughly N/k <em>independent</em> observations. Quoting the naive standard error overstates precision by √k. Both are reported, with the multiple stated.</dd>
+  <dt>A straddle is not a sigma</dt><dd>A chain's "implied move" is the at-the-money <strong>straddle price</strong>, which is about 0.798 standard deviations. Comparing it directly against a return standard deviation is a category error that understates the market's own volatility estimate by a fifth. The packet converts it.</dd>
+  <dt>Realized vol at the traded horizon</dt><dd>A held-to-expiry position is paid on <em>terminal</em> dispersion. Daily volatility scaled by √t is the wrong comparator when the series mean-reverts, and where the k-session dispersion sits below it, that <em>is</em> mean reversion at exactly the horizon being traded.</dd>
+  <dt>Beta and R², not correlation alone</dt><dd>A low correlation with a beta near one means a large expected co-move with a large residual — an argument for <em>owning</em> optionality around a name's events, not for dismissing them. Correlation alone hides that, and on the first issue it led the desk to the wrong conclusion twice.</dd>
+  <dt>The priced event premium</dt><dd>When two listed expiries straddle a dated event, the difference in their implied variance prices the event itself: J² = (σ<sub>post</sub>² − σ<sub>pre</sub>²) × t<sub>post</sub>. The share of the horizon's total variance it represents says whether a post-event volatility crush is worth fearing — on the Micron study it was <strong>9.1%</strong>, so the "crush risk" one seat named as the trade's principal danger was worth under three volatility points.</dd>
+  <dt>Does the expiry even cover the window?</dt><dd>Stated explicitly, because it frequently does not. A ten-day expiry covers about seven trading sessions, and a study that quietly analyses seven while claiming ten is wrong by 30%.</dd>
+</dl>
+
+<div class="callout callout-note"><strong>Every one of these carries its own warning text into the board's brief.</strong> The seats are handed the corrections <em>first</em>, told not to redo them, not to contradict them without showing their working, and not to report them back as though they were their own findings. The arithmetic is settled before the argument starts.</div>
+
+<h3 id="issue-mock-mode">In mock mode<a class="anchor" href="#issue-mock-mode" aria-label="Link to In mock mode">#</a></h3>
+
+<p>With no API key the fourteen seats answer deterministically and the document says so on its own front page. <strong>Everything in the arithmetic sections is still real</strong> — real chains, real levels, real distributions, real computation — because none of it is a model call. A mock issue is half a study, and it is honest about which half.</p>
+
+<h3 id="issue-endpoints">The endpoints<a class="anchor" href="#issue-endpoints" aria-label="Link to The endpoints">#</a></h3>
+
+<dl class="spec">
+  <dt><code>GET /api/issues</code></dt><dd>The archive, newest first.</dd>
+  <dt><code>GET /api/issues/progress</code></dt><dd>What the writer is doing right now — the stage and the seat.</dd>
+  <dt><code>POST /api/issues/generate</code></dt><dd><code>{ticker, horizon}</code>. Returns immediately; one study runs at a time and a second request is refused rather than queued.</dd>
+  <dt><code>GET /api/issues/&lt;id&gt;</code></dt><dd>The whole study — packet, every seat, the verdict.</dd>
+  <dt><code>GET /api/issues/&lt;id&gt;/pdf</code></dt><dd>The rendered PDF, inline. A missing file is <em>re-rendered from the stored payload</em> rather than 404'd, because the study itself was never lost.</dd>
+</dl>
+
+<div class="callout callout-rule"><strong>Research output, and read-only.</strong> A special issue grades, prices and argues. It is not a recommendation, and nothing in the issues package places, stages or routes an order of any kind.</div>
+
 </div>
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="the-spotlight.html"><small>← Previous</small><b>The Spotlight</b></a><a class="next" rel="next" href="download-and-install.html"><small>Next →</small><b>Download &amp; install</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#the-fundamentals">The fundamentals</a></li><li class="l3"><a href="#the-earnings-strip">The earnings strip</a></li><li class="l2"><a href="#the-chain">The full options chain</a></li><li class="l3"><a href="#what-the-chain-says">What the chain says, before any single contract</a></li><li class="l3"><a href="#the-strike-window">How many strikes to show</a></li><li class="l3"><a href="#the-table">The table</a></li><li class="l2"><a href="#the-chain-on-the-chart">The chain, on the chart</a></li><li class="l2"><a href="#reaching-the-far-columns">Reaching the far columns with a mouse</a></li><li class="l2"><a href="#the-endpoints">The endpoints</a></li><li class="l2"><a href="#the-limits">What it will not tell you</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#the-fundamentals">The fundamentals</a></li><li class="l3"><a href="#the-earnings-strip">The earnings strip</a></li><li class="l2"><a href="#the-chain">The full options chain</a></li><li class="l3"><a href="#what-the-chain-says">What the chain says, before any single contract</a></li><li class="l3"><a href="#the-strike-window">How many strikes to show</a></li><li class="l3"><a href="#the-table">The table</a></li><li class="l2"><a href="#the-chain-on-the-chart">The chain, on the chart</a></li><li class="l2"><a href="#reaching-the-far-columns">Reaching the far columns with a mouse</a></li><li class="l2"><a href="#the-endpoints">The endpoints</a></li><li class="l2"><a href="#the-limits">What it will not tell you</a></li><li class="l2"><a href="#commission-a-special-issue">Commission a special issue</a></li><li class="l3"><a href="#the-house-arithmetic">The house does the arithmetic before the board sits</a></li><li class="l3"><a href="#issue-mock-mode">In mock mode</a></li><li class="l3"><a href="#issue-endpoints">The endpoints</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
