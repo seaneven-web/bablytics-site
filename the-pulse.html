@@ -346,11 +346,32 @@
   <dt>MODEL-CARD.md</dt><dd>the repo-root card: data, training, held-out numbers, silenced columns, the fitness finding, limitations</dd>
 </dl>
 
+<h2 id="pulse-any-ticker">Pulse any ticker<a class="anchor" href="#pulse-any-ticker" aria-label="Link to Pulse any ticker">#</a></h2>
+
+<p>The cycle covers what the desk already has an interest in: <strong>the owner's book</strong> and <strong>the day's leads</strong>. Round 36 adds a third scope — <em>any</em> ticker, asked for by name, whether or not the board has ever looked at it.</p>
+
+<figure class="shot">
+  <img src="assets/screens/pulse-lookup.png" alt="The Pulse tab showing the Pulse any ticker panel: a ticker box containing MU, a long/short toggle with long selected, a Pulse it button, and below it a full signal card reading MU LONG STOCK TRIM, last $932.40, size medium, conviction 51, exit zone stop $820.73 target $1,155.75, a board view panel saying no standing board view because MU was looked up on request, a model consensus panel showing TRIM at 52% with three of five models agreeing at margin 0.05, and the written rationale" loading="lazy" width="2880" height="1800" decoding="async">
+  <figcaption>A looked-up name gets the same card the cycle produces — the same model, the same exit-zone arithmetic, the same five-model ballot.</figcaption>
+</figure>
+
+<dl class="spec">
+  <dt>The same model, not a lesser one</dt><dd>A lookup runs the identical path a cycle signal does: the population consensus (or the single checkpoint behind it), blended with any standing board view, capped by the same house overrides, with the exit zone computed by the same ATR arithmetic. It is not a simplified estimate.</dd>
+  <dt>Long or short</dt><dd>The toggle re-reads the same name the other way, and the answers genuinely differ — MU read <em>trim</em> at conviction 51 long, and <em>exit</em> at 71 short with the zone inverted. The direction is an input to the model, not a label on the output.</dd>
+  <dt>It is never saved as a cycle</dt><dd>Asking about a name must not overwrite the record of what the Pulse actually <em>saw</em>. A lookup returns live and is not persisted, so the cycle history stays a truthful log of the scheduled reads.</dd>
+</dl>
+
+<div class="callout callout-note"><strong>A lookup is a read on the NAME, not a verdict on a position.</strong> There is no entry price and no holding period, so the action describes what the model would do with <em>fresh</em> exposure. Where you already hold the name the panel says so and points at your own card below, which carries the real entry and the unrealised mark — the two answers are about different things and the app does not let them be confused.</div>
+
+<p>Two smaller pieces of honesty came with it. The board-view note now names the <em>right reason</em> a name has no grade: a held position the board never picked is not the same thing as a ticker you simply asked about, and the card says which. And a ticker with no price history is refused outright — <em>"no price history for this ticker — nothing to read"</em> — rather than emitting a signal assembled entirely from defaults.</p>
+
+<div class="callout callout-rule"><strong>Read-only, like every other Pulse surface.</strong> <code>GET /api/pulse/lookup?ticker=&amp;direction=&amp;instrument=</code> is authenticated and reads market data. No code path in the Pulse package can reach an order of any kind.</div>
+
 </div>
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="reviews-and-horizons.html"><small>← Previous</small><b>Reviews</b></a><a class="next" rel="next" href="the-bailiff.html"><small>Next →</small><b>The Bailiff</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-pulse-is">What the Pulse is</a></li><li class="l2"><a href="#your-book">What counts as your book</a></li><li class="l2"><a href="#goals">The goal matrix</a></li><li class="l2"><a href="#the-31-feature-state">The 31-feature state</a></li><li class="l2"><a href="#five-models">Five actor-critic models</a></li><li class="l2"><a href="#consensus-and-agreement">Consensus and agreement</a></li><li class="l2"><a href="#the-blend">The blend, and its overrides</a></li><li class="l3"><a href="#leans">The five leans</a></li><li class="l3"><a href="#exit-zones">Exit zones by ATR</a></li><li class="l2"><a href="#degrade-ladder">What happens when something is missing</a></li><li class="l2"><a href="#the-model-card">The Model card</a></li><li class="l2"><a href="#evolution">Evolution: one generation per court night</a></li><li class="l2"><a href="#no-execution-path">No execution path — stated plainly</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#api-and-files">API, settings and files</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-pulse-is">What the Pulse is</a></li><li class="l2"><a href="#your-book">What counts as your book</a></li><li class="l2"><a href="#goals">The goal matrix</a></li><li class="l2"><a href="#the-31-feature-state">The 31-feature state</a></li><li class="l2"><a href="#five-models">Five actor-critic models</a></li><li class="l2"><a href="#consensus-and-agreement">Consensus and agreement</a></li><li class="l2"><a href="#the-blend">The blend, and its overrides</a></li><li class="l3"><a href="#leans">The five leans</a></li><li class="l3"><a href="#exit-zones">Exit zones by ATR</a></li><li class="l2"><a href="#degrade-ladder">What happens when something is missing</a></li><li class="l2"><a href="#the-model-card">The Model card</a></li><li class="l2"><a href="#evolution">Evolution: one generation per court night</a></li><li class="l2"><a href="#no-execution-path">No execution path — stated plainly</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#api-and-files">API, settings and files</a></li><li class="l2"><a href="#pulse-any-ticker">Pulse any ticker</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
