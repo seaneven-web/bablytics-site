@@ -78,6 +78,7 @@
 <li><a href="evidence-locker.html">Evidence locker</a></li>
 <li><a href="mailing-list.html">Mailing list</a></li>
 <li><a href="the-spotlight.html">The Spotlight</a></li>
+<li><a href="the-research-desk.html">Research Desk</a></li>
 </ul></details>
 <details open data-group="reference"><summary>Reference</summary><ul>
 <li><a href="download-and-install.html">Download &amp; install</a></li>
@@ -307,6 +308,12 @@
 <div class="callout callout-rule"><strong>Caps and closed legs.</strong> Pre-release chains cap at 55; escalation-story expressions cap at 55 on a morning the front-month crude stamp is lower; a closed leg needs a structured <code>closed</code> record — ticker, instrument, close price, the branch that fired — not prose.</div>
 
 <h2 id="the-pdf">The PDF<a class="anchor" href="#the-pdf" aria-label="Link to The PDF">#</a></h2>
+<h3 id="read-pdf">Read PDF — the report, rendered<a class="anchor" href="#read-pdf" aria-label="Link to Read PDF — the report, rendered">#</a></h3>
+
+<p><strong>Read PDF</strong> sits beside Download PDF and opens the same report <em>inside the app</em>, in the platform's own PDF viewer, at a size worth reading. It is a separate route rather than a flag on the export for a concrete reason: <strong>the download is encrypted, and an encrypted PDF cannot be rendered by any viewer</strong>. Reading a report and exporting one are genuinely different operations, so they are two buttons and two endpoints — <code>GET /api/reports/morning/{run_id}/view</code> streams the PDF unencrypted and <code>inline</code>, behind the same session cookie as every other route. Nothing is written to disk, so there is no file to encrypt against.</p>
+
+<div class="callout callout-note"><strong>It cannot fail silently.</strong> Chrome, Safari, Edge, WKWebView (the macOS build) and WebView2 (the Windows build) all render a PDF in a frame. <strong>WebKitGTK — the Linux build — has no PDF viewer at all</strong>, and it does not report an error: the frame loads "successfully" and draws an empty box, which an <code>&lt;object&gt;</code> fallback will not catch. So the reader probes the frame after it settles and replaces anything that produced no viewer with a plain explanation and two working ways out — open it in a browser, or download it. A blank rectangle is never the answer.</div>
+
 <p><strong>Download PDF</strong> in the top strip asks for a password (at least four characters) and returns <code>bablytics-briefing-&lt;date&gt;.pdf</code>: a light-paper document with honey rules and maroon headings — the market table, the memo, an Options desk table (rank, ticker, direction, grade, contract, thesis), a Stock book table (price and 5D added), then a board transcript per lead with every seat's grade, stance and comment. A lead graded 60 or better carries the word <code>SPOTLIGHT</code> after its grade in that block, pointing at its own document (<code>Bablytics-Spotlight-&lt;TICKER&gt;-&lt;date&gt;.pdf</code>). The file is encrypted with pypdf: AES-256 when the <code>cryptography</code> package is installed, RC4 otherwise. The dialog is honest about what that buys — it deters casual sharing; anyone with the password can open it.</p>
 
 <h2 id="mock-mode-and-ai-mode">Mock mode and AI mode<a class="anchor" href="#mock-mode-and-ai-mode" aria-label="Link to Mock mode and AI mode">#</a></h2>
@@ -318,7 +325,7 @@
   <li><a href="pre-open-check.html">The Pre-Open Check</a> at 9:15 — the full committee revalidates these twenty leads against futures, pre-market prints and the OI-conversion audit; its per-lead actions land on the cards as corner chips.</li>
   <li><a href="midday-check-in.html">The Midday Check-In</a> at 12:30 — every seat re-reads the paper positions it opened on these leads and files hold or close.</li>
   <li><a href="the-pulse.html">The Pulse</a> every half hour and <a href="the-bailiff.html">the Bailiff</a> every fifteen minutes — one reads the book's levels, the other prices the written invalidations.</li>
-  <li><a href="evening-court.html">The Evening Court</a> at 19:00 — the leads are scored against the close, the Pyramid re-forms and every seat journals; the lessons ride tomorrow's prompts.</li>
+  <li><a href="evening-court.html">The Evening Court</a> at 19:00 — the leads are scored against the close and every seat journals; the lessons ride tomorrow's prompts.</li>
 </ul>
 
 <h2 id="api">API<a class="anchor" href="#api" aria-label="Link to API">#</a></h2>
@@ -328,6 +335,7 @@
   <dt>GET /api/levels?run_id=</dt><dd>Live Entry / Now / Stop / Target / ATR(14) and the option premium per lead, plus each lead's <code>horizon</code> object (stored, or estimated and labelled so); 45-second in-process cache, <code>X-Levels-Cache: hit|miss</code> header.</dd>
   <dt>GET /api/coupling/{ticker} · GET /api/coupling/lead/{lead_id}</dt><dd>The coupling dict for a ticker, computed on demand and cached per day; or <code>{"coupling", "read_across"}</code> for a stored lead, with a fallback compute and mock text when the run predates the feature.</dd>
   <dt>GET /api/evidence · POST · PATCH · DELETE · /preview?purpose=morning</dt><dd>The Evidence locker; <code>preview</code> returns the exact USER EVIDENCE block the morning prompts will carry. Full shapes on <a href="evidence-locker.html#api">The Evidence Locker</a>.</dd>
+  <dt>GET /api/reports/morning/{run_id}/view</dt><dd>The briefing PDF, unencrypted and <code>inline</code>, for the in-app reader. Same for <code>/api/reports/evening/{run_id}/view</code>.</dd>
   <dt>POST /api/reports/morning/{run_id}</dt><dd>Body <code>{"password": "…"}</code> (4+ chars) → the encrypted briefing PDF.</dd>
   <dt>Settings</dt><dd><code>run_hour</code> / <code>run_minute</code> (defaults 7:00 ET) via <code>GET/POST /api/settings</code>; saving reschedules the job at once. <code>trading_style</code> (the <a href="#the-mandate">mandate</a>: <code>intraday</code> / <code>swing</code> / <code>long_term</code> / <code>mix</code>, default <code>mix</code>) through the same endpoints — <code>GET</code> also returns <code>trading_style_label</code> — or through the knob's own <code>PUT / POST /api/settings/mandate</code> <code>{"trading_style"}</code>; read at the next run, never re-grading the last.</dd>
 </dl>
@@ -336,13 +344,13 @@
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="the-board.html"><small>← Previous</small><b>The Board</b></a><a class="next" rel="next" href="pre-open-check.html"><small>Next →</small><b>Pre-Open Check</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-briefing-is">What the briefing is</a></li><li class="l2"><a href="#the-pipeline">The pipeline, stage by stage</a></li><li class="l3"><a href="#how-a-contract-is-chosen">How a contract is chosen</a></li><li class="l2"><a href="#the-mandate">The mandate: day trade, swing, long-term or mix</a></li><li class="l2"><a href="#what-a-lead-card-shows">What a lead card shows</a></li><li class="l3"><a href="#levels-entry-now-stop-target">Entry, Now, Stop, Target, ATR</a></li><li class="l3"><a href="#board-range-and-consensus-strip">Board range and the consensus strip</a></li><li class="l2"><a href="#the-spotlight-badge">The spotlight on a lead above 60</a></li><li class="l2"><a href="#time-horizon">The time horizon on every lead</a></li><li class="l2"><a href="#read-across">Read-across: what moves with each lead</a></li><li class="l2"><a href="#user-evidence">User evidence: what you put in front of the board</a></li><li class="l2"><a href="#memo-and-listen">The memo and Listen</a></li><li class="l2"><a href="#the-house-rules">The house rules</a></li><li class="l2"><a href="#the-pdf">The PDF</a></li><li class="l2"><a href="#mock-mode-and-ai-mode">Mock mode and AI mode</a></li><li class="l2"><a href="#what-the-run-feeds">What the run feeds</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-briefing-is">What the briefing is</a></li><li class="l2"><a href="#the-pipeline">The pipeline, stage by stage</a></li><li class="l3"><a href="#how-a-contract-is-chosen">How a contract is chosen</a></li><li class="l2"><a href="#the-mandate">The mandate: day trade, swing, long-term or mix</a></li><li class="l2"><a href="#what-a-lead-card-shows">What a lead card shows</a></li><li class="l3"><a href="#levels-entry-now-stop-target">Entry, Now, Stop, Target, ATR</a></li><li class="l3"><a href="#board-range-and-consensus-strip">Board range and the consensus strip</a></li><li class="l2"><a href="#the-spotlight-badge">The spotlight on a lead above 60</a></li><li class="l2"><a href="#time-horizon">The time horizon on every lead</a></li><li class="l2"><a href="#read-across">Read-across: what moves with each lead</a></li><li class="l2"><a href="#user-evidence">User evidence: what you put in front of the board</a></li><li class="l2"><a href="#memo-and-listen">The memo and Listen</a></li><li class="l2"><a href="#the-house-rules">The house rules</a></li><li class="l2"><a href="#the-pdf">The PDF</a></li><li class="l3"><a href="#read-pdf">Read PDF — the report, rendered</a></li><li class="l2"><a href="#mock-mode-and-ai-mode">Mock mode and AI mode</a></li><li class="l2"><a href="#what-the-run-feeds">What the run feeds</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-24 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-25 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">

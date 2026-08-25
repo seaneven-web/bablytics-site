@@ -78,6 +78,7 @@
 <li><a href="evidence-locker.html">Evidence locker</a></li>
 <li><a href="mailing-list.html">Mailing list</a></li>
 <li><a href="the-spotlight.html">The Spotlight</a></li>
+<li><a href="the-research-desk.html">Research Desk</a></li>
 </ul></details>
 <details open data-group="reference"><summary>Reference</summary><ul>
 <li><a href="download-and-install.html">Download &amp; install</a></li>
@@ -277,7 +278,9 @@
 <aside class="tip">The quoted lessons are real lines from each seat's journal in <code>data/members/&lt;key&gt;.md</code>, regenerated after every Evening Court. They are dated because the seats keep learning; by the time you read this, the latest entries will be newer.</aside>
 
 <h2 id="the-pyramid">The Pyramid, and who is in charge of the world<a class="anchor" href="#the-pyramid" aria-label="Link to The Pyramid, and who is in charge of the world">#</a></h2>
-<p>Every evening, after the day report is scored, the court re-forms <strong>The Pyramid</strong> — a daily performance ranking of the whole room. Fourteen seats are ranked: the thirteen graders and the Skeptic. The Executive chairs and is not.</p>
+<p><strong>The Pyramid</strong> is a daily performance ranking of the whole room. Fourteen seats are ranked: the thirteen graders and the Skeptic. The Executive chairs and is not.</p>
+
+<div class="callout callout-note"><strong>It re-ranks every weekday, not only on court nights.</strong> The Pyramid used to re-form in one place — inside the <a href="evening-court.html">Evening Court</a>, off the report the court itself had just built. That coupled the ranking to a heavy 19:00 session, so <em>a day the court did not sit was a day the ranking silently froze</em>, showing a stale leader as if it were current. It now scores as its own step in the daily outcomes job, reading the realized returns out of the database rather than needing the court's live report, and the court's own pass simply overwrites the same run. Sessions are scored <strong>oldest first</strong>, and the EWMA is ordered by the day each score belongs to rather than by when it was written, so a session backfilled after a gap slots into its own place in the sequence instead of landing after the days that followed it.</div>
 <p>Per lead with a realized day return, a seat's lead score is <strong>stance sign × conviction × underlying move</strong>: stance sign is bull +1, bear −1, neutral 0; conviction is |grade − 50| / 50; the underlying move is the day return un-flipped by lead direction, so a short that earned +1.5% because the stock fell contributes −1.5% as the underlying. Strongly right earns, strongly wrong bleeds, timid or neutral earns almost nothing — the top of the pyramid is whoever is <em>strongest and most right</em>. The seat's daily score is the mean over its scored leads, to four decimals, stored per seat and run (re-running a day replaces it).</p>
 <p>Worked example from the code's own docstring: a seat graded NVDA long at 80 bull and the stock rose 2.00% — conviction 0.60, lead score +1.20; it graded an XYZ short at 35 bear and the stock fell 1.50% (underlying −1.50) — conviction 0.30, lead score (−1)(0.30)(−1.50) = +0.45; daily score 0.825.</p>
 <p>The ranking value is an <strong>EWMA of daily scores with span 10 sessions</strong> (α = 2/11, oldest-first recursion seeded with the first value), so a hot week climbs the pyramid but one lucky day does not crown anyone for long; seats with no history rank on today alone. Standings sort descending into tiers:</p>
@@ -329,7 +332,7 @@
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-24 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-25 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
