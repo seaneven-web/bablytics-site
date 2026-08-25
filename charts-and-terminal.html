@@ -179,11 +179,35 @@
 
 <div class="callout callout-note"><strong>Where the bars come from.</strong> The chart API is served by <code>bablytics/marketdata.py</code> over the same market-data source the rest of the app uses (yfinance). Nothing is streamed: each load is one request, cached for five minutes. For what leaves your machine, see <a href="data-and-privacy.html">Data &amp; privacy</a>.</div>
 
+<h2 id="the-live-drip">The live drip<a class="anchor" href="#the-live-drip" aria-label="Link to The live drip">#</a></h2>
+
+<p>The chart used to sit still until something reloaded it. The <strong>LIVE</strong> toggle opens a stream and the price keeps arriving: each quote is folded into the <strong>forming bar</strong> — the one whose period you are still inside — so its close moves and its high and low stretch to contain it while you watch.</p>
+
+<div class="callout callout-rule"><strong>The default feed is delayed, and the app says so everywhere.</strong> Out of the box the quotes come from yfinance, which is <em>unofficial, delayed market data — not a real-time consolidated quote</em>. The stream announces its provider before the first price arrives, every payload carries <code>source</code> and <code>delayed</code>, and the note strip under the chart prints it: <code>live 765.39 · 09:13:04 · delayed feed</code>. Polling a free feed every two seconds is how you get blocked rather than how you get real-time data, so the cadence floor is three seconds and the default is five.</div>
+
+<p><strong>It never invents a bar.</strong> If the period has rolled while you were watching, the next scheduled load brings the real one. A bar drawn from a quote alone would carry no volume and would misstate the session.</p>
+
+<h3 id="real-time-data">Getting genuinely real-time prices<a class="anchor" href="#real-time-data" aria-label="Link to Getting genuinely real-time prices">#</a></h3>
+
+<p>That is a provider swap, not a rewrite. <code>bablytics/quotes.py</code> keys its providers by name and selects one with the <code>BABLYTICS_QUOTE_PROVIDER</code> environment variable; nothing above that module knows which one answered. If you already link a <a href="broker.html">broker</a>, its streaming quote API is the natural first real-time provider to add.</p>
+
+<dl class="spec">
+  <dt><code>GET /api/quotes?symbols=…</code></dt><dd>One batch, for stock tickers and OCC option symbols alike.</dd>
+  <dt><code>GET /api/quotes/provider</code></dt><dd>Which feed is answering, and whether it is delayed.</dd>
+  <dt><code>GET /api/quotes/stream?symbols=…&amp;interval=5</code></dt><dd>Server-sent events: a <code>provider</code> event, then a <code>quote</code> event per tick. The connection is capped so the client re-opens, which also re-checks the session.</dd>
+</dl>
+
+<p>One stream is opened per chart and closed when the chart is torn down, so moving between tabs does not leak a connection — and does not leave the server polling a feed for a chart nobody is looking at.</p>
+
+<h2 id="the-chain-overlay">The options chain on the chart<a class="anchor" href="#the-chain-overlay" aria-label="Link to The options chain on the chart">#</a></h2>
+
+<p>The <strong>OPT</strong> toggle draws the <a href="the-research-desk.html#the-chain-on-the-chart">options chain</a> as horizontal price levels: the implied-move band (shaded), max pain, and the call and put walls labelled with their open interest. The note strip names the expiry and the implied move, because a level without its expiry is not a level. Unlike <strong>LVL</strong>, it draws on every interval — a strike is a strike at any zoom.</p>
+
 </div>
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="dashboard-workspace.html"><small>← Previous</small><b>Dashboard</b></a><a class="next" rel="next" href="positions-and-trades.html"><small>Next →</small><b>Positions &amp; Trades</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#charts-pro">Charts Pro</a></li><li class="l3"><a href="#timescales">Nine timescales, including intraday</a></li><li class="l3"><a href="#styles-and-toggles">Styles and toggles</a></li><li class="l3"><a href="#the-thirty-studies">The thirty studies</a></li><li class="l3"><a href="#the-studies-dialog">The studies dialog</a></li><li class="l3"><a href="#templates">Templates in localStorage</a></li><li class="l3"><a href="#crosshair-and-readouts">Crosshair and readouts</a></li><li class="l2"><a href="#the-terminal">The Terminal: the whole desk on one screen</a></li><li class="l2"><a href="#deep-links">Deep links into the chart</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#charts-pro">Charts Pro</a></li><li class="l3"><a href="#timescales">Nine timescales, including intraday</a></li><li class="l3"><a href="#styles-and-toggles">Styles and toggles</a></li><li class="l3"><a href="#the-thirty-studies">The thirty studies</a></li><li class="l3"><a href="#the-studies-dialog">The studies dialog</a></li><li class="l3"><a href="#templates">Templates in localStorage</a></li><li class="l3"><a href="#crosshair-and-readouts">Crosshair and readouts</a></li><li class="l2"><a href="#the-terminal">The Terminal: the whole desk on one screen</a></li><li class="l2"><a href="#deep-links">Deep links into the chart</a></li><li class="l2"><a href="#the-live-drip">The live drip</a></li><li class="l3"><a href="#real-time-data">Getting genuinely real-time prices</a></li><li class="l2"><a href="#the-chain-overlay">The options chain on the chart</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">

@@ -236,11 +236,43 @@
   <dt>Settings</dt><dd><code>review_hour</code> / <code>review_minute</code> (defaults 19:00 ET) via <code>GET/POST /api/settings</code>; <code>rl_evolve_enabled</code> (default "1") gates the night's generation.</dd>
 </dl>
 
+<h2 id="two-returns">Two returns, not one — the stock and the contract<a class="anchor" href="#two-returns" aria-label="Link to Two returns, not one — the stock and the contract">#</a></h2>
+
+<p>The scoreboard prints <strong>two</strong> percentages against an option lead, and they routinely disagree by an order of magnitude:</p>
+
+<dl class="spec">
+  <dt>Stock</dt><dd>The underlying's move, <strong>direction-adjusted</strong> — positive means the call was right. This is the <em>forecasting</em> number.</dd>
+  <dt>Option</dt><dd>The contract's own move from the premium it was opened at, and it is <strong>not</strong> direction-adjusted. This is the <em>trade</em> number.</dd>
+</dl>
+
+<p>Why the second is not sign-flipped: a bearish lead expresses itself by <strong>buying a put</strong>, so the contract is already long the view. Flipping it would report a winning put as a loss.</p>
+
+<div class="callout callout-warn"><strong>This used to be recorded wrong, and it mattered.</strong> Until round 30 the <code>outcomes</code> table held one number per lead — the underlying's move — for stock and option leads alike. Everything built on that table inherited it: the <a href="the-board.html#the-pyramid">Pyramid</a>, the model's training labels, and the <a href="the-fund.html">Fund's</a> performance. A lead that said <em>buy the $610 call</em> was recorded at the share price's +2.54% while the call itself went 1.50 → 0.95, <strong>−36.7%</strong>. The court was the only place that ever refetched a contract, and that price never reached the record — so the court's own transcript for 24 August calls that lead <em>"the book's second-best leg at +2.54%"</em>, quoting the stock's move as the contract's result. Both numbers are now stored, and 100 historical rows were backfilled.</div>
+
+<p>What Monday's option book actually did, once both numbers exist:</p>
+
+<div class="table-wrap">
+<table class="data">
+  <thead><tr><th>Lead</th><th class="r">Stock</th><th class="r">Contract</th><th class="r">Entry → later</th></tr></thead>
+  <tbody>
+    <tr><td>MRNA short $130P</td><td class="r num">+2.67%</td><td class="r num">−86.8%</td><td class="r num">4.40 → 0.58</td></tr>
+    <tr><td>DIS long $111C</td><td class="r num">+2.05%</td><td class="r num">+68.9%</td><td class="r num">0.74 → 1.25</td></tr>
+    <tr><td>WMT long $106C</td><td class="r num">+2.21%</td><td class="r num">−45.4%</td><td class="r num">0.86 → 0.47</td></tr>
+    <tr><td>MA long $610C</td><td class="r num">+2.54%</td><td class="r num">−36.7%</td><td class="r num">1.50 → 0.95</td></tr>
+    <tr><td>PLTR long $172.5C</td><td class="r num">+0.19%</td><td class="r num">−29.0%</td><td class="r num">7.13 → 5.06</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>A contract with no stored entry premium, or one that has expired and can no longer be quoted, shows a dash rather than a guess.</p>
+
+<div class="callout callout-note"><strong>The Pyramid still ranks on the underlying.</strong> That is defensible — it is a directional-forecasting score, and stance × conviction × the underlying's move is what it was built to measure — but after round 30 it is a <em>choice</em> rather than an accident, and the contract number now exists if the ranking should be based on what the trade did instead. Changing it would rewrite every standing, so it is the owner's call.</div>
+
 </div>
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="midday-check-in.html"><small>← Previous</small><b>Midday Check-In</b></a><a class="next" rel="next" href="reviews-and-horizons.html"><small>Next →</small><b>Reviews</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-court-is">What the court is</a></li><li class="l2"><a href="#how-the-court-runs">How the court runs</a></li><li class="l2"><a href="#scoring-against-the-close">Scoring against the close</a></li><li class="l2"><a href="#on-base-off-base-lesson">On base, off base, lesson</a></li><li class="l2"><a href="#horizon-versus-what-happened">The stated horizon versus what happened</a></li><li class="l2"><a href="#best-call-worst-call">Best call, worst call</a></li><li class="l2"><a href="#the-pyramid-re-forms">The Pyramid re-forms</a></li><li class="l2"><a href="#journals-and-dossiers">Journals and dossiers</a></li><li class="l2"><a href="#the-owners-reflections">The owner&#x27;s reflections</a></li><li class="l2"><a href="#models-and-training">The models and training appendix</a></li><li class="l2"><a href="#where-it-shows">Where it shows</a></li><li class="l2"><a href="#the-pdf">The PDF</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-court-is">What the court is</a></li><li class="l2"><a href="#how-the-court-runs">How the court runs</a></li><li class="l2"><a href="#scoring-against-the-close">Scoring against the close</a></li><li class="l2"><a href="#on-base-off-base-lesson">On base, off base, lesson</a></li><li class="l2"><a href="#horizon-versus-what-happened">The stated horizon versus what happened</a></li><li class="l2"><a href="#best-call-worst-call">Best call, worst call</a></li><li class="l2"><a href="#the-pyramid-re-forms">The Pyramid re-forms</a></li><li class="l2"><a href="#journals-and-dossiers">Journals and dossiers</a></li><li class="l2"><a href="#the-owners-reflections">The owner&#x27;s reflections</a></li><li class="l2"><a href="#models-and-training">The models and training appendix</a></li><li class="l2"><a href="#where-it-shows">Where it shows</a></li><li class="l2"><a href="#the-pdf">The PDF</a></li><li class="l2"><a href="#api">API</a></li><li class="l2"><a href="#two-returns">Two returns, not one — the stock and the contract</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
