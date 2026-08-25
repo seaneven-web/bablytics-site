@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Broker Page · Bablytics Guide</title>
-<meta name="description" content="Connect a Schwab developer app with the paste-the-redirect OAuth flow, read balances and positions, and review the orders the bot stages after each morning run — which only you can submit, one at a time, each behind a confirmation. There is no auto-submit anywhere.">
+<meta name="description" content="Connect a Schwab developer app with the paste-the-redirect OAuth flow, read balances and positions, and review the orders the bot stages after each morning run — which only you can submit, one at a time, each behind a confirmation. There is no auto-submit anywhere. Round 31 adds E*TRADE, Tradier and Alpaca, and is honest that several large brokers publish no retail API at all.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -93,7 +93,7 @@
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-broker" data-slug="broker" data-title="The Broker Page">
-<header class="page-head"><p class="eyebrow">Desk · staged, never sent</p><h1>The Broker Page</h1><p class="summary">Connect a Schwab developer app with the paste-the-redirect OAuth flow, read balances and positions, and review the orders the bot stages after each morning run — which only you can submit, one at a time, each behind a confirmation. There is no auto-submit anywhere.</p></header>
+<header class="page-head"><p class="eyebrow">Desk · staged, never sent</p><h1>The Broker Page</h1><p class="summary">Connect a Schwab developer app with the paste-the-redirect OAuth flow, read balances and positions, and review the orders the bot stages after each morning run — which only you can submit, one at a time, each behind a confirmation. There is no auto-submit anywhere. Round 31 adds E*TRADE, Tradier and Alpaca, and is honest that several large brokers publish no retail API at all.</p></header>
 <div class="article">
 
 <div class="callout callout-rule"><strong>The policy, exactly as the code enforces it.</strong> The bot <em>stages</em>; you <em>submit</em>. A real-money order is never sent without an explicit click in the UI. Every Submit button sends exactly one order, behind a confirmation that restates it. There is no "submit all", no server-side loop over orders, no scheduled submission, and no setting that could turn one on. The one function that reaches Schwab's order endpoint, <code>orders.submit_order</code>, runs only when <code>POST /api/orders/{id}/submit</code> is called for the one id in the path.</div>
@@ -221,11 +221,57 @@
 
 <div class="callout callout-warn"><strong>This page moves real money when you press Submit.</strong> Everything else in Bablytics is research output; this is the one place where a click has consequences at a brokerage, which is why the click is singular, confirmed, and never taken for you. Nothing on this page — the bot's tickets, its sizing, its rationale — is a recommendation; see <a href="not-financial-advice.html">Not financial advice</a>.</div>
 
+<h2 id="other-brokerages">Other brokerages<a class="anchor" href="#other-brokerages" aria-label="Link to Other brokerages">#</a></h2>
+
+<p>The retail brokerage market is not uniform, and the Broker page says so rather than presenting a tidy row of equally hopeful Connect buttons. Every brokerage listed declares <strong>what kind of link it actually supports</strong>, and the page renders that declaration.</p>
+
+<dl class="spec">
+  <dt>API link</dt><dd>The broker publishes a retail API and this app speaks it. Positions and balances import; orders stay behind the same staging rule.</dd>
+  <dt>Local gateway</dt><dd>The API exists only through software running on <em>your</em> machine — Interactive Brokers' Client Portal Gateway. Supported in principle, but there is nothing to connect until you start the gateway yourself, so it is listed as planned rather than offered.</dd>
+  <dt>CSV import only</dt><dd>No retail API exists. You export from the broker's website and drop the file on the <a href="positions-and-trades.html">Positions</a> tab.</dd>
+</dl>
+
+<div class="table-wrap">
+<table class="data">
+  <thead><tr><th>Broker</th><th>Link</th><th>Auth</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Charles Schwab</strong></td><td>API</td><td>OAuth 2</td><td>Live — the only one with a staged order path exercised against a real account.</td></tr>
+    <tr><td><strong>E*TRADE</strong></td><td>API</td><td>OAuth 1.0a</td><td>Implemented, unverified.</td></tr>
+    <tr><td><strong>Tradier</strong></td><td>API</td><td>Bearer token</td><td>Implemented, unverified. Also a real-time quote source.</td></tr>
+    <tr><td><strong>Alpaca</strong></td><td>API</td><td>Key + secret</td><td>Implemented, unverified. Paper accounts are free.</td></tr>
+    <tr><td>Interactive Brokers</td><td>Local gateway</td><td>Gateway login</td><td>Planned.</td></tr>
+    <tr><td>Fidelity · Vanguard · Robinhood · Merrill Edge</td><td>CSV import</td><td>—</td><td><strong>No public retail API.</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout-warn"><strong>Why there is no "Connect Robinhood" button.</strong> Robinhood publishes no supported public API. The unofficial libraries that appear to offer one work by taking your account <em>password</em> and logging in as you — which breaks whenever the login flow changes, and which this app will not ask you for under any circumstances. Fidelity, Vanguard and Merrill Edge are the same story without the password problem: there simply is no retail API to call. For all four, exporting a CSV is not a lesser answer, it is the <em>only</em> answer, and the page says so instead of implying otherwise.</div>
+
+<h3 id="etrade">E*TRADE, and why it is the awkward one<a class="anchor" href="#etrade" aria-label="Link to E*TRADE, and why it is the awkward one">#</a></h3>
+
+<p>Schwab speaks OAuth 2: you get a bearer token and refresh it. <strong>E*TRADE speaks OAuth 1.0a</strong>, which is a different animal — every single request carries an HMAC-SHA1 signature computed over a normalised form of that request, there is no refresh token, the access token expires at the end of the calendar day, and it goes inactive after two hours idle.</p>
+
+<p>The flow the page walks you through: the app asks E*TRADE for a <em>request token</em>, opens E*TRADE in a new tab, you log in and accept, E*TRADE shows a <strong>short verification code</strong>, and you paste that code back. There is no redirect to catch, which is why it is two prompts rather than a callback.</p>
+
+<div class="callout callout-note"><strong>"Implemented, unverified" means exactly that.</strong> The adapter is written and the protocol is right — its parameter normalisation is checked against the worked example published in RFC 5849 itself, which is the only part of an E*TRADE link that can be proven without an E*TRADE account. But it has never been run against a live account, because that needs <em>your</em> consumer key. You will be the first to exercise it, which is why it defaults to the <strong>sandbox</strong>. The status chip says "implemented, unverified" rather than "live" until that changes.</div>
+
+<h3 id="tradier-realtime">Tradier earns its place twice<a class="anchor" href="#tradier-realtime" aria-label="Link to Tradier earns its place twice">#</a></h3>
+
+<p>Tradier is the simplest link of the set — a bearer token, no OAuth dance — but it matters more as a <em>data</em> source. It quotes stocks and OCC option contracts from the same endpoint and its production tier is genuinely real-time, which makes it the natural provider to put behind the <a href="charts-and-terminal.html#the-live-drip">charts' live drip</a> and the <a href="the-research-desk.html">research desk</a>. Set <code>BABLYTICS_QUOTE_PROVIDER=tradier</code> and the delayed default steps aside.</p>
+
+<p>It stays honest about itself: selected with no token, or on a <em>sandbox</em> token, the provider report says it is falling back to delayed data rather than claiming real-time. Alpaca does the same in its own way — its free tier is <strong>IEX only</strong>, a single venue rather than the consolidated tape, and its payloads say so.</p>
+
+<h3 id="your-own-keys">These are your keys, and they stay yours<a class="anchor" href="#your-own-keys" aria-label="Link to These are your keys, and they stay yours">#</a></h3>
+
+<p>Every API link uses <strong>your own</strong> developer credentials, typed by you and stored in the local settings table. Nothing secret is read back to the browser once stored — the page shows <code>set · …1234</code> and never the value. A provider can only write the setting keys it declares, so a malformed request cannot reach into another provider's credentials.</p>
+
+<div class="callout callout-rule"><strong>The staging rule is inherited, not re-litigated.</strong> None of the round-31 adapters has a <code>place_order</code> function at all. They read positions, balances and quotes. The single choke point that reaches a real brokerage's order endpoint remains <code>orders.submit_order</code>, one order per explicit click — and adding a new broker to that path is a separate, deliberate step, not something a link grants automatically.</div>
+
 </div>
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="positions-and-trades.html"><small>← Previous</small><b>Positions &amp; Trades</b></a><a class="next" rel="next" href="news-library-archive.html"><small>Next →</small><b>News · Library · Archive</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#before-you-start">Before you start: a Schwab developer app</a></li><li class="l2"><a href="#connecting">Connecting</a></li><li class="l2"><a href="#read-only-sync">Read-only sync</a></li><li class="l2"><a href="#the-staged-order-queue">The staged-order queue</a></li><li class="l3"><a href="#what-the-bot-stages">What the bot stages</a></li><li class="l3"><a href="#manual-tickets">Manual tickets</a></li><li class="l3"><a href="#editing-and-removing">Editing and removing</a></li><li class="l2"><a href="#submitting-an-order">Submitting an order</a></li><li class="l2"><a href="#sizing-settings">Sizing settings</a></li><li class="l2"><a href="#order-statuses">Order statuses</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#before-you-start">Before you start: a Schwab developer app</a></li><li class="l2"><a href="#connecting">Connecting</a></li><li class="l2"><a href="#read-only-sync">Read-only sync</a></li><li class="l2"><a href="#the-staged-order-queue">The staged-order queue</a></li><li class="l3"><a href="#what-the-bot-stages">What the bot stages</a></li><li class="l3"><a href="#manual-tickets">Manual tickets</a></li><li class="l3"><a href="#editing-and-removing">Editing and removing</a></li><li class="l2"><a href="#submitting-an-order">Submitting an order</a></li><li class="l2"><a href="#sizing-settings">Sizing settings</a></li><li class="l2"><a href="#order-statuses">Order statuses</a></li><li class="l2"><a href="#other-brokerages">Other brokerages</a></li><li class="l3"><a href="#etrade">E*TRADE, and why it is the awkward one</a></li><li class="l3"><a href="#tradier-realtime">Tradier earns its place twice</a></li><li class="l3"><a href="#your-own-keys">These are your keys, and they stay yours</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
