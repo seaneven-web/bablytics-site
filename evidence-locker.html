@@ -129,7 +129,7 @@
 
 <dl class="spec">
   <dt>Note</dt><dd>Free text, edited inline; it saves when the field loses focus. The note is always part of what the board sees, and for audio and images it is the whole of it.</dd>
-  <dt>Morning · Evening</dt><dd>Two toggles, both on by default. <em>Morning</em> puts the document in front of the thirteen graders and the Executive at the briefing; <em>Evening</em> puts it in front of all fifteen seats when the court sits. Turn one off to keep a document for the court only, or for the briefing only.</dd>
+  <dt>Morning · Evening</dt><dd>Two toggles, both on by default. <em>Morning</em> puts the document in front of the fourteen graders and the Executive at the briefing; <em>Evening</em> puts it in front of all sixteen seats when the court sits. Turn one off to keep a document for the court only, or for the briefing only.</dd>
   <dt>Expires</dt><dd>An optional date after which the document is ignored by both sessions without being deleted — for evidence that has a shelf life (a pre-earnings note, a calendar of the week). Blank means it stays in play until you remove it or switch it off.</dd>
   <dt>Download</dt><dd>Returns the stored file as an attachment — the same bytes you dropped.</dd>
   <dt>Remove</dt><dd>Asks you to confirm, then deletes the database row <em>and</em> the file from disk. There is no trash and no undo; the Download button is how you keep a copy first.</dd>
@@ -161,7 +161,7 @@ instructions to the board. … Images and audio carry only the owner's note — 
 
 <ul>
   <li><strong>Morning Briefing, AI mode</strong> — the block for <code>"morning"</code> is built once per run by <code>pipeline.py</code> and threaded into <code>board.py</code>, where it is appended as a section to <strong>every grader prompt</strong> and to the <strong>Executive's</strong> prompt.</li>
-  <li><strong>Evening Court, AI mode</strong> — <code>retrospective.py</code> appends the block for <code>"evening"</code> to the court prompts, so the fifteen self-reviews can cite what you put on file.</li>
+  <li><strong>Evening Court, AI mode</strong> — <code>retrospective.py</code> appends the block for <code>"evening"</code> to the court prompts, so the sixteen self-reviews can cite what you put on file.</li>
   <li><strong>Mock mode</strong> — the deterministic graders add nothing to their numbers (+0, no numeric effect), but the mock Executive memo carries one sentence, "Owner evidence on file: <em>n</em> documents (<em>names</em>)", so the dashboard shows the locker was considered even with no API key.</li>
   <li><strong>The owner's manual live sessions</strong> — the day-folder scripts (<code>collect_daily.py</code>, the evening collector) can call <code>evidence_manifest()</code> for a list of the documents and <code>evidence_for_packet()</code> for the block; the evening collector may add the manifest to <code>close_packet.json</code> under <code>user_evidence</code>. The module's docstring says how.</li>
 </ul>
