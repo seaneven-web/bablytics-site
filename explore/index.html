@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Bablytics — the public archive</title><style>
+:root{--ground:#f5e9cf;--panel:#fbf3e0;--panel2:#f0e2c2;--ink:#2a2013;--muted:#7a6a4f;
+--accent:#6f2130;--gold:#a97f1c;--good:#1e7a52;--bad:#a3372e;--line:#e0d0a8}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--ground:#0b0e14;--panel:#121722;
+--panel2:#171e2c;--ink:#dce4ee;--muted:#8a94a6;--accent:#3fb68b;--gold:#d9a53f;--good:#3fb68b;
+--bad:#e06c5f;--line:#232b3a}}
+*{box-sizing:border-box}html{background:var(--ground)}
+body{margin:0;background:var(--ground);color:var(--ink);
+ font:16px/1.62 Georgia,'Iowan Old Style',serif}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px 80px}
+.top{border-bottom:3px double var(--accent);margin:0 -24px 26px;padding:26px 24px 18px;
+ display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.brand{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:700;
+ letter-spacing:.2em;font-size:15px;color:var(--accent);text-decoration:none}
+.top nav{margin-left:auto;display:flex;gap:16px;font-family:-apple-system,sans-serif;font-size:13px}
+.top nav a{color:var(--muted);text-decoration:none}.top nav a:hover{color:var(--accent)}
+h1{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:800;
+ font-size:clamp(28px,5vw,44px);line-height:1.08;margin:14px 0 6px}
+.sub{color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+ font-family:ui-monospace,Menlo,monospace;margin-bottom:22px}
+.eyebrow{font-family:-apple-system,sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.22em;
+ text-transform:uppercase;color:var(--accent);margin:38px 0 12px;display:flex;align-items:center;gap:12px}
+.eyebrow::after{content:'';flex:1;border-top:1px solid var(--line)}
+.lede{max-width:74ch}
+.sessions{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.s-card{display:block;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);
+ padding:14px 16px;text-decoration:none;color:inherit}
+.s-card:hover{border-left-color:var(--accent)}
+.s-date{font-family:-apple-system,sans-serif;font-weight:800;font-size:18px}
+.s-kinds{color:var(--muted);font-size:12px;margin-top:4px;font-family:ui-monospace,Menlo,monospace}
+.s-head{font-style:italic;font-size:13.5px;margin-top:8px;color:var(--muted)}
+.doc{background:var(--panel);border:1px solid var(--line);padding:18px 20px;margin:0 0 16px}
+.doc h2{font-family:-apple-system,sans-serif;font-size:19px;margin:0 0 4px}
+.doc .when{color:var(--muted);font-size:12px;font-family:ui-monospace,Menlo,monospace;margin-bottom:12px}
+.doc p{max-width:74ch}
+.lead{background:var(--panel2);border:1px solid var(--line);padding:12px 14px;margin:0 0 10px}
+.lead-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.tick{font-family:-apple-system,sans-serif;font-weight:800;font-size:19px}
+.tag{font-family:-apple-system,sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.12em;
+ text-transform:uppercase;border:1px solid var(--line);padding:2px 6px;border-radius:3px;color:var(--muted)}
+.grade{margin-left:auto;font-family:-apple-system,sans-serif;font-weight:800;font-size:22px}
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:6px;margin:8px 0;
+ font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.levels div{background:var(--ground);padding:5px 8px}
+.levels b{display:block;font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:.1em;
+ text-transform:uppercase;color:var(--muted)}
+.kill{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--bad);margin:6px 0}
+ol.rules li{margin:0 0 8px;max-width:74ch}
+.note{background:var(--panel2);border-left:3px solid var(--gold);padding:12px 16px;margin:14px 0}
+.foot{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);
+ font-size:12px;max-width:80ch}
+.pill{display:inline-block;font-family:-apple-system,sans-serif;font-size:10px;font-weight:700;
+ letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;
+ padding:2px 8px;color:var(--muted)}
+</style></head><body><div class="wrap">
+<div class="top"><a class="brand" href="index.html">BABLYTICS</a>
+<span class="pill">The public archive</span>
+<nav><a href="index.html">Sessions</a><a href="https://bablytics.com/">The Guide</a></nav></div>
+<h1>The Boardroom, in public</h1><div class="sub">7 sessions · sixteen seats · real market data</div><p class="lede">Bablytics runs a sixteen-seat AI investment board every weekday: it builds a slate from real market data, has every seat grade it from its own philosophy, lets a Skeptic attack the result, and files the whole argument. This is the archive of what it actually produced — the books, the grades, the cross-examinations and the corrections, exactly as written on the day.</p><div class="note"><b>What is not here.</b><p>Positions, entries and results belonging to the person running this desk are removed before anything is published — by an allowlist that publishes only known board fields, a second pass that drops any single sentence mentioning them, and a scanner that fails the build if any of it survives anyway. You are reading what the board thought, not what anyone holds.</p></div><div class="eyebrow">Sessions</div><div class="sessions"><a class="s-card" href="2026-08-25.html"><div class="s-date">2026-08-25</div><div class="s-kinds">Close-out book</div><div class="s-head">The board built this book twice, and the second time it graded the desk&#x27;s own machinery as well as its leads: nothing clears sixty</div></a><a class="s-card" href="2026-08-24.html"><div class="s-date">2026-08-24</div><div class="s-kinds">Morning briefing · Midday check-in · Evening court</div><div class="s-head">Twenty leads, and the highest number on the sheet is fifty: the board looked at a risk-off Monday two sessions before NVIDIA print</div></a><a class="s-card" href="2026-08-21.html"><div class="s-date">2026-08-21</div><div class="s-kinds">Morning briefing · Evening court</div><div class="s-head">Two rulings fired Thursday and nothing closed, so a book that reads +0.55% would read +1.06% on the same tape - and the desk answe</div></a><a class="s-card" href="2026-08-20.html"><div class="s-date">2026-08-20</div><div class="s-kinds">Morning briefing · Evening court</div><div class="s-head">WMT beats, raises, and gaps -8.2%: the pre-committed branch flattens the long at the open with no chair in the loop, crude clears </div></a><a class="s-card" href="2026-08-19.html"><div class="s-date">2026-08-19</div><div class="s-kinds">Morning briefing · Evening court</div><div class="s-head">There is no CPI today - there never was: the book re-anchors to three hawkish dissents at 2:00, takes the LOW wound it wrote the r</div></a><a class="s-card" href="2026-08-18.html"><div class="s-date">2026-08-18</div><div class="s-kinds">Morning briefing · Evening court</div><div class="s-head">HD&#x27;s beat fires the read-through, RUN gets the OKTA cure, and a third straight VIX bid says today is for setting the book, not gro</div></a><a class="s-card" href="2026-08-17.html"><div class="s-date">2026-08-17</div><div class="s-kinds">Morning briefing</div><div class="s-head">Crude owns Monday, WDAY&#x27;s binary got cheaper, and a 5% VIX bid on a flat tape says Wednesday is already being priced.</div></a></div>
+<div class="foot">Research output from an AI boardroom, published as a record of what the system produced. Grades, levels and structures are model output, not recommendations, and none of it is financial advice. Options can expire worthless. Nothing in Bablytics places, stages or routes an order of any kind. Positions and results belonging to the person running this desk are NOT part of this archive and never appear in it.</div></div></body></html>
