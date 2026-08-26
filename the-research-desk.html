@@ -144,7 +144,7 @@
 <dl class="spec">
   <dt>Implied move</dt><dd>The at-the-money straddle priced off marks, as a dollar figure and as a percentage of spot, with the implied high and low it defines. This is <strong>the chain's own forecast for this expiry</strong> and it is the single most useful number on the page.</dd>
   <dt>Max pain</dt><dd>The strike at which the most option value expires worthless, computed across every strike's open interest — shown with its distance from spot.</dd>
-  <dt>ATM IV</dt><dd>The mean of the at-the-money call and put implied volatilities.</dd>
+  <dt>ATM IV</dt><dd>The mean of the at-the-money call and put implied volatilities — of the legs that actually have a quote. The feed marks a strike it has no two-sided market for with an implied volatility of <code>0.00001</code>, which is a no-quote marker and not a number; until round 41 that marker was averaged in as though it were an observation, which is why this cell once read <strong>0.4%</strong> for NVIDIA. Legs below a 2% floor are now dropped, and where neither leg has a real quote the cell reads <strong>&mdash;</strong>. A dash here is a finding: it means this expiry has no at-the-money market, and any number in its place would be invented.</dd>
   <dt>Put/call ratios</dt><dd>Separately for open interest and for volume — positioning against activity, which frequently disagree.</dd>
   <dt>The walls</dt><dd>The call strike and the put strike carrying the heaviest open interest on this expiry, with the size.</dd>
 </dl>
@@ -263,7 +263,7 @@
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-25 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-08-26 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
