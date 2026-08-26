@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap">
-<link rel="stylesheet" href="site.css?v=2.0.0-f82f8c7d26">
+<link rel="stylesheet" href="site.css?v=2.0.0-7fd57c8821">
 </head>
 <body class="layout-doc">
 <a class="skip" href="#main">Skip to content</a>
@@ -110,13 +110,13 @@
 </dl>
 
 <h2 id="what-each-seat-files">What each seat files<a class="anchor" href="#what-each-seat-files" aria-label="Link to What each seat files">#</a></h2>
-<p>Fourteen entries, one per committee member, each the same shape:</p>
+<p>Fifteen entries, one per committee member, each the same shape:</p>
 <ul>
   <li><strong>read</strong> — two or three sentences on the midday tape through that seat's lens, citing the actual numbers;</li>
   <li><strong>tilt</strong> — <span class="pill pill-amber">▲ risk up</span>, <span class="pill pill-red">▼ risk down</span> or <span class="pill">— unchanged</span>: how the seat is adjusting its risk appetite into the close;</li>
   <li><strong>actions</strong> — exactly one <code>hold</code> or <code>close</code> row, with a one-sentence reason, for every open position in that seat's own book; a seat with nothing open files an empty list.</li>
 </ul>
-<p>In AI mode each seat is one schema-constrained call carrying the common context, its own marked positions, its journal lessons and its Pyramid rank; an action naming a ticker the seat does not hold is dropped and a missing one defaults to hold. The Bot — the League's fifteenth book, which mechanically trades the Executive's signed slate — does not sit: its rules are fixed.</p>
+<p>In AI mode each seat is one schema-constrained call carrying the common context, its own marked positions, its journal lessons and its Pyramid rank; an action naming a ticker the seat does not hold is dropped and a missing one defaults to hold. The Bot — the League's sixteenth book, which mechanically trades the Executive's signed slate — does not sit: its rules are fixed.</p>
 
 <h3 id="the-tolerances">The tolerances<a class="anchor" href="#the-tolerances" aria-label="Link to The tolerances">#</a></h3>
 <p>Without an API key the actions come from deterministic rules keyed off <code>m</code>, the position's signed midday move in percentage points — and they double as the plainest statement of each seat's spirit. Every mock read still cites the real numbers.</p>
@@ -142,7 +142,7 @@
 <p>After the committee files, every <code>close</code> is executed on the paper ledger with <code>paper.midday_close(member, ticker, mark, reason)</code>: the position is closed at the midday mark with <code>kind="midday"</code> and the seat's reason recorded, and the member's equity row for the day is re-snapshotted from the ledger so the League reflects it at once. A position with no usable mark is left open and logged rather than closed blind. The applied list — member, ticker, exit price, reason — goes into the report as <code>closes_applied</code>; holds are recorded in the report only. Positions that survive ride to the 16:45 mark and, unless the <a href="the-bailiff.html">Bailiff</a> closes them in the record first, to the League's five-trading-day exit.</p>
 
 <h2 id="the-executives-synthesis">The Executive's synthesis<a class="anchor" href="#the-executives-synthesis" aria-label="Link to The Executive&#x27;s synthesis">#</a></h2>
-<p>The chair returns a one-line <strong>headline</strong>, a four-to-eight-sentence <strong>summary</strong> citing the tape, where the committee's tilts landed and which paper positions closed and why, and a <strong>board tilt</strong> — in mock mode the majority of the committee's tilts ("Midday check-in: 2 positions closed, board tilt risk down"). The persisted report is <code>{headline, summary, board_tilt, members[14], closes_applied, generated_at}</code>, one per review date; the manual button forces a replacement.</p>
+<p>The chair returns a one-line <strong>headline</strong>, a four-to-eight-sentence <strong>summary</strong> citing the tape, where the committee's tilts landed and which paper positions closed and why, and a <strong>board tilt</strong> — in mock mode the majority of the committee's tilts ("Midday check-in: 2 positions closed, board tilt risk down"). The persisted report is <code>{headline, summary, board_tilt, members[15], closes_applied, generated_at}</code>, one per review date; the manual button forces a replacement.</p>
 
 <h2 id="where-it-shows">Where it shows<a class="anchor" href="#where-it-shows" aria-label="Link to Where it shows">#</a></h2>
 <figure class="shot"><img src="assets/screens/preopen-midday.png" alt="The Midday check-in card on the morning dashboard: the board-tilt badge and headline, the summary, a Closes applied feed naming the member, ticker, price and reason, and the Member reads accordion" loading="lazy" width="1200" height="1524" decoding="async"><figcaption>The same midday card is mounted on the dashboard, the League page and the Reviews tab.</figcaption></figure>

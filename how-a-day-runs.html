@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap">
-<link rel="stylesheet" href="site.css?v=2.0.0-f82f8c7d26">
+<link rel="stylesheet" href="site.css?v=2.0.0-7fd57c8821">
 </head>
 <body class="layout-doc">
 <a class="skip" href="#main">Skip to content</a>
@@ -100,7 +100,7 @@
 <h2 id="the-rhythm-at-a-glance">The rhythm at a glance<a class="anchor" href="#the-rhythm-at-a-glance" aria-label="Link to The rhythm at a glance">#</a></h2>
 <p>Bablytics runs on a scheduler (APScheduler, all jobs in <code>America/New_York</code>). On a weekday the board meets four times — briefing, pre-open, midday, court — and two engines work the session in between: the Pulse every thirty minutes and the Bailiff every fifteen. Bookkeeping happens at 16:45. The weekend belongs to the horizon reviews. Every job below also has a button, so you never have to wait for the clock to see any of it.</p>
 <figure class="diagram">
-  <svg viewBox="0 0 960 340" role="img" aria-label="A Bablytics weekday in three lanes, 6:00 to 20:00 US Eastern. The board lane: 7:00 Morning Briefing with sixteen seats, 9:15 Pre-Open Check with fourteen panelists and the chair, 12:30 Midday Check-In with the same committee adjusting League books, 19:00 Evening Court with sixteen entries and the Pyramid. The engines lane: Pulse cycles every 30 minutes from 9:30 to 16:00, a Bailiff watch every 15 minutes, a 14:35 ratchet report and a 16:05 close sweep. The bookkeeping lane: outcomes recorded at the start of the morning run, then at 16:45 outcomes, Paper League mark-to-market and model training, and after the court the dossiers and the nightly generation. A weekend column: Saturday 8:00 Week in Review, Sunday 15:00 deep generation, Sunday 17:00 Week Ahead, and the month and year editions on period edges." xmlns="http://www.w3.org/2000/svg" fill="currentColor" font-size="11">
+  <svg viewBox="0 0 960 340" role="img" aria-label="A Bablytics weekday in three lanes, 6:00 to 20:00 US Eastern. The board lane: 7:00 Morning Briefing with sixteen seats, 9:15 Pre-Open Check with fifteen panelists and the chair, 12:30 Midday Check-In with the same committee adjusting League books, 19:00 Evening Court with sixteen entries and the Pyramid. The engines lane: Pulse cycles every 30 minutes from 9:30 to 16:00, a Bailiff watch every 15 minutes, a 14:35 ratchet report and a 16:05 close sweep. The bookkeeping lane: outcomes recorded at the start of the morning run, then at 16:45 outcomes, Paper League mark-to-market and model training, and after the court the dossiers and the nightly generation. A weekend column: Saturday 8:00 Week in Review, Sunday 15:00 deep generation, Sunday 17:00 Week Ahead, and the month and year editions on period edges." xmlns="http://www.w3.org/2000/svg" fill="currentColor" font-size="11">
     <rect x="304" y="34" width="312" height="272" fill="currentColor" fill-opacity=".06"/>
     <text x="460" y="28" text-anchor="middle" font-size="10" fill-opacity=".75">regular session 9:30–16:00</text>
     <g stroke="currentColor" stroke-opacity=".18">
@@ -126,7 +126,7 @@
       <text x="184" y="96" font-size="9.5" fill-opacity=".8">16 seats · Top 20</text>
       <text x="292" y="136" font-size="9.5" fill-opacity=".8">14 panelists + chair</text>
       <text x="448" y="96" font-size="9.5" fill-opacity=".8">14 + chair · League books</text>
-      <text x="760" y="96" font-size="9.5" fill-opacity=".8">15 entries · Pyramid</text>
+      <text x="760" y="96" font-size="9.5" fill-opacity=".8">16 entries · Pyramid</text>
       <text x="760" y="110" font-size="9.5" fill-opacity=".8">then trains (gated)</text>
     </g>
     <g fill="currentColor">
@@ -199,7 +199,7 @@
   <div class="tl-item">
     <time>16:45</time>
     <h3 id="tl-outcomes">Outcomes, League mark, model training<a class="anchor" href="#tl-outcomes" aria-label="Link to Outcomes, League mark, model training">#</a></h3>
-    <p>For every past lead whose 1- or 5-trading-day horizon has elapsed, the realized return is recorded (sign-flipped for shorts). The Paper League is marked to market — pending entries priced, five-day holds closed, every equity curve re-derived from the ledger. Then the outcome model retrains: a small scikit-learn network (<code>MLPRegressor(32, 16)</code>) that predicts the 5-day return from the thirteen member grades plus numeric features, once at least 25 leads have realized outcomes. Page: <a href="learning-loops.html">Learning Loops</a>.</p>
+    <p>For every past lead whose 1- or 5-trading-day horizon has elapsed, the realized return is recorded (sign-flipped for shorts). The Paper League is marked to market — pending entries priced, five-day holds closed, every equity curve re-derived from the ledger. Then the outcome model retrains: a small scikit-learn network (<code>MLPRegressor(32, 16)</code>) that predicts the 5-day return from the fourteen member grades plus numeric features, once at least 25 leads have realized outcomes. Page: <a href="learning-loops.html">Learning Loops</a>.</p>
   </div>
   <div class="tl-item">
     <time>19:00</time>
@@ -267,7 +267,7 @@
   <dt>What mock mode does</dt>
   <dd>Each persona grades from simple rules in its own spirit — Flow keys off volume-to-open-interest ratios, Dagger off RSI and momentum, Sam punishes counter-trend setups, the Skeptic inverts the room's mean, the Executive takes a weighted blend with the Pyramid leader's grades at 1.5× — with small per-ticker jitter so output looks alive. The output shape is identical to real mode. Court entries are deterministic but data-true, built from each member's best- and worst-aligned calls; Pulse rationales are templates that interpolate the real numbers. If even the market scan fails (fully offline), the scanner falls back to a synthetic candidate list so the pipeline still demonstrates end to end.</dd>
   <dt>What AI mode does</dt>
-  <dd>Each seat is a structured-output call to the Anthropic model named by <code>BABLYTICS_MODEL</code> (default <code>claude-opus-4-8</code>), seeded with the persona's system prompt, its five most recent journal lessons and its Pyramid rank. The morning board is fifteen calls (fourteen graders, the Skeptic, the Executive); the pre-open and midday are one call per panelist plus one for the Executive; the court is one call per seat; a Pulse cycle is one call for the rationale. Any failed call falls back to the mock text for that member, so a session always completes.</dd>
+  <dd>Each seat is a structured-output call to the Anthropic model named by <code>BABLYTICS_MODEL</code> (default <code>claude-opus-4-8</code>), seeded with the persona's system prompt, its five most recent journal lessons and its Pyramid rank. The morning board is sixteen calls (fourteen graders, the Skeptic, the Executive); the pre-open and midday are one call per panelist plus one for the Executive; the court is one call per seat; a Pulse cycle is one call for the rationale. Any failed call falls back to the mock text for that member, so a session always completes.</dd>
   <dt>How to switch</dt>
   <dd>Put <code>ANTHROPIC_API_KEY=…</code> in your <code>.env</code> and restart. From a checkout that is the repo-root <code>.env</code>; the desktop app reads a <code>.env</code> in its data folder (<code>~/Library/Application Support/Bablytics/.env</code> on macOS, <code>%APPDATA%\Bablytics\.env</code> on Windows, <code>~/.local/share/bablytics/.env</code> on Linux). The key is read once at start-up — there is no settings-table field for it — so a restart is required, and <code>BABLYTICS_MOCK=1</code> forces mock mode even with a key present. Details: <a href="download-and-install.html">Download &amp; Install</a>, <a href="run-from-source.html">Run from Source</a>.</dd>
 </dl>
@@ -283,7 +283,7 @@
   <dt>Boardroom</dt>
   <dd>The roster, the Pyramid with its crown, every seat's JOURNAL strip, and the “Run evening review” button. Each seat links to its member workspace and dossier.</dd>
   <dt>League</dt>
-  <dd>The fifteen paper books, sortable by window, with equity sparklines, the midday adjustments and the last-action feed.</dd>
+  <dd>The sixteen paper books, sortable by window, with equity sparklines, the midday adjustments and the last-action feed.</dd>
   <dt>Reviews</dt>
   <dd>The weekend, month and year reports — timeline, report view, run-now, encrypted PDF.</dd>
   <dt>Archive</dt>

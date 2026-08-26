@@ -234,6 +234,10 @@ table.data td.num, table.data th.num, td.num { text-align: right; font-family: v
 /* A signed number in a comparison table. Rides --green/--red, which both
    palettes already define, so no colour is hard-coded to one theme. */
 .pos { color: var(--green); }
+/* Used on de-emphasised text across the Guide and never actually defined,
+   so every 'muted' span has been rendering at full body contrast. */
+.muted { color: var(--muted); }
+
 .neg { color: var(--red); }
 
 ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 1.4em 0; }

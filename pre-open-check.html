@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap">
-<link rel="stylesheet" href="site.css?v=2.0.0-f82f8c7d26">
+<link rel="stylesheet" href="site.css?v=2.0.0-7fd57c8821">
 </head>
 <body class="layout-doc">
 <a class="skip" href="#main">Skip to content</a>
@@ -113,7 +113,7 @@
   <dt>Gap context (the Glazier)</dt><dd>Per lead: the gap from the prior close in % and in 14-day ATR multiples; where the print sits in the prior day's range (above the high, upper range, lower range, below the low); a taxonomy hint — common, breakaway candidate (an ATR or more out of a compressed five-day range), runaway candidate (continuing a three-day run of closes) — and a doctrine base-rate note from Bulkowski's fill statistics and Andrews' zone odds.</dd>
 </dl>
 
-<h2 id="the-panel">The panel: fourteen reads and a verdict<a class="anchor" href="#the-panel" aria-label="Link to The panel: fourteen reads and a verdict">#</a></h2>
+<h2 id="the-panel">The panel: fifteen reads and a verdict<a class="anchor" href="#the-panel" aria-label="Link to The panel: fifteen reads and a verdict">#</a></h2>
 <p>Since round 11 the whole grading committee sits — all fourteen graders plus the Skeptic, in speaking order — and each files one <strong>market read</strong> and one <strong>action per lead</strong>:</p>
 <div class="table-wrap"><table class="data">
 <thead><tr><th>Market read</th><th>Meaning</th><th>Per-lead action</th><th>Meaning</th></tr></thead>
@@ -122,7 +122,7 @@
 <tr><td><span class="pill pill-red">PUMP FAKE</span></td><td>yesterday's flow or move is not holding</td><td>EXIT · TRIM</td><td>out before the open, or cut the size</td></tr>
 <tr><td><span class="pill pill-amber">UNDECIDED</span></td><td>neither confirmation nor collapse</td><td>UPGRADE · WATCH</td><td>the case got stronger overnight; or nothing has broken yet</td></tr>
 </tbody></table></div>
-<p>Each seat gets the common context — the futures tape, the lead rows with their pre-market prints, the flagged headlines — and its own data slice: Flow and the Croupier get the OI audit; the Chartist gets the support, resistance, SMA and Fibonacci levels stored with the briefing; the Glazier gets the gap contexts; Sam, the Croupier, the Skeptic, the Watchdog and the Domestic Desk get the econ prints and the analyst tape; the Timekeeper gets the cycle picture. Every prompt also carries the seat's five latest journal lessons and its Pyramid rank line. In AI mode that is one JSON-schema call per seat, fourteen in all, and one more for the chair. The <strong>Executive</strong> then signs the final verdict, a three-to-six-sentence memo update that says what changed and what stands, and one <code>lead_updates</code> row per lead — an action and a note — which are the rows the dashboard turns into corner chips.</p>
+<p>Each seat gets the common context — the futures tape, the lead rows with their pre-market prints, the flagged headlines — and its own data slice: Flow and the Croupier get the OI audit; the Chartist gets the support, resistance, SMA and Fibonacci levels stored with the briefing; the Glazier gets the gap contexts; Sam, the Croupier, the Skeptic, the Watchdog and the Domestic Desk get the econ prints and the analyst tape; the Timekeeper gets the cycle picture. Every prompt also carries the seat's five latest journal lessons and its Pyramid rank line. In AI mode that is one JSON-schema call per seat, fifteen in all, and one more for the chair. The <strong>Executive</strong> then signs the final verdict, a three-to-six-sentence memo update that says what changed and what stands, and one <code>lead_updates</code> row per lead — an action and a note — which are the rows the dashboard turns into corner chips.</p>
 
 <h3 id="without-an-api-key">Without an API key<a class="anchor" href="#without-an-api-key" aria-label="Link to Without an API key">#</a></h3>
 <p>Mock mode is deterministic and data-true, and its rules are the clearest statement of what each seat watches before the bell:</p>
@@ -155,7 +155,7 @@
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="morning-briefing.html"><small>← Previous</small><b>Morning Briefing</b></a><a class="next" rel="next" href="midday-check-in.html"><small>Next →</small><b>Midday Check-In</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-check-is">What the check is</a></li><li class="l2"><a href="#the-overnight-packet">The overnight packet</a></li><li class="l2"><a href="#the-panel">The panel: fourteen reads and a verdict</a></li><li class="l3"><a href="#without-an-api-key">Without an API key</a></li><li class="l2"><a href="#where-it-shows">Where it shows</a></li><li class="l2"><a href="#guards-and-storage">Guards and storage</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-check-is">What the check is</a></li><li class="l2"><a href="#the-overnight-packet">The overnight packet</a></li><li class="l2"><a href="#the-panel">The panel: fifteen reads and a verdict</a></li><li class="l3"><a href="#without-an-api-key">Without an API key</a></li><li class="l2"><a href="#where-it-shows">Where it shows</a></li><li class="l2"><a href="#guards-and-storage">Guards and storage</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
