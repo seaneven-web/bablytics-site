@@ -22,6 +22,7 @@ evidence-locker.html
 mailing-list.html
 the-spotlight.html
 the-research-desk.html
+the-leads-desk.html
 download-and-install.html
 run-from-source.html
 data-and-privacy.html
