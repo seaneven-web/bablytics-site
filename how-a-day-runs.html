@@ -254,6 +254,8 @@
   <p>No job places, stages or submits an order except the morning run's staging step, and that step only fills a queue you review. Broker submission is one click per order behind a confirmation, and there is no setting that changes that. The Bailiff ships dry: until you set <code>bailiff_dry_run</code> to <code>0</code>, a scheduled pass changes nothing in the database.</p>
 </div>
 
+<div class="callout callout-note"><strong>See a real one.</strong> The output of these sessions is published in <a href="explore/index.html">the public archive</a> — every session the board has run, readable without an account.</div>
+
 <h2 id="mock-mode-vs-ai-mode">Mock mode versus AI mode<a class="anchor" href="#mock-mode-vs-ai-mode" aria-label="Link to Mock mode versus AI mode">#</a></h2>
 <p>The rule is one line in <code>config.py</code>: if <code>ANTHROPIC_API_KEY</code> is empty, or <code>BABLYTICS_MOCK=1</code> (legacy <code>STONKS_MOCK=1</code>), the app is in <strong>mock mode</strong>. Every session then runs end to end with deterministic heuristic board members instead of model calls — zero API cost, demoable offline — and the UI shows a <strong>mock mode</strong> pill so you always know which board you are talking to.</p>
 <figure class="shot">
