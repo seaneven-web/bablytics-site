@@ -124,6 +124,8 @@
   <dt>In the Guide</dt><dd>Every page of this guide already carries its build date in the footer; the guide's home page now says the same thing at the top — "This guide describes Bablytics as of <em>version</em> — built <em>date</em>" — so a printed page can be dated too.</dd>
 </dl>
 
+<div class="callout callout-note"><strong>Every grade carries one decimal.</strong> They used to round to whole numbers, which put a lead graded <strong>59.9</strong> on screen as a <strong>60</strong> — the exact line the <a href="the-spotlight.html">Spotlight</a> and <a href="the-fund.html">the Fund</a> both admit on. A card reading 60 with no badge looks like a broken badge rather than the near miss it actually is. Grades now print to one decimal <em>everywhere</em> — card, chip, board range and consensus rail — so what is shown and what the rules test are always the same number, and a grade within a point of the line carries a tooltip saying exactly that. Counts stay whole numbers.</div>
+
 <h2 id="anatomy-of-a-lead-card">Anatomy of a lead card<a class="anchor" href="#anatomy-of-a-lead-card" aria-label="Link to Anatomy of a lead card">#</a></h2>
 
 <p>Each lead in the morning book is one card. Reading top to bottom, a card carries exactly these parts (from <code>leadCardHTML</code> in <code>web/app.js</code>):</p>
@@ -215,6 +217,8 @@
 </figure>
 
 <p>The jump is a real anchor (<code>#lead-&lt;id&gt;-member-&lt;key&gt;</code>) so it works from the keyboard and for screen readers; the highlight honours <code>prefers-reduced-motion</code>.</p>
+
+<div class="callout callout-note"><strong>The expanded lead scrolls itself.</strong> A lead overlay routinely runs past 3,000 pixels, and the panel used to have no height limit at all — it grew to full size and relied on the <em>container</em> around it scrolling. That works in Chrome and is fragile everywhere else: with the page body locked at <code>overflow:hidden</code> and the container fixed, several WebKit builds swallow a wheel that lands on the panel rather than on the container's own padding, which reads as "the cards do not scroll". The panel is now its own scroller with a viewport-relative max height — the ordinary modal pattern, and it works with the pointer anywhere inside it. <code>overscroll-behavior: contain</code> stops a scroll running off the end and dragging the locked page behind it, and the close button became <em>sticky</em> rather than absolute, because an X positioned absolutely inside a scrolling panel scrolls away and leaves a long overlay with no visible way out.</div>
 
 <h2 id="morning-and-evening">Morning briefing | Evening court<a class="anchor" href="#morning-and-evening" aria-label="Link to Morning briefing | Evening court">#</a></h2>
 
