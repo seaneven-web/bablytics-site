@@ -27,6 +27,7 @@ run-from-source.html
 data-and-privacy.html
 faq-and-glossary.html
 not-financial-advice.html
+the-public-archive.html
 subscribe.html
 unsubscribe.html
 bablytics-guide.html
