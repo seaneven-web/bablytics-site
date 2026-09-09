@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Paper League · Bablytics Guide</title>
-<meta name="description" content="Sixteen autonomous $100,000 paper books — the fourteen graders, the Skeptic and The Bot — filled at the open, held five trading days, marked at 16:45 and ranked on a live leaderboard with sparklines. Paper only, by construction.">
+<meta name="description" content="Sixteen autonomous $100,000 paper books — the fourteen graders, the Skeptic and The Bot — filled at the open, held five trading days, marked at 18:00 and ranked on a live leaderboard with sparklines. Paper only, by construction.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -95,7 +95,7 @@
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-paper-league" data-slug="paper-league" data-title="The Paper League">
-<header class="page-head"><p class="eyebrow">Engine · paper only</p><h1>The Paper League</h1><p class="summary">Sixteen autonomous $100,000 paper books — the fourteen graders, the Skeptic and The Bot — filled at the open, held five trading days, marked at 16:45 and ranked on a live leaderboard with sparklines. Paper only, by construction.</p></header>
+<header class="page-head"><p class="eyebrow">Engine · paper only</p><h1>The Paper League</h1><p class="summary">Sixteen autonomous $100,000 paper books — the fourteen graders, the Skeptic and The Bot — filled at the open, held five trading days, marked at 18:00 and ranked on a live leaderboard with sparklines. Paper only, by construction.</p></header>
 <div class="article">
 
 <h2 id="what-the-league-is">What the League is<a class="anchor" href="#what-the-league-is" aria-label="Link to What the League is">#</a></h2>
@@ -131,7 +131,7 @@
 
 <h3 id="marking-and-closing">Marking and closing<a class="anchor" href="#marking-and-closing" aria-label="Link to Marking and closing">#</a></h3>
 
-<p><code>mark_to_market</code> runs from the 16:45 outcomes job, right after realized outcomes are recorded, and on demand. For each member, in order: price any pending entries whose open bar now exists; close any priced position held for <strong>five trading days</strong> — the exit bar is the entry bar's index plus five in the ticker's own daily series, closed at that bar's close once its date has arrived (a missing bar falls back to the last known close); then recompute the member's equity <em>from scratch</em> off the whole position ledger and upsert one snapshot for the day (<code>paper_equity</code> is unique per member and date, so re-marking a day is idempotent and never drifts). Weekends and holidays fall out naturally because prices come from daily bars.</p>
+<p><code>mark_to_market</code> runs from the 18:00 outcomes job, right after realized outcomes are recorded, and on demand. For each member, in order: price any pending entries whose open bar now exists; close any priced position held for <strong>five trading days</strong> — the exit bar is the entry bar's index plus five in the ticker's own daily series, closed at that bar's close once its date has arrived (a missing bar falls back to the last known close); then recompute the member's equity <em>from scratch</em> off the whole position ledger and upsert one snapshot for the day (<code>paper_equity</code> is unique per member and date, so re-marking a day is idempotent and never drifts). Weekends and holidays fall out naturally because prices come from daily bars.</p>
 
 <div class="callout callout-note"><strong>The cash arithmetic, including shorts.</strong> Starting from cash = start equity: a long open spends cash (qty × entry); a short open credits the proceeds. On close a long sale credits cash; a short cover spends it. Anything still open is marked at the current price — a long as an asset, a short as a liability to buy back. Equity = cash + open value. Worked in the module: long 10 shares @ 100 → mark 110 → close 120 gives 100,000 → 100,100 → 100,200; short 10 @ 100 → 90 → cover 80 gives the same +200. Both round trips are commented in the code so the accounting can be checked by hand.</div>
 
@@ -154,7 +154,7 @@
   <li class="tl-item"><time>~7:00 ET</time><h3 id="tl-open">Books open<a class="anchor" href="#tl-open" aria-label="Link to Books open">#</a></h3><p>The morning run finishes; every seat's picks are written. Because the open has not printed yet, they sit pending until the first mark.</p></li>
   <li class="tl-item"><time>12:30 ET</time><h3 id="tl-midday">Midday Check-In<a class="anchor" href="#tl-midday" aria-label="Link to Midday Check-In">#</a></h3><p>All fourteen graders and the Skeptic read <em>their own</em> open paper positions marked at midday and file one hold-or-close per position. Closes are applied immediately with the member's reason; the League page shows them in a <strong>Midday adjustments</strong> card (headline, board tilt, the closes-applied feed, per-member reads). The Bot does not attend — it follows the Executive's book mechanically.</p></li>
   <li class="tl-item"><time>during the session</time><h3 id="tl-bailiff">The Bailiff (if enforcing)<a class="anchor" href="#tl-bailiff" aria-label="Link to The Bailiff (if enforcing)">#</a></h3><p>A fired ruling closes every member's leg in that ticker for the run, tagged <code>bailiff</code>. Off by default; see <a href="the-bailiff.html#dry-run-versus-enforce">dry run versus enforce</a>.</p></li>
-  <li class="tl-item"><time>16:45 ET</time><h3 id="tl-mark">Mark to market<a class="anchor" href="#tl-mark" aria-label="Link to Mark to market">#</a></h3><p>Pending entries are priced at the open, five-day holds are closed at the close, and every seat's equity snapshot for the day is recomputed from the ledger.</p></li>
+  <li class="tl-item"><time>18:00 ET</time><h3 id="tl-mark">Mark to market<a class="anchor" href="#tl-mark" aria-label="Link to Mark to market">#</a></h3><p>Pending entries are priced at the open, five-day holds are closed at the close, and every seat's equity snapshot for the day is recomputed from the ledger.</p></li>
 </ul>
 
 <h2 id="windows-and-the-table">Windows, win rate and the table<a class="anchor" href="#windows-and-the-table" aria-label="Link to Windows, win rate and the table">#</a></h2>
@@ -222,7 +222,7 @@
     <tr><td>Sizing</td><td>a house constant: 10 % of the seat's equity per leg</td><td>a <strong>model</strong>: a transformer's allocation 0–1 of the portfolio, split into per-lot weights</td></tr>
     <tr><td>Exits</td><td>a flat five-trading-day hold, plus a midday close by the seat and a Bailiff kill</td><td>the lead's <strong>real stop and target</strong>, its stated <strong>horizon</strong> (plus 25 % slack), the Bailiff kill, grade decay below 50, and option expiry — all on a close</td></tr>
     <tr><td>Options</td><td>traded as the underlying; the League does not price contracts</td><td>filled at the contract's mark when the chain gives one, else the underlying with a <code>proxy_underlying</code> flag on the lot</td></tr>
-    <tr><td>Rebalancing</td><td>none — a position is opened and then left alone</td><td>a daily reweight at 17:10 ET, idempotent per date</td></tr>
+    <tr><td>Rebalancing</td><td>none — a position is opened and then left alone</td><td>a daily reweight at 18:20 ET, idempotent per date</td></tr>
     <tr><td>Tax</td><td>not modelled</td><td>a <strong>tax lens</strong>: lot terms, estimated tax on every proposed trim, an after-tax hysteresis that can veto the model, and a wash-sale flag — <em>estimates, not tax advice</em></td></tr>
     <tr><td>The question</td><td>whose philosophy was right</td><td>whether the room's ≥ 60 book, held on its own written terms, was worth holding</td></tr>
   </tbody>

@@ -98,9 +98,9 @@
 <header class="page-head"><p class="eyebrow">Start · The rhythm</p><h1>How a Day Runs</h1><p class="summary">The weekday rhythm from 7:00 to 19:00 ET, the weekend horizons, what runs on its own versus on request, mock mode versus AI mode, and where each session shows up in the app.</p></header>
 <div class="article">
 <h2 id="the-rhythm-at-a-glance">The rhythm at a glance<a class="anchor" href="#the-rhythm-at-a-glance" aria-label="Link to The rhythm at a glance">#</a></h2>
-<p>Bablytics runs on a scheduler (APScheduler, all jobs in <code>America/New_York</code>). On a weekday the board meets four times — briefing, pre-open, midday, court — and two engines work the session in between: the Pulse every thirty minutes and the Bailiff every fifteen. Bookkeeping happens at 16:45. The weekend belongs to the horizon reviews. Every job below also has a button, so you never have to wait for the clock to see any of it.</p>
+<p>Bablytics runs on a scheduler (APScheduler, all jobs in <code>America/New_York</code>). On a weekday the board meets four times — briefing, pre-open, midday, court — and two engines work the session in between: the Pulse every thirty minutes and the Bailiff every fifteen. Bookkeeping happens at 18:00, once the day's bars have settled. The weekend belongs to the horizon reviews. Every job below also has a button, so you never have to wait for the clock to see any of it.</p>
 <figure class="diagram">
-  <svg viewBox="0 0 960 340" role="img" aria-label="A Bablytics weekday in three lanes, 6:00 to 20:00 US Eastern. The board lane: 7:00 Morning Briefing with sixteen seats, 9:15 Pre-Open Check with fifteen panelists and the chair, 12:30 Midday Check-In with the same committee adjusting League books, 19:00 Evening Court with sixteen entries and the Pyramid. The engines lane: Pulse cycles every 30 minutes from 9:30 to 16:00, a Bailiff watch every 15 minutes, a 14:35 ratchet report and a 16:05 close sweep. The bookkeeping lane: outcomes recorded at the start of the morning run, then at 16:45 outcomes, Paper League mark-to-market and model training, and after the court the dossiers and the nightly generation. A weekend column: Saturday 8:00 Week in Review, Sunday 15:00 deep generation, Sunday 17:00 Week Ahead, and the month and year editions on period edges." xmlns="http://www.w3.org/2000/svg" fill="currentColor" font-size="11">
+  <svg viewBox="0 0 960 340" role="img" aria-label="A Bablytics weekday in three lanes, 6:00 to 20:00 US Eastern. The board lane: 7:00 Morning Briefing with sixteen seats, 9:15 Pre-Open Check with fifteen panelists and the chair, 12:30 Midday Check-In with the same committee adjusting League books, 19:00 Evening Court with sixteen entries and the Pyramid. The engines lane: Pulse cycles every 30 minutes from 9:30 to 16:00, a Bailiff watch every 15 minutes, a 14:35 ratchet report and a 16:05 close sweep. The bookkeeping lane: outcomes recorded at the start of the morning run, then at 18:00 outcomes, Paper League mark-to-market and model training, and after the court the dossiers and the nightly generation. A weekend column: Saturday 8:00 Week in Review, Sunday 15:00 deep generation, Sunday 17:00 Week Ahead, and the month and year editions on period edges." xmlns="http://www.w3.org/2000/svg" fill="currentColor" font-size="11">
     <rect x="304" y="34" width="312" height="272" fill="currentColor" fill-opacity=".06"/>
     <text x="460" y="28" text-anchor="middle" font-size="10" fill-opacity=".75">regular session 9:30–16:00</text>
     <g stroke="currentColor" stroke-opacity=".18">
@@ -145,11 +145,11 @@
       <text x="640" y="236" font-size="9.5" fill-opacity=".85">16:05 close sweep</text>
     </g>
     <g fill="currentColor">
-      <circle cx="184" cy="266" r="5"/><circle cx="652" cy="266" r="6"/><circle cx="770" cy="266" r="5"/>
+      <circle cx="184" cy="266" r="5"/><circle cx="712" cy="266" r="6"/><circle cx="770" cy="266" r="5"/>
     </g>
     <g text-anchor="middle">
       <text x="184" y="250" font-size="10">before the briefing:</text><text x="184" y="286" font-size="10">outcomes + retrain</text>
-      <text x="652" y="250" font-weight="700">16:45</text><text x="652" y="286" font-size="10">outcomes → League mark</text><text x="652" y="300" font-size="10">→ model train</text>
+      <text x="712" y="250" font-weight="700">18:00</text><text x="704" y="286" font-size="10" text-anchor="end">outcomes → League mark</text><text x="704" y="300" font-size="10" text-anchor="end">→ model train</text>
       <text x="770" y="286" font-size="10">after court:</text><text x="770" y="300" font-size="10">dossiers, generation</text>
     </g>
     <rect x="828" y="34" width="120" height="272" rx="8" fill="currentColor" fill-opacity=".05" stroke="currentColor" stroke-opacity=".4"/>
@@ -158,7 +158,7 @@
       <text x="888" y="84" font-weight="700" font-size="10">Sat 8:00</text><text x="888" y="97" font-size="10">Week in Review</text>
       <text x="888" y="124" font-weight="700" font-size="10">Sun 15:00</text><text x="888" y="137" font-size="10">deep generation</text>
       <text x="888" y="164" font-weight="700" font-size="10">Sun 17:00</text><text x="888" y="177" font-size="10">Week Ahead</text>
-      <text x="888" y="210" font-weight="700" font-size="10">Month / year</text><text x="888" y="223" font-size="10">18:00 last day</text><text x="888" y="236" font-size="10">review</text><text x="888" y="256" font-size="10">7:30 first day</text><text x="888" y="269" font-size="10">prospectus</text>
+      <text x="888" y="210" font-weight="700" font-size="10">Month / year</text><text x="888" y="223" font-size="10">18:40 last day</text><text x="888" y="236" font-size="10">review</text><text x="888" y="256" font-size="10">7:30 first day</text><text x="888" y="269" font-size="10">prospectus</text>
     </g>
   </svg>
   <figcaption>Three lanes of a weekday (ET) plus the weekend column. Circles are sessions; dots and ticks are the Pulse and Bailiff cadence inside the regular session; diamonds are the Bailiff's two reporting jobs. Hour lines every hour.</figcaption>
@@ -197,9 +197,9 @@
     <p>With the closes printed, the Bailiff runs its close-basis pass: this is where “closes below” rulings can fire. In the default dry-run mode it looks and reports; with <code>bailiff_dry_run</code> set to <code>0</code> it closes the leg in the record — the board's book and the Paper League — and writes the event.</p>
   </div>
   <div class="tl-item">
-    <time>16:45</time>
+    <time>18:00</time>
     <h3 id="tl-outcomes">Outcomes, League mark, model training<a class="anchor" href="#tl-outcomes" aria-label="Link to Outcomes, League mark, model training">#</a></h3>
-    <p>For every past lead whose 1- or 5-trading-day horizon has elapsed, the realized return is recorded (sign-flipped for shorts). The Paper League is marked to market — pending entries priced, five-day holds closed, every equity curve re-derived from the ledger. Then the outcome model retrains: a small scikit-learn network (<code>MLPRegressor(32, 16)</code>) that predicts the 5-day return from the fourteen member grades plus numeric features, once at least 25 leads have realized outcomes. Page: <a href="learning-loops.html">Learning Loops</a>.</p>
+    <p>For every past lead whose 1- or 5-trading-day horizon has elapsed, the realized return is recorded (sign-flipped for shorts). The job sits well after the bell on purpose: daily bars keep moving for a while after the close, and a label written at 4:45 could differ from the same label read back that evening — so nothing is recorded, marked or trained until the bar has settled. The Paper League is marked to market — pending entries priced, five-day holds closed, every equity curve re-derived from the ledger. Then the outcome model retrains: a small scikit-learn network (<code>MLPRegressor(32, 16)</code>) that predicts the 5-day return from the fourteen member grades plus numeric features, once at least 25 leads have realized outcomes. Page: <a href="learning-loops.html">Learning Loops</a>.</p>
   </div>
   <div class="tl-item">
     <time>19:00</time>
@@ -219,7 +219,7 @@
   <li><strong>Saturday 8:00 — the Week in Review</strong> (backward): lead performance over the just-ended Monday–Sunday week with realized outcomes, windowed per-member accuracy, Pyramid movement, Paper League equity deltas, the econ tape, and your own scorecard built from taken trades and reflections.</li>
   <li><strong>Sunday 15:00 — the weekly deep generation</strong>: the same score → train → breed → select cycle as the nightly court generation, with a deeper budget (5 min per member, 30 min total), behind the same held-out gate and the same <code>rl_evolve_enabled</code> switch. It is not a retrain from scratch — that is <code>train.py</code>'s job, run by hand.</li>
   <li><strong>Sunday 17:00 — the Week Ahead</strong> (forward): a prospectus from the current market context, cycle read, the upcoming econ calendar, the carried book and open paper positions, sector posture and the Pyramid leader's read.</li>
-  <li><strong>Month and year editions</strong> ride two daily guard jobs: 18:00 runs the month in review on the last calendar day of a month (the year in review on December 31), and 7:30 runs the month-ahead prospectus on the first (the year-ahead on January 1). On every other day the guards pass silently.</li>
+  <li><strong>Month and year editions</strong> ride two daily guard jobs: 18:40 runs the month in review on the last calendar day of a month (the year in review on December 31), and 7:30 runs the month-ahead prospectus on the first (the year-ahead on January 1). On every other day the guards pass silently.</li>
 </ul>
 <p>The panel rotates by horizon — week: Executive, Croupier, Timekeeper, Skeptic and the current Pyramid leader; month and year: Executive, Croupier, Timekeeper, Oracle, Graham, Black Swan. Reports land on the <strong>Reviews</strong> tab with run-now buttons and encrypted PDF export; a fresh weekend report also gets a dashboard strip. Page: <a href="reviews-and-horizons.html">Reviews &amp; Horizons</a>.</p>
 <figure class="shot">
@@ -240,12 +240,12 @@
     <tr><td>Midday Check-In</td><td><span class="num">12:30</span></td><td><code>midday_hour</code> / <code>midday_minute</code></td><td>“Run midday check-in” on the midday card</td><td>Midday card (morning dashboard), League last-action feed, Archive</td></tr>
     <tr><td>Bailiff ratchet check</td><td><span class="num">14:35</span></td><td><code>bailiff_ratchet_hour</code> / <code>_minute</code></td><td>—</td><td>Log; docket line only when enforcing</td></tr>
     <tr><td>Bailiff close sweep</td><td><span class="num">16:05</span></td><td><code>bailiff_sweep_hour</code> / <code>_minute</code></td><td>—</td><td>Bailiff card, Archive dockets</td></tr>
-    <tr><td>Outcomes → League mark → model training</td><td><span class="num">16:45</span> (fixed)</td><td>—</td><td>Outcomes are also recorded at the start of each morning run and by the court</td><td>League tab, member calibration, Archive 1d/5d columns</td></tr>
+    <tr><td>Outcomes → League mark → model training</td><td><span class="num">18:00</span> (fixed)</td><td>—</td><td>Outcomes are also recorded at the start of each morning run and by the court</td><td>League tab, member calibration, Archive 1d/5d columns</td></tr>
     <tr><td>Evening Court (+ nightly generation)</td><td><span class="num">19:00</span></td><td><code>review_hour</code> / <code>review_minute</code>; <code>rl_evolve_enabled</code> gates the training half</td><td>“Run evening review” on the Boardroom page or the evening dashboard</td><td>Dashboard (evening view), Boardroom journals and Pyramid, PDF, dossiers, Archive</td></tr>
     <tr><td>Week in Review</td><td>Sat <span class="num">8:00</span></td><td><code>week_review_hour</code> / <code>_minute</code></td><td>Reviews tab</td><td>Reviews tab, dashboard strip, MY TRADES scorecard</td></tr>
     <tr><td>Weekly deep generation</td><td>Sun <span class="num">15:00</span></td><td><code>rl_weekly_hour</code> / <code>_minute</code>, <code>rl_evolve_enabled</code></td><td>—</td><td>Model card on the Pulse tab</td></tr>
     <tr><td>Week Ahead</td><td>Sun <span class="num">17:00</span></td><td><code>week_prospectus_hour</code> / <code>_minute</code></td><td>Reviews tab</td><td>Reviews tab, dashboard strip</td></tr>
-    <tr><td>Month / year review</td><td>daily guard <span class="num">18:00</span>, acts on the period's last day</td><td><code>period_backward_hour</code> / <code>_minute</code></td><td>Reviews tab</td><td>Reviews tab</td></tr>
+    <tr><td>Month / year review</td><td>daily guard <span class="num">18:40</span>, acts on the period's last day</td><td><code>period_backward_hour</code> / <code>_minute</code></td><td>Reviews tab</td><td>Reviews tab</td></tr>
     <tr><td>Month / year prospectus</td><td>daily guard <span class="num">7:30</span>, acts on the period's first day</td><td><code>period_forward_hour</code> / <code>_minute</code></td><td>Reviews tab</td><td>Reviews tab</td></tr>
   </tbody>
 </table>

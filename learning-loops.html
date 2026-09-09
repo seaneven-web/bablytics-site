@@ -100,12 +100,12 @@
 
 <h2 id="five-loops-one-day">Five loops, one day<a class="anchor" href="#five-loops-one-day" aria-label="Link to Five loops, one day">#</a></h2>
 
-<p>Bablytics learns in five places, and they close at different speeds. Two are in words and three are in numbers. All five are fed by the same two facts the day produces: the grades the board wrote in the morning, and what the tape did afterwards — the 16:45 realized outcomes and the close the Evening Court scores against.</p>
+<p>Bablytics learns in five places, and they close at different speeds. Two are in words and three are in numbers. All five are fed by the same two facts the day produces: the grades the board wrote in the morning, and what the tape did afterwards — the 18:00 realized outcomes and the close the Evening Court scores against.</p>
 
 <p>The first four are drawn below. The fifth — the <a href="the-fund.html#the-allocation-model">Fund's allocation transformer</a>, added in round 27 — hangs off the same court night and is described in <a href="#loop-5-the-fund">its own section</a>; its diagram is the <a href="the-fund.html#the-daily-cycle">Fund's daily cycle</a>, because what it learns is a portfolio decision, not a grade.</p>
 
 <figure class="diagram">
-<svg width="100%" viewBox="0 0 960 560" role="img" aria-label="The four learning loops around one trading day: the morning briefing's grades and the 16:45 realized outcomes feed the Evening Court; the court writes journals, which feed loop one (each seat's last five lessons into the next morning's prompt) and loop two (the per-member dossier files); outcomes plus grades train loop three (the sklearn outcome MLP, whose predictions and calibration reach the Executive's prompt); the court's last step runs loop four (one generation of the RL population, gated by a frozen held-out split), which the Pulse reads the next session" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13">
+<svg width="100%" viewBox="0 0 960 560" role="img" aria-label="The four learning loops around one trading day: the morning briefing's grades and the 18:00 realized outcomes feed the Evening Court; the court writes journals, which feed loop one (each seat's last five lessons into the next morning's prompt) and loop two (the per-member dossier files); outcomes plus grades train loop three (the sklearn outcome MLP, whose predictions and calibration reach the Executive's prompt); the court's last step runs loop four (one generation of the RL population — every retrain gated against the member's own before-reading, the child gated by a frozen held-out split), which the Pulse reads the next session" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13">
   <defs>
     <marker id="loops-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker>
   </defs>
@@ -117,7 +117,7 @@
   <path d="M230,62 L370,62" marker-end="url(#loops-arrow)"/>
   <text x="300" y="54" text-anchor="middle" fill="currentColor" stroke="none" font-size="11">grades · leads</text>
   <rect x="370" y="30" width="200" height="64" rx="8" stroke-width="2"/>
-  <text x="470" y="56" text-anchor="middle" fill="currentColor" stroke="none" font-weight="600">16:45 Outcomes</text>
+  <text x="470" y="56" text-anchor="middle" fill="currentColor" stroke="none" font-weight="600">18:00 Outcomes</text>
   <text x="470" y="76" text-anchor="middle" fill="currentColor" stroke="none" font-size="12">realized 1-day / 5-day returns</text>
 
   <path d="M570,62 L710,62" marker-end="url(#loops-arrow)"/>
@@ -161,7 +161,7 @@
   <text x="953" y="150" fill="currentColor" stroke="none" font-size="11" transform="rotate(90 953 150)">last step of the court</text>
   <rect x="470" y="400" width="410" height="110" rx="8"/>
   <text x="675" y="424" text-anchor="middle" fill="currentColor" stroke="none" font-weight="600">④ RL population — one generation</text>
-  <text x="675" y="444" text-anchor="middle" fill="currentColor" stroke="none" font-size="12">score 5 members → train all → breed 1 child from the elite</text>
+  <text x="675" y="444" text-anchor="middle" fill="currentColor" stroke="none" font-size="12">score 5 → train all, revert bad retrains → breed 1 child</text>
   <text x="675" y="462" text-anchor="middle" fill="currentColor" stroke="none" font-size="12">→ admit only if it beats the worst on the frozen held-out split</text>
   <text x="675" y="480" text-anchor="middle" fill="currentColor" stroke="none" font-size="12">→ record the generation, changed or not</text>
   <text x="675" y="500" text-anchor="middle" fill="currentColor" stroke="none" font-size="11" font-style="italic">gated by rl_evolve_enabled · a failure never breaks the court</text>
@@ -189,7 +189,7 @@
 
 <h2 id="loop-3-outcome-mlp">Loop 3 — the outcome model the Executive reads<a class="anchor" href="#loop-3-outcome-mlp" aria-label="Link to Loop 3 — the outcome model the Executive reads">#</a></h2>
 
-<p>The oldest loop is numeric. A small sklearn network — <code>MLPRegressor(hidden_layer_sizes=(32, 16))</code> in a pipeline behind a <code>StandardScaler</code> — learns to predict a lead's <strong>5-day realized return</strong> from a 25-number vector: the fourteen members' grades in roster order (a missing grade is 50, a neutral read) followed by eleven numeric features from the scan and the technicals (options score, volume ratio, volume-to-OI, call/put ratio, 1-day and 5-day change, RSI-14, distance to support and resistance, above the 50- and 200-day). It trains once at least 25 rows have a 5-day outcome; with 40 or more it reports 80/20 hold-out MAE and R² and then refits on everything, and below that it says plainly that the metrics are in-sample. It is retrained at 16:45 after outcomes are recorded and again at the top of every morning run.</p>
+<p>The oldest loop is numeric. A small sklearn network — <code>MLPRegressor(hidden_layer_sizes=(32, 16))</code> in a pipeline behind a <code>StandardScaler</code> — learns to predict a lead's <strong>5-day realized return</strong> from a 25-number vector: the fourteen members' grades in roster order (a missing grade is 50, a neutral read) followed by eleven numeric features from the scan and the technicals (options score, volume ratio, volume-to-OI, call/put ratio, 1-day and 5-day change, RSI-14, distance to support and resistance, above the 50- and 200-day). It trains once at least 25 rows have a 5-day outcome; with 40 or more it reports 80/20 hold-out MAE and R² and then refits on everything, and below that it says plainly that the metrics are in-sample. It is retrained at 18:00 after outcomes are recorded and again at the top of every morning run.</p>
 
 <p>Its output reaches the room in two ways. The pipeline calls <code>predict_many</code> on each morning's candidates <em>before</em> the board has graded, so the grade slots are all 50 and the prediction rides on the numeric features alone; the Executive's prompt then carries the predicted return per candidate <strong>and</strong> per-member calibration — sample size, hit rate, grade-to-return correlation — so consistently wrong seats are discounted and consistently right ones weighted up. Calibration is also shown on the Boardroom and member pages.</p>
 
@@ -212,7 +212,7 @@
 
 <h2 id="loop-4-the-population">Loop 4 — the RL population<a class="anchor" href="#loop-4-the-population" aria-label="Link to Loop 4 — the RL population">#</a></h2>
 
-<p>The fourth loop is the Pulse's five actor-critic models, and it is the only one that breeds: it retires and replaces members rather than just refitting one. The court's last act, after journals and dossiers, is one <strong>generation</strong>: score every member, train every member on the day's fresh episodes, breed one mutated child from the elite, and admit the child only if its fitness on a frozen held-out split beats the worst member's — the elite is never replaced, the population never shrinks, and a generation that changes nothing is recorded with the same fields as one that does. The first generation (2026-08-21) refused its child and left m1–m5 standing. The full mechanism — the fitness formula, the held-out split, the rejection record, the model card's caveats — is on <a href="the-pulse.html#evolution">the Pulse page</a>.</p>
+<p>The fourth loop is the Pulse's five actor-critic models, and it is the only one that breeds: it retires and replaces members rather than just refitting one. The court's last act, after journals and dossiers, is one <strong>generation</strong>: score every member, train every member on the day's fresh episodes (a retrain that scores below the member's own pre-training reading is <em>reverted</em> to the backed-up weights — the 2026-09-08 rule, after one deep-budget generation degraded all five members and overwrote a good night unrecoverably), breed one mutated child from the elite, and admit the child only if its fitness on a frozen held-out split beats the worst member's — the elite is never replaced, the population never shrinks, and a generation that changes nothing is recorded with the same fields as one that does. The first generation (2026-08-21) refused its child and left m1–m5 standing. The full mechanism — the fitness formula, the held-out split, the rejection record, the model card's caveats — is on <a href="the-pulse.html#evolution">the Pulse page</a>.</p>
 
 <h2 id="loop-5-the-fund">Loop 5 — the Fund's allocation transformer<a class="anchor" href="#loop-5-the-fund" aria-label="Link to Loop 5 — the Fund&#x27;s allocation transformer">#</a></h2>
 
