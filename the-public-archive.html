@@ -110,7 +110,7 @@
 
 <dl class="spec">
   <dt>An allowlist, never a denylist</dt><dd>Each document type declares the fields that <em>may</em> be published; everything else is dropped, <strong>including fields that do not exist yet</strong>. A denylist fails open &mdash; a field added next round would publish itself by default and nobody would notice until it was indexed. It also mangles the writing: this board produces prose like &ldquo;Azure past $100B banked&rdquo; and &ldquo;not how an owner acquires a business&rdquo;, and a keyword filter butchers both.</dd>
-  <dt>A sentence-level pass inside allowed text</dt><dd>The allowlist protects fields, not the inside of them. Board prose occasionally mentions the operator's own book mid-paragraph. Any single sentence carrying a high-precision marker is dropped and replaced with a note that a line was removed; every other sentence is left untouched. Across the whole archive this has fired <strong>once</strong>.</dd>
+  <dt>A sentence-level pass inside allowed text</dt><dd>The allowlist protects fields, not the inside of them. Board prose occasionally mentions the operator's own book mid-paragraph. Any single sentence carrying a high-precision marker is dropped and replaced with a note that a line was removed; every other sentence is left untouched. Four such notes stand in the archive as of September 2026 &mdash; three of them in the early Evening Courts, whose narrative fields turned out to carry the operator's open legs mid-paragraph when they were first published.</dd>
   <dt>A scanner that fails the build</dt><dd>Before any page is written, the rendered output is scanned for the operator's actual figures. A hit raises and nothing is published. The gate runs again inside <code>publish.sh</code>, so a stale build cannot reach a public repository.</dd>
 </dl>
 
@@ -118,7 +118,7 @@
 
 <h2 id="verifying-it">Verifying it rather than asserting it<a class="anchor" href="#verifying-it" aria-label="Link to Verifying it rather than asserting it">#</a></h2>
 
-<p>The redaction module carries a <code>self_test</code> that the build runs before it writes anything. It asserts the scanner catches four known operator markers <em>and their HTML-escaped forms</em>, that it does <strong>not</strong> fire on four real sentences of board prose, and that the sentence scrubber removes the offending sentence while keeping the ones around it. A scanner nobody proved is a comfort, not a control.</p>
+<p>The redaction module carries a <code>self_test</code> that the build runs before it writes anything. It asserts the scanner catches six known operator markers <em>and their HTML-escaped forms</em>, that it does <strong>not</strong> fire on seven real sentences of board prose &mdash; including the court seats' constant talk of the operator's <em>authority</em> (&ldquo;sizing is the owner's question&rdquo;), which is not his record &mdash; and that the sentence scrubber removes the offending sentence while keeping the ones around it. A scanner nobody proved is a comfort, not a control.</p>
 
 <h2 id="what-is-published">What a visitor sees<a class="anchor" href="#what-is-published" aria-label="Link to What a visitor sees">#</a></h2>
 
@@ -126,6 +126,7 @@
   <li>An index of every session, newest first, with the headline the board actually wrote.</li>
   <li>Per session: the executive summary, the standing read, how the document was produced, the correction the desk owed, the whole book ranked with entries, stops, targets and written kills, the room's range and the Skeptic's grade per lead, the house rules, the branches and the checks.</li>
   <li>The Fund's and the Spotlight's verdicts for that day &mdash; including the days on which the correct answer was that nothing cleared sixty.</li>
+  <li>The Evening Court, when one sat: the chair's report scoring the morning against the tape, every seat's own on-base / off-base / lesson entry with its stated conviction, the book marked to the close, the scoreboard, and which seats earned their chairs. The courts joined the archive on 2026-09-08 &mdash; before that the allowlist named fields no court ever carried, so every court redacted to nothing and silently stayed home, which is what failing closed looks like.</li>
 </ul>
 
 <div class="callout callout-rule"><strong>Research output, and it says so on every page.</strong> Grades, levels and structures are model output rather than recommendations, none of it is financial advice, and nothing in Bablytics places, stages or routes an order of any kind.</div>

@@ -120,14 +120,11 @@
 <ol class="steps">
   <li><strong>Graders and the Skeptic</strong> each take up to <strong>three</strong> leads on which they took a non-neutral stance, ranked by conviction |grade − 50| descending (ties broken by the lead's rank). Direction follows the stance: bull → long, bear → short.</li>
   <li><strong>The Bot</strong> takes the Executive's top five leads by final grade with final grade ≥ 60, direction exactly as the lead was ranked (long or short).</li>
-  <li><strong>One leg per ticker per book.</strong> A run's leads can carry the same underlying twice — two theses, one name. The best-placed lead claims the ticker and the freed slot passes to the next distinct name, so a seat never doubles a position by agreeing with both. A unique index on (member, run, ticker) enforces the same rule in the database, so a doubled leg cannot be written even by a bug.</li>
   <li><strong>Size</strong> = 10 % of the member's current equity ÷ entry price — "current equity" being the latest equity snapshot dated strictly before the run date, or the start equity for a seat with no history. Fractional shares are allowed down to 0.0001. All of a member's same-day picks size off that one basis.</li>
   <li><strong>Entry price</strong> = that day's <strong>open</strong> (the daily bar dated exactly the run date). A pre-open run has no such bar yet, so the rows are written <em>pending</em> with no entry price and priced on the next mark once the open lands, using the same sizing basis.</li>
 </ol>
 
 <p>Every leg is shares of the lead's ticker. An option lead is traded as its underlying — the League does not price contracts.</p>
-
-<div class="callout callout-note"><strong>The doubled-book correction (2026-09-08).</strong> The one-leg-per-ticker rule was added after the fact. The runs of 2026-08-18 and 2026-08-19 each listed a ticker in two leads, and pick selection then had no such rule — eleven legs across nine books were opened twice, and because each snapshot walks the whole ledger, every equity number from 18 August on was computed over the doubled rows. The surplus legs were removed (keeping the first-written leg of each pair — the one the midday desk had been closing first anyway), every snapshot from 2026-08-18 was re-marked from the corrected ledger, and the Pyramid's money basis was refreshed. All nine books gained, because every doubled leg was a loser: watchdog +$1,107 and dagger +$1,098 at the far end, four books around +$212 at the near end. The crown did not move.</div>
 
 <h3 id="marking-and-closing">Marking and closing<a class="anchor" href="#marking-and-closing" aria-label="Link to Marking and closing">#</a></h3>
 
