@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Paper League · Bablytics Guide</title>
-<meta name="description" content="Sixteen autonomous $100,000 paper books — the fourteen graders, the Skeptic and The Bot — filled at the open, held five trading days, marked at 18:00 and ranked on a live leaderboard with sparklines. Paper only, by construction.">
+<meta name="description" content="Seventeen autonomous $100,000 paper books — the fifteen graders, the Skeptic and The Bot — filled at the open, held five trading days, marked at 18:00 and ranked on a live leaderboard with sparklines. Paper only, by construction.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -96,14 +96,14 @@
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-paper-league" data-slug="paper-league" data-title="The Paper League">
-<header class="page-head"><p class="eyebrow">Engine · paper only</p><h1>The Paper League</h1><p class="summary">Sixteen autonomous $100,000 paper books — the fourteen graders, the Skeptic and The Bot — filled at the open, held five trading days, marked at 18:00 and ranked on a live leaderboard with sparklines. Paper only, by construction.</p></header>
+<header class="page-head"><p class="eyebrow">Engine · paper only</p><h1>The Paper League</h1><p class="summary">Seventeen autonomous $100,000 paper books — the fifteen graders, the Skeptic and The Bot — filled at the open, held five trading days, marked at 18:00 and ranked on a live leaderboard with sparklines. Paper only, by construction.</p></header>
 <div class="article">
 
 <h2 id="what-the-league-is">What the League is<a class="anchor" href="#what-the-league-is" aria-label="Link to What the League is">#</a></h2>
 
-<p>Every seat that grades gets a book. The Paper League (<code>bablytics/paper.py</code>) runs <strong>sixteen</strong> fully autonomous paper accounts — the fourteen grading members, the Skeptic, and <strong>The Bot</strong> 🤖, which mechanically trades the Executive's signed book — each starting at <strong>$100,000</strong> (the <code>paper_start_equity</code> setting). It is a self-scoring simulation with no real money and no connection to the broker: the League exists so the leaderboard can show which philosophies actually made money on paper, and so every member's daily convictions leave a priced trail the reviews can grade.</p>
+<p>Every seat that grades gets a book. The Paper League (<code>bablytics/paper.py</code>) runs <strong>seventeen</strong> fully autonomous paper accounts — the fifteen grading members, the Skeptic, and <strong>The Bot</strong> 🤖, which mechanically trades the Executive's signed book — each starting at <strong>$100,000</strong> (the <code>paper_start_equity</code> setting). It is a self-scoring simulation with no real money and no connection to the broker: the League exists so the leaderboard can show which philosophies actually made money on paper, and so every member's daily convictions leave a priced trail the reviews can grade.</p>
 
-<aside class="tip">The roster is <em>derived</em>, never listed: it is <code>GRADING_MEMBERS + [skeptic, bot]</code>, so seating a new grader grows the League by one book with no code change and no edit to this page. It is sixteen books today because there are fourteen graders; older docs quote smaller numbers because there were fewer seats when they were written.</aside>
+<aside class="tip">The roster is <em>derived</em>, never listed: it is <code>GRADING_MEMBERS + [skeptic, bot]</code>, so seating a new grader grows the League by one book with no code change and no edit to this page. It is seventeen books today because there are fifteen graders; older docs quote smaller numbers because there were fewer seats when they were written.</aside>
 
 <figure class="shot">
   <img src="assets/screens/league.png" alt="The League page: a leaderboard table with rank, member, equity, the selected window's P&L %, open positions, win rate, last action and an inline equity sparkline per member, a crown on the leader and The Bot highlighted, with the Midday adjustments card above it" loading="lazy" width="1440" height="900" decoding="async">
@@ -153,7 +153,7 @@
 
 <ul class="timeline">
   <li class="tl-item"><time>~7:00 ET</time><h3 id="tl-open">Books open<a class="anchor" href="#tl-open" aria-label="Link to Books open">#</a></h3><p>The morning run finishes; every seat's picks are written. Because the open has not printed yet, they sit pending until the first mark.</p></li>
-  <li class="tl-item"><time>12:30 ET</time><h3 id="tl-midday">Midday Check-In<a class="anchor" href="#tl-midday" aria-label="Link to Midday Check-In">#</a></h3><p>All fourteen graders and the Skeptic read <em>their own</em> open paper positions marked at midday and file one hold-or-close per position. Closes are applied immediately with the member's reason; the League page shows them in a <strong>Midday adjustments</strong> card (headline, board tilt, the closes-applied feed, per-member reads). The Bot does not attend — it follows the Executive's book mechanically.</p></li>
+  <li class="tl-item"><time>12:30 ET</time><h3 id="tl-midday">Midday Check-In<a class="anchor" href="#tl-midday" aria-label="Link to Midday Check-In">#</a></h3><p>All fifteen graders and the Skeptic read <em>their own</em> open paper positions marked at midday and file one hold-or-close per position. Closes are applied immediately with the member's reason; the League page shows them in a <strong>Midday adjustments</strong> card (headline, board tilt, the closes-applied feed, per-member reads). The Bot does not attend — it follows the Executive's book mechanically.</p></li>
   <li class="tl-item"><time>during the session</time><h3 id="tl-bailiff">The Bailiff (if enforcing)<a class="anchor" href="#tl-bailiff" aria-label="Link to The Bailiff (if enforcing)">#</a></h3><p>A fired ruling closes every member's leg in that ticker for the run, tagged <code>bailiff</code>. Off by default; see <a href="the-bailiff.html#dry-run-versus-enforce">dry run versus enforce</a>.</p></li>
   <li class="tl-item"><time>18:00 ET</time><h3 id="tl-mark">Mark to market<a class="anchor" href="#tl-mark" aria-label="Link to Mark to market">#</a></h3><p>Pending entries are priced at the open, five-day holds are closed at the close, and every seat's equity snapshot for the day is recomputed from the ledger.</p></li>
 </ul>
@@ -212,13 +212,13 @@
 
 <h2 id="fund-versus-league">The League and the Fund<a class="anchor" href="#fund-versus-league" aria-label="Link to The League and the Fund">#</a></h2>
 
-<p>Round 27 added a second paper engine, <a href="the-fund.html">The Fund</a>, and the two are deliberately not merged: they answer different questions. The League asks <em>which philosophy makes money</em>, so it needs sixteen books and rules crude enough that every seat is scored on the same yardstick. The Fund asks <em>how the board's signed book behaves as one managed portfolio</em>, so it needs one book, the board's own risk terms, and something deciding how much of it to hold.</p>
+<p>Round 27 added a second paper engine, <a href="the-fund.html">The Fund</a>, and the two are deliberately not merged: they answer different questions. The League asks <em>which philosophy makes money</em>, so it needs seventeen books and rules crude enough that every seat is scored on the same yardstick. The Fund asks <em>how the board's signed book behaves as one managed portfolio</em>, so it needs one book, the board's own risk terms, and something deciding how much of it to hold.</p>
 
 <div class="table-wrap">
 <table class="data">
   <thead><tr><th></th><th>The Paper League</th><th>The Fund</th></tr></thead>
   <tbody>
-    <tr><td>Books</td><td>sixteen — one per grading seat, plus the Skeptic and The Bot</td><td>one</td></tr>
+    <tr><td>Books</td><td>seventeen — one per grading seat, plus the Skeptic and The Bot</td><td>one</td></tr>
     <tr><td>What gets in</td><td>each seat's own top three by conviction; The Bot takes the Executive's top five at ≥ 60</td><td>every lead the board finally grades <strong>≥ 60</strong>, one slot per underlying, capped at 20</td></tr>
     <tr><td>Sizing</td><td>a house constant: 10 % of the seat's equity per leg</td><td>a <strong>model</strong>: a transformer's allocation 0–1 of the portfolio, split into per-lot weights</td></tr>
     <tr><td>Exits</td><td>a flat five-trading-day hold, plus a midday close by the seat and a Bailiff kill</td><td>the lead's <strong>real stop and target</strong>, its stated <strong>horizon</strong> (plus 25 % slack), the Bailiff kill, grade decay below 50, and option expiry — all on a close</td></tr>
@@ -270,7 +270,7 @@
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-09-14 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-09-21 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
