@@ -128,16 +128,16 @@
 
 <div class="table-wrap">
 <table class="data">
-  <thead><tr><th>Profile</th><th>Stop (ATR)</th><th>Target (ATR)</th><th>Training penalty λ</th><th>Size behaviour</th></tr></thead>
+  <thead><tr><th>Profile</th><th>Stop (ATR)</th><th>Target (ATR)</th><th>Training risk γ (since 2026-09-28)</th><th>Retired v1 penalty λ</th><th>Size behaviour</th></tr></thead>
   <tbody>
-    <tr><td>conservative</td><td class="num">1.0</td><td class="num">1.5</td><td class="num">2.0</td><td>size hint steps down one notch when VIX &gt; 16</td></tr>
-    <tr><td>moderate</td><td class="num">1.5</td><td class="num">2.5</td><td class="num">1.0</td><td>size hint = your size setting</td></tr>
-    <tr><td>aggressive</td><td class="num">2.0</td><td class="num">4.0</td><td class="num">0.4</td><td>size hint = your size setting</td></tr>
+    <tr><td>conservative</td><td class="num">1.0</td><td class="num">1.5</td><td class="num">4 (quarter Kelly)</td><td class="num">2.0</td><td>size hint steps down one notch when VIX &gt; 16</td></tr>
+    <tr><td>moderate</td><td class="num">1.5</td><td class="num">2.5</td><td class="num">2 (half Kelly)</td><td class="num">1.0</td><td>size hint = your size setting</td></tr>
+    <tr><td>aggressive</td><td class="num">2.0</td><td class="num">4.0</td><td class="num">1 (full Kelly)</td><td class="num">0.4</td><td>size hint = your size setting</td></tr>
   </tbody>
 </table>
 </div>
 
-<p>The multiples and the penalty live in one module (<code>pulse/goals.py</code>) and are imported by the engine, the RL code and the dashboard's levels rail, so the bracket on a lead card and the bracket the Pulse reports never disagree. The profiles also ride inside the model's state as one-hot columns — that is how one network learns three temperaments. Nothing about your profile is inferred from your trades.</p>
+<p>The multiples and the risk terms live in one module (<code>pulse/goals.py</code>) and are imported by the engine, the RL code and the dashboard's levels rail, so the bracket on a lead card and the bracket the Pulse reports never disagree. The profiles also ride inside the model's state as one-hot columns — that is how one network learns three temperaments. Nothing about your profile is inferred from your trades.</p>
 
 <h2 id="the-31-feature-state">The 31-feature state<a class="anchor" href="#the-31-feature-state" aria-label="Link to The 31-feature state">#</a></h2>
 
@@ -304,15 +304,43 @@
 
 <p>Below the watch table sits a collapsible <strong>Model</strong> card, fed by <code>GET /api/pulse/model</code>: the deployed-checkpoint line; the <strong>population panel</strong> — each member's id, architecture, generation, fitness and a lineage note ("bred from m2 on …", or founder); the last self-court verdict in plain language; a strip of the last ten evolution decisions as dated deployed/rejected chips; and the standing line <em>New brains deploy only by beating the old one on held-out data — rejections are recorded.</em> Before any generation has run it says "generation 0 — no generations have run" rather than inventing one.</p>
 
+<div class="callout callout-rule" id="quarterly-retrain-2026-q3"><strong>The 2026-Q3 quarterly retrain (2026-09-28): why the Pulse said "exit", and what changed.</strong>
+<p><strong>The bias.</strong> Across every Pulse cycle from 08-19 to 09-25, the population chose <em>exit</em> on 73% of signals and never chose enter or hold. Generation 12 said exit on 835 of 840. The blend passed that through, because the board could cap an enter or an add but never overrule an exit.</p>
+<p><strong>The cause was the training reward.</strong> v1 charged holding λ·e·max(0,−r) on every down day. That charge is first order in volatility and linear in exposure, so one held unit was expected to lose 0.18–1.51% a day (by profile) even in a rising market, while flat cost one friction. Exit was the expected-value optimum in every state. Fitness, the vote weights and the retrain gate all read the same reward, so they locked it in.</p>
+<p><strong>The new objective, v2n.</strong></p>
+<p><code>e·(r − s·(m − μ<sub>LR</sub>)) − γ·e²·max(0,−r)² − F·|Δe|</code></p>
+<ul>
+<li>Holding is credited at the market's long-run drift (μ<sub>LR</sub> = 0.0688% a day).</li>
+<li>The downside charge is second order and concave in exposure: quarter, half and full Kelly for the three profiles.</li>
+<li>Exit ends the episode.</li>
+</ul>
+<p><strong>How it was retrained and judged.</strong></p>
+<ul>
+<li>All five members (m1, m2, m3, m4 and m7) were retrained fresh from their own genes, with new seeds. The corpus was cut before the held-out tail, with about 19% shorts chosen point in time.</li>
+<li>A pre-registered protocol and an independent judge scored three candidates against the old population on an out-of-time slice, the frozen split and 840 replayed live signals.</li>
+<li>One input, the board grade, had moved on only 0.02% of training states. Its first-layer weights are zeroed.</li>
+<li>The owner's 2026-09-08 rule still holds (never keep a retrain that scores worse than the member did before), read on the new objective. All five slots were kept, and all seven gates passed.</li>
+</ul>
+<p><strong>The result.</strong> On held-out states the consensus now keeps 74% and exits 26%, against 0% and 67% before. The replayed live headline went from exit 99.4% to hold 74% / exit 25%.</p>
+<p><strong>What it is not.</strong></p>
+<ul>
+<li>It has no forecasting skill, and neither did v1: its hold calls are right 43.5% of the time against a 44.4% base rate.</li>
+<li>Its balance comes from the objective and your risk profile, not from reading the name. Conservative mostly exits; moderate and aggressive mostly keep. On live signals it takes almost every long and passes on most shorts.</li>
+<li>Its advantage rests on crediting the long-run drift. With zero drift assumed it scores below v1.</li>
+</ul>
+<p><strong>Rollback and the shadow.</strong> The v1 population is archived byte for byte under <code>data/rl/population_archive/2026-09-28-v1</code>. It runs as a hidden shadow for 10 sessions from 09-29, scored on the same T+1 rule. If the live consensus exits more than 35% of long watch rows, or puts more than 80% on one action, for 5 sessions running, the report proposes a rollback for the owner to decide.</p>
+<p><strong>The nightly generation described below is frozen</strong> (<code>rl_evolve_enabled</code> = 0) until the owner unfreezes it.</p>
+</div>
+
 <h2 id="evolution">Evolution: one generation per court night<a class="anchor" href="#evolution" aria-label="Link to Evolution: one generation per court night">#</a></h2>
 
-<p>The population trains <em>inside the Evening Court</em>. After the journals are filed and the dossiers refreshed, the court calls <code>evolve.generation()</code> for its own session date — gated by the <code>rl_evolve_enabled</code> setting (default on); a failure never breaks the court, which reports "training did not run: &lt;reason&gt;" instead. A Sunday 15:00 ET job runs the same generation with a deeper budget. One generation is five steps:</p>
+<p>The population trains <em>inside the Evening Court</em>. Since 2026-09-28 this happens on every path the evening review can take, and from the live court's <code>persist_court</code>, claimed once per date. Before that it sat behind two early returns and had not run since 09-11. After the journals are filed and the dossiers refreshed, the court calls <code>evolve.generation()</code> for its own session date — gated by the <code>rl_evolve_enabled</code> setting (default on); a failure never breaks the court, which reports "training did not run: &lt;reason&gt;" instead. A Sunday 15:00 ET job runs the same generation with a deeper budget. One generation is five steps:</p>
 
 <ol class="steps">
-  <li><strong>Score</strong> every member. Fitness = 0.80·bounded(held-out shaped reward / 0.01) + 0.08·tanh(edge vs always-hold / 0.5) + 0.08·(2·hit rate − 1) + 0.04·critic correlation, bounded to [−1, 1]. The dominant term is the objective the models are <em>trained</em> on. (Round 21 weighted raw-return edge at 0.60 and ranked the five in exact reverse of that objective, Spearman −1.00; round 22 fixed it to +1.00.) The three small terms are the nightly self-court's live-lean diagnostics on a strict T+1 rule: a lean emitted in session T is scored against session T+1's close, never the same day's.</li>
-  <li><strong>Train</strong> every member on the day's fresh episodes — about one epoch a night, capped at 3 minutes per member and 15 in total (the Sunday slot allows 5 and 30). Since 2026-09-08 the retrain itself is gated like the child is: the new weights are kept only if they score at least the member's own pre-training reading on the night's scoring slice, and otherwise the pre-training weights are restored and the refusal recorded per member. A one-deep backup (<code>actor_critic.prev.npz</code>) is written before every retrain either way.</li>
+  <li><strong>Score</strong> every member. Fitness = 0.80·bounded(shaped reward on the recent scoring slice / 0.003; v2n since 2026-09-28, 0.01 under v1) + 0.08·tanh(edge vs always-hold / 0.5) + 0.08·(2·hit rate − 1) + 0.04·critic correlation, bounded to [−1, 1]. The dominant term is the objective the models are <em>trained</em> on. (Round 21 weighted raw-return edge at 0.60 and ranked the five in exact reverse of that objective, Spearman −1.00; round 22 fixed it to +1.00.) The three small terms are the nightly self-court's live-lean diagnostics on a strict T+1 rule: a lean emitted in session T is scored against session T+1's close, never the same day's.</li>
+  <li><strong>Train</strong> every member on the day's fresh episodes — about one epoch a night, capped at 3 minutes per member and 15 in total (the Sunday slot allows 5 and 30). Since 2026-09-08 the retrain itself is gated like the child is: the new weights are kept only if they score at least the member's own pre-training reading on the night's scoring slice, and otherwise the pre-training weights are restored and the refusal recorded per member. Since 2026-09-28 a retrain is also reverted if it puts more than 90% of the slice's states on one action, and readings from different objective versions are never compared. A one-deep backup (<code>actor_critic.prev.npz</code>) is written before every retrain either way.</li>
   <li><strong>Breed</strong> one child from the best member: one architecture operator drawn at random — widen a layer (×1.15–1.5), narrow one (×0.5–0.85), add a layer, drop a layer, or flip the activation — plus learning rate, entropy and γ jittered log-uniformly, a fresh seed, and the lineage recorded.</li>
-  <li><strong>Select</strong> on the <strong>frozen held-out split</strong> — 4,000 episodes with entry dates on or after 2026-03-25, created once for generation 0 and never trained on. The child replaces the <em>worst</em> member only if its fitness there beats that member's. <strong>Elitism is absolute</strong>: the best member is never a candidate for replacement and the population never drops below five. A profile gate (mean not worse; no single profile more than 10 % worse) is recorded beside the fitness verdict.</li>
+  <li><strong>Select</strong> on the <strong>recent scoring slice</strong>, since 2026-09-28. Before that, selection used the frozen held-out split: 4,000 episodes from a strong bull tail, still read and recorded for information. The child replaces the <em>worst</em> member only if its fitness there beats that member's, and never if it puts more than 90% of states on one action. <strong>Elitism is absolute</strong>: the best member is never a candidate for replacement and the population never drops below five. A profile gate (mean not worse; no single profile more than 10 % worse) is recorded beside the fitness verdict.</li>
   <li><strong>Record</strong> the generation — who was born, who died, fitness before and after, the retrain gate's verdicts (kept vs reverted, member by member), the selection numbers — to <code>roster.json</code> and <code>data/rl/self-court.jsonl</code>. A generation that changes nothing is written with the same fields and <code>changed: false</code>; a rejected child's weights are kept under <code>population/rejected/</code>; a retired member goes to the graveyard with its lineage. Silent no-ops are how evolution theatre starts.</li>
 </ol>
 
@@ -332,7 +360,7 @@
   <li><strong>Small models, small data, research opinion.</strong> 1.2k–17k parameters each, two years of daily bars, ten-day episodes. Nothing before August 2024; no crash seen from inside a position, no halt, no gap through a stop, no earnings gap.</li>
   <li><strong>Trained on daily bars, questioned intraday.</strong> The population responds measurably to seven of the eleven intraday senses, but every training decision sat at a close. It is <em>time-of-day blind</em>: 09:45 and 15:45 differ through the other columns, never through <code>session_progress</code>.</li>
   <li><strong>The written kill is untrained.</strong> The most predictive column the system has measured has zero training examples and is silenced. So are board grades.</li>
-  <li><strong>"Beats buy-and-hold" means "de-risks".</strong> The shaped reward penalizes drawdown days with no symmetric bonus for up days, so constant exposure scores negative and a defensive policy near zero. On held-out states the consensus says exit 55.0 %, trim 44.9 %, hold 0.1 %, and essentially never enter or add. That is risk management under a stated reward, not evidence of alpha — and the eval metric is shaped reward, not money.</li>
+  <li><strong>The balance is the objective's, not a forecast.</strong> Under the retired v1 reward the consensus exited or trimmed almost everything, because exit was that reward's built-in answer. Under v2n it keeps most moderate and aggressive positions and exits most conservative ones, and its hold calls are right no more often than the base rate. The advantage it shows on the new objective rests on crediting the long-run drift. The eval metric is a shaped reward, not money.</li>
   <li><strong>The ensemble does not beat the best single member.</strong> The equal-weight consensus scored −0.00116 held-out against m3's −0.00051 — better than the <em>average</em> member and two of five, worse than three. What it buys is variance reduction and a visible disagreement signal, not performance.</li>
   <li><strong>Deterministic and greedy</strong>: same inputs, same view, every cycle. Shorts were trained only on the ten weakest-momentum names. Rewards are close-to-close with a flat 0.05 % friction; no fills, no slippage, no size compounding.</li>
 </ul>

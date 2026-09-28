@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Paper League · Bablytics Guide</title>
-<meta name="description" content="Seventeen autonomous $100,000 paper books — the fifteen graders, the Skeptic and The Bot — filled at the open, held five trading days, marked at 18:00 and ranked on a live leaderboard with sparklines. Paper only, by construction.">
+<meta name="description" content="Seventeen autonomous $100,000 paper books — the fifteen graders, the Skeptic and The Bot — filled at the first open after the board sits, held to the close five sessions on, marked at 18:00 and ranked on a live leaderboard, with a clean SPY-hedged column beside the booked equity. A scoreboard, not a record of skill. Paper only, by construction.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -96,7 +96,7 @@
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-paper-league" data-slug="paper-league" data-title="The Paper League">
-<header class="page-head"><p class="eyebrow">Engine · paper only</p><h1>The Paper League</h1><p class="summary">Seventeen autonomous $100,000 paper books — the fifteen graders, the Skeptic and The Bot — filled at the open, held five trading days, marked at 18:00 and ranked on a live leaderboard with sparklines. Paper only, by construction.</p></header>
+<header class="page-head"><p class="eyebrow">Engine · paper only</p><h1>The Paper League</h1><p class="summary">Seventeen autonomous $100,000 paper books — the fifteen graders, the Skeptic and The Bot — filled at the first open after the board sits, held to the close five sessions on, marked at 18:00 and ranked on a live leaderboard, with a clean SPY-hedged column beside the booked equity. A scoreboard, not a record of skill. Paper only, by construction.</p></header>
 <div class="article">
 
 <h2 id="what-the-league-is">What the League is<a class="anchor" href="#what-the-league-is" aria-label="Link to What the League is">#</a></h2>
@@ -123,7 +123,12 @@
   <li><strong>The Bot</strong> takes the Executive's top five leads by final grade with final grade ≥ 60, direction exactly as the lead was ranked (long or short).</li>
   <li><strong>One leg per ticker per book.</strong> A run's leads can carry the same underlying twice — two theses, one name. The best-placed lead claims the ticker and the freed slot passes to the next distinct name, so a seat never doubles a position by agreeing with both. A unique index on (member, run, ticker) enforces the same rule in the database, so a doubled leg cannot be written even by a bug.</li>
   <li><strong>Size</strong> = 10 % of the member's current equity ÷ entry price — "current equity" being the latest equity snapshot dated strictly before the run date, or the start equity for a seat with no history. Fractional shares are allowed down to 0.0001. All of a member's same-day picks size off that one basis.</li>
-  <li><strong>Entry price</strong> = that day's <strong>open</strong> (the daily bar dated exactly the run date). A pre-open run has no such bar yet, so the rows are written <em>pending</em> with no entry price and priced on the next mark once the open lands, using the same sizing basis.</li>
+  <li><strong>Entry price.</strong> It depends on when the book is written (round 59, 2026-09-28).
+    <ul>
+      <li><strong>Before 09:30 ET:</strong> the entry is that day's <strong>open</strong>. The rows wait <em>pending</em> until the open prints, then are priced on the next mark with the same sizing basis.</li>
+      <li><strong>At or after 09:30 ET</strong>, which is most days, because the board usually sits after the open: the entry is the <strong>next session's open</strong>, held four sessions, so the exit is still the close of the run bar plus five. Until then a book booked at the day's open was credited with the open-to-freeze move its seats had already watched. That credit flattered the seats that buy what has already moved (Sam, Herald, Flow) and cost the contrarian ones (Black Swan, Graham, Timekeeper).</li>
+    </ul>
+    Existing rows are not rewritten. From the entry session the Bailiff and the Midday Check-In price a pending row first, so a trigger can exit it. On the run date itself the book is still waiting for the next open, and the <strong>Last action</strong> column reads <em>pending: opens X at the &lt;date&gt; open</em>.</li>
 </ol>
 
 <p>Every leg is shares of the lead's ticker. An option lead is traded as its underlying — the League does not price contracts.</p>
@@ -152,7 +157,7 @@
 <h2 id="a-day-in-the-league">A day in the League<a class="anchor" href="#a-day-in-the-league" aria-label="Link to A day in the League">#</a></h2>
 
 <ul class="timeline">
-  <li class="tl-item"><time>~7:00 ET</time><h3 id="tl-open">Books open<a class="anchor" href="#tl-open" aria-label="Link to Books open">#</a></h3><p>The morning run finishes; every seat's picks are written. Because the open has not printed yet, they sit pending until the first mark.</p></li>
+  <li class="tl-item"><time>after the board</time><h3 id="tl-open">Books open<a class="anchor" href="#tl-open" aria-label="Link to Books open">#</a></h3><p>The morning run finishes and every seat's picks are written <em>pending</em>. A book written before 09:30 ET enters at that day's open. One written after the open, which is the usual case, enters at the next session's open.</p></li>
   <li class="tl-item"><time>12:30 ET</time><h3 id="tl-midday">Midday Check-In<a class="anchor" href="#tl-midday" aria-label="Link to Midday Check-In">#</a></h3><p>All fifteen graders and the Skeptic read <em>their own</em> open paper positions marked at midday and file one hold-or-close per position. Closes are applied immediately with the member's reason; the League page shows them in a <strong>Midday adjustments</strong> card (headline, board tilt, the closes-applied feed, per-member reads). The Bot does not attend — it follows the Executive's book mechanically.</p></li>
   <li class="tl-item"><time>during the session</time><h3 id="tl-bailiff">The Bailiff (if enforcing)<a class="anchor" href="#tl-bailiff" aria-label="Link to The Bailiff (if enforcing)">#</a></h3><p>A fired ruling closes every member's leg in that ticker for the run, tagged <code>bailiff</code>. Off by default; see <a href="the-bailiff.html#dry-run-versus-enforce">dry run versus enforce</a>.</p></li>
   <li class="tl-item"><time>18:00 ET</time><h3 id="tl-mark">Mark to market<a class="anchor" href="#tl-mark" aria-label="Link to Mark to market">#</a></h3><p>Pending entries are priced at the open, five-day holds are closed at the close, and every seat's equity snapshot for the day is recomputed from the ledger.</p></li>
@@ -163,6 +168,38 @@
 <p>The table sorts by <strong>highest balance</strong> by default, and <strong>every meaningful column is sortable</strong> — click a heading to sort by it, click again to reverse. Blank cells always sink to the bottom whichever way the arrow points, so a seat with no win rate cannot top the table by having no data. The <strong>crown is computed from equity independently of the sort</strong>: it marks the biggest book, and it stays on that seat when you sort by name or win rate instead of wandering to whoever happens to be in the top row.</p>
 
 <p>The leaderboard shows each seat's equity and its P&amp;L over a selectable window — <strong>1D · 1W · 1M · YTD · 6M</strong>. The server computes window P&amp;L by comparing the latest equity snapshot with the last snapshot on or before a cutoff: 1, 7 and 30 calendar days back, 182 days for 6M, and the prior year's last snapshot for YTD; where the seat has no snapshot that old the cell is empty rather than invented. <strong>Win rate</strong> counts closed trades only. The table's other columns are open-position count, a <strong>Last action</strong> line in words ("closed NEM midday — stop paying vig", "opened HL 2026-08-14"; on the same day a close outranks an open), and <strong>Trend</strong> — an inline SVG equity sparkline drawn from <code>/api/paper/league/history</code>, no chart library. The leader wears a crown; The Bot is highlighted as the benchmark; the footnote states the start equity.</p>
+
+<h3 id="clean-hedged">Clean, hedged: the same picks, measured without the League's conventions<a class="anchor" href="#clean-hedged" aria-label="Link to Clean, hedged: the same picks, measured without the League&#x27;s conventions">#</a></h3>
+
+<p>The leaderboard's equity is <strong>as booked</strong>: entered at the open, sized at 10% of compounding equity, and closed early by the Midday Check-In, which accounts for 42% of all closes. Beside it the table prints two columns (round 59):</p>
+<ul>
+  <li><strong>Clean, hedged</strong> re-prices each seat's own picks on one fixed basis: entry at the next session's open, exit at the close of the run bar plus five, $10,000 a position with no compounding, midday exits ignored, and the four historical mock runs (1, 2, 29, 33) excluded. It then subtracts what the S&amp;P 500 did over the same window in the same direction. It shows whether the picks beat the market, not whether the book grew. Positions that cannot be priced are counted and flagged, never read as zero, and a price outage shows as <em>n/a</em>.</li>
+  <li><strong>Net (avg)</strong> is the book's time-weighted net exposure over its session closes. The tooltip adds "now". A book that is 69% net short today may have been net long on average, and the member page says both.</li>
+</ul>
+<p>A seat whose book has never held a priced position (the Decoder) reads <strong>UNRANKED</strong> and takes no rank (R33).</p>
+
+<div class="callout callout-warn"><strong>What the leaderboard is not: a record of skill (tested 2026-09-28).</strong> The owner asked whether the Executive should lean on the seats that lead the League, since leaders seem to run in seasons: Graham early, Black Swan now. A backtest tested that on the League's own record, and verifiers checked each result:
+<ul>
+  <li><strong>Form does not persist.</strong> A seat's past results did not predict its next ones on any basis, lookback or horizon: 0 of 284 tests. The early leaders were among September's worst.</li>
+  <li><strong>The top seat is within luck.</strong> Black Swan's lead is stock selection, not its short bet. Even so, the best of 15 seats picking at random from the same slate beats it about 90% of the time.</li>
+  <li><strong>Following the leaders lost money.</strong> Copying the top three seats' trades did worse than copying everyone. Weighting the room's grades by League record did no better than random weights.</li>
+</ul>
+The leaderboard is a scoreboard of paper books. The courts ruled the same way independently (2026-09-15 and 2026-09-18, rulings 9, and R33): the chair never weights a seat by its equity rank. The idea is being tested forward as a <a href="#league-weight-shadow">shadow</a> rather than dropped.</div>
+
+<h3 id="league-weight-shadow">The League-weight shadow test<a class="anchor" href="#league-weight-shadow" aria-label="Link to The League-weight shadow test">#</a></h3>
+
+<p>Every morning from 2026-09-29, the desk freezes each seat's weight and prints a League-weighted median beside the real one. It is never shipped. The weight is rank-linear from 0.5 to 1.5, on the seat's clean hedged P&amp;L over the five settled sessions before the run. A forward test registered on 2026-09-28 (commit <code>a897090</code>, before any eligible packet froze) scores the weighted vector against the real one on the 40-name slate as each run's five sessions settle.</p>
+<ul>
+  <li><strong>Futility at 20 runs:</strong> if the weighted vector is doing no better than chance, the test stops there.</li>
+  <li><strong>Decision at 40 runs</strong>, about mid-December. The idea becomes eligible for an owner ruling only if all three hold:
+    <ul>
+      <li>it beats weights shuffled at random across seats (p &lt; 0.05);</li>
+      <li>a seat's trailing score predicts its next results;</li>
+      <li>the gain survives removing each name's own momentum.</li>
+    </ul>
+  </li>
+</ul>
+<p>Courts see only <em>RUNNING n=k</em>, never the running score. The chair's prompt carries nothing from it. <code>scripts/boardroom/league_weight_test.py status</code> prints the state.</p>
 
 <h2 id="the-trade-history">Click a name: the trade history<a class="anchor" href="#the-trade-history" aria-label="Link to Click a name: the trade history">#</a></h2>
 
@@ -246,6 +283,7 @@
   <li>Fills are the daily open and the daily close with no slippage, no commission, and fractional shares — a paper convention, not an execution model.</li>
   <li>Option leads are traded as their underlying. A seat that was right about a contract's premium and wrong about the stock shows the stock's result.</li>
   <li>Ten percent of equity per leg and a flat five-day hold are house constants. They are not optimized and the leaderboard does not reward timing beyond the midday close.</li>
+  <li>On 21 to 22 runs the League's rank order cannot be told apart from luck. The clean, hedged column removes the League's own conventions, but not chance.</li>
   <li>Window P&amp;L is measured on calendar days, so a 1W window over a holiday week compares four sessions, not five.</li>
   <li>The League is evidence about the board, not about you. It never trades your money and cannot: the only code that submits a real order lives behind a human click on the Broker page, one order per click, and the League does not call it.</li>
 </ul>
@@ -253,7 +291,7 @@
 <h2 id="api">API<a class="anchor" href="#api" aria-label="Link to API">#</a></h2>
 
 <dl class="spec">
-  <dt>GET /api/paper/league</dt><dd>every seat: equity, P&amp;L and % per window, open positions, win rate, last action; The Bot flagged</dd>
+  <dt>GET /api/paper/league</dt><dd>every seat: equity (as booked), P&amp;L and % per window, open positions, win rate, last action, <code>clean_pct</code> / <code>clean_hedged_pct</code> / <code>clean_n</code> / <code>clean_unpriced</code>, net exposure now and time-weighted, <code>book_opened</code>; The Bot flagged</dd>
   <dt>GET /api/paper/league/history?window=</dt><dd>per-member equity series for the sparklines, capped to a readable length</dd>
   <dt>GET /api/paper/member/{key}</dt><dd>equity curve, open positions, closed-trade log with exit reason and kind, window stats</dd>
   <dt>paper_start_equity</dt><dd>setting, default 100000</dd>
@@ -264,7 +302,7 @@
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="the-bailiff.html"><small>← Previous</small><b>The Bailiff</b></a><a class="next" rel="next" href="learning-loops.html"><small>Next →</small><b>Learning Loops</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-league-is">What the League is</a></li><li class="l2"><a href="#the-rules">The rules, exactly</a></li><li class="l3"><a href="#opening-books">How a book opens</a></li><li class="l3"><a href="#marking-and-closing">Marking and closing</a></li><li class="l3"><a href="#exit-reasons">Why a leg closes</a></li><li class="l2"><a href="#a-day-in-the-league">A day in the League</a></li><li class="l2"><a href="#windows-and-the-table">Windows, win rate and the table</a></li><li class="l2"><a href="#the-trade-history">Click a name: the trade history</a></li><li class="l2"><a href="#against-the-index">Against the index</a></li><li class="l3"><a href="#how-the-benchmark-is-built">How it is built, and what it refuses to claim</a></li><li class="l2"><a href="#the-bot">The Bot</a></li><li class="l2"><a href="#fund-versus-league">The League and the Fund</a></li><li class="l2"><a href="#where-it-feeds">Where the League feeds</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-league-is">What the League is</a></li><li class="l2"><a href="#the-rules">The rules, exactly</a></li><li class="l3"><a href="#opening-books">How a book opens</a></li><li class="l3"><a href="#marking-and-closing">Marking and closing</a></li><li class="l3"><a href="#exit-reasons">Why a leg closes</a></li><li class="l2"><a href="#a-day-in-the-league">A day in the League</a></li><li class="l2"><a href="#windows-and-the-table">Windows, win rate and the table</a></li><li class="l3"><a href="#clean-hedged">Clean, hedged: the same picks, measured without the League&#x27;s conventions</a></li><li class="l3"><a href="#league-weight-shadow">The League-weight shadow test</a></li><li class="l2"><a href="#the-trade-history">Click a name: the trade history</a></li><li class="l2"><a href="#against-the-index">Against the index</a></li><li class="l3"><a href="#how-the-benchmark-is-built">How it is built, and what it refuses to claim</a></li><li class="l2"><a href="#the-bot">The Bot</a></li><li class="l2"><a href="#fund-versus-league">The League and the Fund</a></li><li class="l2"><a href="#where-it-feeds">Where the League feeds</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
