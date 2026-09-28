@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Fund · Bablytics Guide</title>
-<meta name="description" content="One synthetic paper book that takes every lead the board grades 60 or better, holds it on the board&#x27;s own stop, target and horizon, and reweights it once a day — with a small transformer deciding what fraction of the portfolio belongs in the book and a tax lens that can veto a trim. Synthetic paper money; nothing executes; tax figures are estimates, not advice.">
+<meta name="description" content="One synthetic paper book on every share lead the board ships: filled at the next open, weighted equally within its day, held a fixed five sessions. Since 2026-09-28 there is no grade line; the 2026-Q3 backtest found the 60 line a coin that the gates had made unreachable. Synthetic paper money; nothing executes; tax figures are estimates, not advice.">
 <meta name="site-root" content="">
 <meta name="color-scheme" content="light dark">
 <meta name="generator" content="site/build.py 2.0.0">
@@ -96,12 +96,24 @@
   </aside>
   <main id="main" class="doc-main">
 <article class="page current" id="page-the-fund" data-slug="the-fund" data-title="The Fund">
-<header class="page-head"><p class="eyebrow">Engine · the synthetic book</p><h1>The Fund</h1><p class="summary">One synthetic paper book that takes every lead the board grades 60 or better, holds it on the board&#x27;s own stop, target and horizon, and reweights it once a day — with a small transformer deciding what fraction of the portfolio belongs in the book and a tax lens that can veto a trim. Synthetic paper money; nothing executes; tax figures are estimates, not advice.</p></header>
+<header class="page-head"><p class="eyebrow">Engine · the synthetic book</p><h1>The Fund</h1><p class="summary">One synthetic paper book on every share lead the board ships: filled at the next open, weighted equally within its day, held a fixed five sessions. Since 2026-09-28 there is no grade line; the 2026-Q3 backtest found the 60 line a coin that the gates had made unreachable. Synthetic paper money; nothing executes; tax figures are estimates, not advice.</p></header>
 <div class="article">
 
 <h2 id="what-the-fund-is">What the Fund is<a class="anchor" href="#what-the-fund-is" aria-label="Link to What the Fund is">#</a></h2>
 
-<p>The Fund is <strong>one book</strong>. Every morning run the board signs a ranked twenty; the Fund admits the ones graded <strong>60 or better</strong>, fills them on paper at the next session's open, and then holds each position on the exact terms the board wrote for it — that lead's stop, that lead's target, that lead's <a href="morning-briefing.html#time-horizon">time horizon</a>, that lead's written invalidation. Once a day, after the close, it marks the whole book, applies the exits that fired, admits what the board added, asks a small transformer what fraction of the portfolio should be in the fund at all, runs the proposed changes past a tax lens, and writes the orders and a paragraph explaining itself.</p>
+<div class="callout callout-rule"><strong>The book rule, since 2026-09-28.</strong> The owner retired the 60 line after the desk's 2026-Q3 backtest of the board's own record. Leads graded 60 or better had done no better than the rest of the book, and since the 09-11 gates, 1 of 173 shipped leads could reach 60 at all. The fund's losses had also been concentrated by its own mechanics: sizing that ran against grade, gross exposure above 100%, an option lead filled and held at its underlying past its contract's expiry, and re-adds to leads weeks old. The fund now runs the benchmark that backtest measured:
+<ul>
+<li><strong>Admission</strong>: every shipped <em>share</em> lead of the newest completed book, filled at the next session's open, on a name the fund does not already hold. There is no grade line.</li>
+<li><strong>Sizing</strong>: each day's cohort gets the owner's allocation divided by the hold (<code>fund_hold_sessions</code>, default 5), split equally across its names, no name above <code>fund_max_weight</code> (10%). Gross exposure therefore never exceeds the allocation. There are no adds, no trims and no model weights.</li>
+<li><strong>Exits</strong>: every lot leaves at the close of its fifth session (the fill session and four more). There is no stop, target, kill or grade-decay exit: the backtest found stops about one ATR away fired on ordinary noise, and the grade carried no information. A lot opened on a lead older than its own book is retired at the first close.</li>
+<li><strong>Option leads</strong> are not admitted unless <code>fund_admit_options</code> is on. Even then, the fund buys the contract (a bearish lead's put is held long), it is never filled at the underlying, and it leaves at the last session before expiry.</li>
+<li><strong>The settled close</strong>: a session is decided only on its settled close. A Reweight clicked before 16:00 ET catches up earlier sessions and writes nothing for today; the 18:20 ET job, or a Reweight after the close, runs the day.</li>
+<li><strong>Missed sessions</strong>: every session the job missed is caught up in order, each with its own exits and equity row, and the next day's note lists what they closed. A missed session's cohort is not admitted late.</li>
+<li><strong>Roll-overs</strong>: when the newest book re-ships a name whose old lot leaves at tonight's close, the new lead is still admitted at the open, and the two lots overlap for that one session.</li>
+</ul>
+The cycle described below, with the grade line, the allocation transformer and the tax lens, is the <strong>retired</strong> policy. It stays in code under <code>fund_policy = "model"</code> so the record it produced can be reproduced.</div>
+
+<p>The Fund is <strong>one book</strong>. <em>Under the retired grade-line policy:</em> every morning run the board signs a ranked twenty; the Fund admits the ones graded <strong>60 or better</strong>, fills them on paper at the next session's open, and then holds each position on the exact terms the board wrote for it — that lead's stop, that lead's target, that lead's <a href="morning-briefing.html#time-horizon">time horizon</a>, that lead's written invalidation. Once a day, after the close, it marks the whole book, applies the exits that fired, admits what the board added, asks a small transformer what fraction of the portfolio should be in the fund at all, runs the proposed changes past a tax lens, and writes the orders and a paragraph explaining itself.</p>
 
 <div class="callout callout-rule"><strong>Synthetic paper fund — model opinion, not financial advice.</strong> The Fund holds no money, has no account, and touches nothing that could reach a venue. Nothing here places, stages or routes an order. Tax figures are rough estimates, not tax advice. It exists so the board's ≥60 book can be scored as a <em>managed portfolio</em> — with entries, exits, sizing and holding periods — instead of as a list.</div>
 
@@ -184,7 +196,7 @@
 
   <text x="40" y="352" fill="currentColor" stroke="none" font-size="12" font-weight="600">Nothing in this cycle places, stages or routes an order. The whole run is idempotent per date. Tax figures are estimates, not tax advice.</text>
 </svg>
-<figcaption>One reweight, start to finish. Stages ① and ② are arithmetic on the tape; ③ is the board's grade; ④ is the only learned step; ⑤ can veto ④; ⑥ and ⑦ are the record.</figcaption>
+<figcaption>The retired grade-line reweight, start to finish. Stages ① and ② are arithmetic on the tape; ③ is the board's grade; ④ is the only learned step; ⑤ can veto ④; ⑥ and ⑦ are the record. The book rule keeps ①, ② (a fixed hold), ③ (every share lead), ⑥ and ⑦, and drops ④ and ⑤.</figcaption>
 </figure>
 
 <h2 id="admission">Admission: who gets in<a class="anchor" href="#admission" aria-label="Link to Admission: who gets in">#</a></h2>
@@ -343,7 +355,7 @@ a_prior = size_base (small .25 · medium .50 · large .75) × risk_factor (conse
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-09-27 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-09-28 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
