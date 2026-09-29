@@ -379,6 +379,30 @@
   <dt>MODEL-CARD.md</dt><dd>the repo-root card: data, training, held-out numbers, silenced columns, the fitness finding, limitations</dd>
 </dl>
 
+<h2 id="universe-scan">The Universe table: all 503, every cycle<a class="anchor" href="#universe-scan" aria-label="Link to The Universe table: all 503, every cycle">#</a></h2>
+
+<p>Since 2026-09-28 every Pulse cycle also scores <strong>all 503 S&amp;P 500 names</strong>, long and short, into a sortable <strong>Universe — all 503</strong> table below the watch list. The owner asked for it. The models already trained on all 503; before this, the live view covered only your book and the day's top eight leads.</p>
+
+<ul>
+  <li><strong>How it runs.</strong> The scan starts after the cycle is saved, on its own thread, so it can never delay or break your book and watch rows.
+    <ul>
+      <li>Prices come in bulk: one multi-symbol quote request a cycle, and daily bars once a session.</li>
+      <li>A cycle's scan takes about 5 seconds, and the first of the session about 17.</li>
+      <li>A failed, partial or over-budget scan keeps the previous one, marked <em>stale</em> with its age and the reason, and names any ticker it could not price.</li>
+    </ul>
+  </li>
+  <li><strong>What a row is.</strong> The population's raw view of the name with no lead behind it:
+    <ul>
+      <li>no board grade, no written kill, day zero of a position;</li>
+      <li>the same ATR bracket every training episode starts with;</li>
+      <li>your risk and size goals.</li>
+    </ul>
+    Each direction prints its action, the five action probabilities and how many members agree. There is no model-written text, the house caution caps are not applied, and universe rows never enter the T+1 court, the hidden shadow or the rollback watch.</li>
+  <li><strong>What it will show.</strong> The models have no forecasting skill on held-out data, and their calls follow the risk profile. On the owner's aggressive goals at the 2026-09-28 close, 474 of 503 longs read <em>enter</em> and 29 <em>hold</em>, while shorts read 344 exit, 96 enter and 63 trim. P(keep) on longs ran 0.62 to 0.86. The table shows what the models think of every name. It is not a ranking of which names will do well.</li>
+</ul>
+
+<p><code>GET /api/pulse/universe</code> serves the latest scan. The table keeps the last five sessions: every scan of the newest session, and the closing scan of each earlier one.</p>
+
 <h2 id="pulse-any-ticker">Pulse any ticker<a class="anchor" href="#pulse-any-ticker" aria-label="Link to Pulse any ticker">#</a></h2>
 
 <p>The cycle covers what the desk already has an interest in: <strong>the owner's book</strong> and <strong>the day's leads</strong>. Round 36 adds a third scope — <em>any</em> ticker, asked for by name, whether or not the board has ever looked at it.</p>
@@ -404,7 +428,7 @@
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="reviews-and-horizons.html"><small>← Previous</small><b>Reviews</b></a><a class="next" rel="next" href="the-bailiff.html"><small>Next →</small><b>The Bailiff</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-pulse-is">What the Pulse is</a></li><li class="l2"><a href="#your-book">What counts as your book</a></li><li class="l2"><a href="#goals">The goal matrix</a></li><li class="l2"><a href="#the-31-feature-state">The 31-feature state</a></li><li class="l2"><a href="#five-models">Five actor-critic models</a></li><li class="l2"><a href="#consensus-and-agreement">Consensus and agreement</a></li><li class="l2"><a href="#the-blend">The blend, and its overrides</a></li><li class="l3"><a href="#leans">The five leans</a></li><li class="l3"><a href="#exit-zones">Exit zones by ATR</a></li><li class="l2"><a href="#degrade-ladder">What happens when something is missing</a></li><li class="l2"><a href="#the-model-card">The Model card</a></li><li class="l2"><a href="#evolution">Evolution: one generation per court night</a></li><li class="l2"><a href="#no-execution-path">No execution path — stated plainly</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#api-and-files">API, settings and files</a></li><li class="l2"><a href="#pulse-any-ticker">Pulse any ticker</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-pulse-is">What the Pulse is</a></li><li class="l2"><a href="#your-book">What counts as your book</a></li><li class="l2"><a href="#goals">The goal matrix</a></li><li class="l2"><a href="#the-31-feature-state">The 31-feature state</a></li><li class="l2"><a href="#five-models">Five actor-critic models</a></li><li class="l2"><a href="#consensus-and-agreement">Consensus and agreement</a></li><li class="l2"><a href="#the-blend">The blend, and its overrides</a></li><li class="l3"><a href="#leans">The five leans</a></li><li class="l3"><a href="#exit-zones">Exit zones by ATR</a></li><li class="l2"><a href="#degrade-ladder">What happens when something is missing</a></li><li class="l2"><a href="#the-model-card">The Model card</a></li><li class="l2"><a href="#evolution">Evolution: one generation per court night</a></li><li class="l2"><a href="#no-execution-path">No execution path — stated plainly</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#api-and-files">API, settings and files</a></li><li class="l2"><a href="#universe-scan">The Universe table: all 503, every cycle</a></li><li class="l2"><a href="#pulse-any-ticker">Pulse any ticker</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
