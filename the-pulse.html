@@ -330,6 +330,13 @@
 </ul>
 <p><strong>Rollback and the shadow.</strong> The v1 population is archived byte for byte under <code>data/rl/population_archive/2026-09-28-v1</code>. It runs as a hidden shadow for 10 sessions from 09-29, scored on the same T+1 rule. If the live consensus exits more than 35% of long watch rows, or puts more than 80% on one action, for 5 sessions running, the report proposes a rollback for the owner to decide.</p>
 <p><strong>The nightly generation described below is frozen</strong> (<code>rl_evolve_enabled</code> = 0) until the owner unfreezes it.</p>
+<p><strong>The owner's retrain of 2026-09-29.</strong> The owner asked for the models to be retrained. It ran as one generation on a snapshot of that night's data, and it did not touch the live models.</p>
+<ul>
+  <li><strong>The dry run found a defect.</strong> Every night's training data now carries all 351 graded leads, so the nightly treated the board-grade and kill inputs as live again. The newborn model came out with random weights on the board grade, the input the owner zeroed on 09-28. Neither gate could see it, because their scoring data holds no grades and no kills.</li>
+  <li><strong>The fix: three inputs are pinned at exactly zero.</strong> The board grade is pinned by the owner's go. Distance-to-kill and has-kill are held with it until the owner rules. The pin holds in every member and every newborn model, through every training step.</li>
+  <li><strong>What the owner's 09-08 gate kept: nothing.</strong> All five retrains scored below their own pre-training reading and were reverted. The recipe is one pass at full learning rate on 30 sessions, read on two entry dates, and it cost about 0.37 on average.</li>
+  <li><strong>The newborn model is held.</strong> m18 passed the admission rule against the weakest member, m2 (0.456 vs 0.177), and is held for the owner's word. The margin is the size of the seed noise. Admitting it would also switch the vote from equal to fitness weights, and it would mix two populations into the v1 shadow window that opened that day. The live Pulse is unchanged.</li>
+</ul>
 </div>
 
 <h2 id="evolution">Evolution: one generation per court night<a class="anchor" href="#evolution" aria-label="Link to Evolution: one generation per court night">#</a></h2>
