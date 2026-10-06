@@ -330,6 +330,16 @@
 </ul>
 <p><strong>Rollback and the shadow.</strong> The v1 population is archived byte for byte under <code>data/rl/population_archive/2026-09-28-v1</code>. It runs as a hidden shadow for 10 sessions from 09-29, scored on the same T+1 rule. If the live consensus exits more than 35% of long watch rows, or puts more than 80% on one action, for 5 sessions running, the report proposes a rollback for the owner to decide.</p>
 <p><strong>The nightly generation described below is frozen</strong> (<code>rl_evolve_enabled</code> = 0) until the owner unfreezes it.</p>
+<p><strong>The owner's retrain of 2026-10-06: every gate kept the incumbent.</strong> The owner asked for all the RL models to be retrained. Only the Pulse population is an RL model the app reads, so it was the one retrained. The fund's transformer was also retrained once by hand.</p>
+<ul>
+  <li><strong>The method.</strong> A protocol was written and hashed before anything trained. Each of the five slots was rebuilt fresh from its own design: three new seeds per slot, 1,000,000 steps each, on data cut at 2026-09-04, with the three pinned inputs held at exactly zero.</li>
+  <li><strong>The judgement.</strong> Each challenger was compared with the current model on entries from 09-08 to 09-21, a stretch neither had trained on (16,590 test episodes). A slot changes only if at least two of its three seeds clear the owner's 09-08 gate and the middle seed does too.</li>
+  <li><strong>The result.</strong> 13 of the 15 challengers scored below the model they would replace. The other two, one on m4 and one on m7, beat it by less than the noise. All five slots were kept, and an independent re-score reproduced every number.</li>
+  <li><strong>The fund.</strong> Its own gate rejected the retrained transformer, and its daily pass reads no model weights under the book rule anyway.</li>
+  <li><strong>What changed live.</strong> Nothing.</li>
+  <li><strong>What the readings say.</strong> On the out-of-time stretch, simply holding every name scored 0.00212, and the five-model vote 0.00162. With the credited drift turned off, every member scores negative.</li>
+  <li><strong>The rollback watch.</strong> On the owner's own watch list, the live models said <em>enter</em> on 100% of long rows on every session from 09-29. Five sessions in a row trips ROLLBACK PROPOSED. Whether to roll back is the owner's decision.</li>
+</ul>
 <p><strong>The owner's retrain of 2026-09-29.</strong> The owner asked for the models to be retrained. It ran as one generation on a snapshot of that night's data, and it did not touch the live models.</p>
 <ul>
   <li><strong>The dry run found a defect.</strong> Every night's training data now carries all 351 graded leads, so the nightly treated the board-grade and kill inputs as live again. The newborn model came out with random weights on the board grade, the input the owner zeroed on 09-28. Neither gate could see it, because their scoring data holds no grades and no kills.</li>
@@ -441,7 +451,7 @@
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-09-29 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-10-06 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">

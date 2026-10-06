@@ -210,7 +210,7 @@
   <dt id="g-verdicts">armed · fired · pending · unenforceable</dt><dd>The Bailiff’s verdicts. Armed: watchable and not yet hit. Fired: the basis price crossed the level. Pending: the basis is not observable yet (a close rule before 16:00). Unenforceable: a real ruling no machine can watch — “one concrete de-escalation headline” — kept and shown, never dropped.</dd>
   <dt id="g-oi-conversion">OI conversion</dt><dd>The Pre-Open audit of yesterday’s option-volume spike: did the volume become held open interest overnight (a confirmed position) or vanish (a pump fake)? A held ratio under 0.35 means it did not convert.</dd>
   <dt id="g-gap-zone">gap zone</dt><dd>Where a pre-market or opening print sits against the prior day’s range: above the high, in the upper range, in the lower range, or below the low. The Glazier’s read, and one of the Pulse’s input features.</dd>
-  <dt id="g-outcome">outcome (1d · 5d)</dt><dd>A lead’s realized return one and five trading days after its run date, sign-flipped for shorts, recorded at 18:00 and used to train the outcome model, grade the board, and settle the League.</dd>
+  <dt id="g-outcome">outcome (1d · 5d)</dt><dd>A lead’s realized return one and five trading days after its run date, sign-flipped for shorts, recorded at 18:00 and used to train the outcome model, grade the board, and settle the League. Recorded from <em>settled</em> daily bars only: a horizon that lands on today waits for the 16:05 ET close (since 2026-10-06, after a morning run wrote seventeen 5-day outcomes from an unfinished bar).</dd>
   <dt id="g-spearman">Spearman</dt><dd>Rank correlation. The live-board court documents report it between the board’s final grades and the day’s signed returns (the own-grades-versus-outcomes check); the app’s own calibration tiles use the ordinary (Pearson) kind. The round-22 fitness fix was verified once by Spearman and recorded in <code>MODEL-CARD.md</code>; nothing in the running code computes it.</dd>
   <dt id="g-regime">regime</dt><dd>The one-line read of the index tape — “risk-on: SPY +2.1% 5d, VIX 14.2 falling” — on every briefing and every Pulse payload.</dd>
   <dt id="g-beta">beta · correlation (90-session)</dt><dd>Beta is the slope of a lead’s daily returns on another symbol’s — SPY, QQQ, IWM, its sector ETF — by ordinary least squares over the last 90 sessions of aligned dates; 1.3 to SPY means the name has tended to move 1.3% for the index’s 1%. Correlation is how tightly, −1 to 1. Fewer than 60 overlapping sessions → null, not a guess. The card tag <code>β 1.3 · XLK</code> is beta to SPY and the sector ETF. Statistical coupling, not causation.</dd>
@@ -275,7 +275,7 @@
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-09-29 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-10-06 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
