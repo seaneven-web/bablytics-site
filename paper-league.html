@@ -176,7 +176,7 @@
   <li><strong>Clean, hedged</strong> re-prices each seat's own picks on one fixed basis: entry at the next session's open, exit at the close of the run bar plus five, $10,000 a position with no compounding, midday exits ignored, and the four historical mock runs (1, 2, 29, 33) excluded. It then subtracts what the S&amp;P 500 did over the same window in the same direction. It shows whether the picks beat the market, not whether the book grew. Positions that cannot be priced are counted and flagged, never read as zero, and a price outage shows as <em>n/a</em>.</li>
   <li><strong>Net (avg)</strong> is the book's time-weighted net exposure over its session closes. The tooltip adds "now". A book that is 69% net short today may have been net long on average, and the member page says both.</li>
 </ul>
-<p>A seat whose book has never held a priced position (the Decoder) reads <strong>UNRANKED</strong> and takes no rank (R33).</p>
+<p>A seat whose book has never held a priced position (the Decoder) reads <strong>UNRANKED</strong> and takes no rank (R33). The Decoder's row also says why, as <a href="#decoder-no-book">NO BOOK</a> with the reason.</p>
 
 <div class="callout callout-warn"><strong>What the leaderboard is not: a record of skill (tested 2026-09-28).</strong> The owner asked whether the Executive should lean on the seats that lead the League, since leaders seem to run in seasons: Graham early, Black Swan now. A backtest tested that on the League's own record, and verifiers checked each result:
 <ul>
@@ -200,6 +200,39 @@ The leaderboard is a scoreboard of paper books. The courts ruled the same way in
   </li>
 </ul>
 <p>Courts see only <em>RUNNING n=k</em>, never the running score. The chair's prompt carries nothing from it. <code>scripts/boardroom/league_weight_test.py status</code> prints the state.</p>
+
+<h3 id="decoder-no-book">The Decoder: NO BOOK, and its shadow book<a class="anchor" href="#decoder-no-book" aria-label="Link to The Decoder: NO BOOK, and its shadow book">#</a></h3>
+
+<p>The Decoder's row reads <strong>NO BOOK</strong>, followed by the reason in plain words. The League trades only a filed bull or bear stance. The Decoder files one only when its direction test passes, which needs two things:</p>
+<ul>
+  <li>its regime dial clears;</li>
+  <li>its held-out direction calls beat a naive rule by two paired standard errors.</li>
+</ul>
+<p>On runs 43–50 that happened on 0 of 320 slate reads, so the Decoder filed neutral on every line. Its only numbers are reach grades (<code>G_OPTION</code>), and a reach grade carries no stance (R84). This is the seat working as designed, not a bug.</p>
+
+<p>The owner ruled on 2026-10-06 that the Decoder gets a <strong>shadow book with no money and no rank</strong>. It is printed under the League table, in a group headed <em>Shadow books (no money, unranked)</em>:</p>
+<ul>
+  <li><strong>The bar.</strong> A call needs <code>walk_forward.beats_naive_by_se</code> of at least 1.42. There is no regime-dial requirement. That bar fires on 5 of 120 pure-noise tapes and on 11 of 120 tapes whose volatility clusters (re-measured 2026-09-29). On the real slate it passed 17 of 320 reads, about the rate chance gives. That is why the book holds no money.</li>
+  <li><strong>The side</strong> is the sign of the read's own next-session edge, which is what the test scored. It is not the listed direction.</li>
+  <li><strong>The slate</strong> is all 40 names when the session's packet is on disk, and the run's leads otherwise. Each date has one book: when a morning is rebuilt, the book that stood (the last one written) replaces the earlier build, with its own entry rule.</li>
+  <li><strong>Recording.</strong> Each morning's run records its calls as the League's books open. If that record fails, the next mark records it late, with the same calls, entry and freeze time. Recording starts on 2026-10-07. A build deleted under an R32 tombstone has its rows removed with <code>decoder_shadow_test.py forget --run N</code>.</li>
+  <li><strong>Fills and exits</strong> follow the League's own rule. A book written after 09:30 ET enters at the next session's open. Every call exits at the close of the run bar plus five. There are no midday or Bailiff exits, only settled bars are used, and each call is hedged against the S&amp;P 500. P&amp;L is quoted on $10,000 a call so it reads beside the clean column; no money is involved.</li>
+  <li><strong>The reach ledger</strong> scores every reach grade other than 50 two-sided. Did the stock's daily high or low cover the break-even distance before expiry, upward or downward? A reach grade claims the size of a move, not its direction. A call whose stock reached that distance on the downside therefore counts as a touch.</li>
+</ul>
+
+<p><strong>The graduation rule is pre-registered once</strong>, from a clean commit, by <code>scripts/boardroom/decoder_shadow_test.py register</code>, the same way as the League-weight test. Two limits apply to the count:</p>
+<ul>
+  <li>calls from runs whose packet froze before the registration never count;</li>
+  <li>holds on the same ticker that overlap count once.</li>
+</ul>
+<p>The decision is taken at 40 counted, settled calls, on those 40 only. The shadow is <strong>KEEP-ELIGIBLE</strong> only if both of these hold:</p>
+<ul>
+  <li>its SPY-hedged wins beat a coin flip, one-sided binomial p &lt; 0.05 (26 or more wins of 40);</li>
+  <li>its summed hedged P&amp;L is above zero.</li>
+</ul>
+<p>Otherwise it is <strong>NOT ELIGIBLE</strong>. KEEP-ELIGIBLE only makes the shadow eligible for an owner ruling; it never graduates by itself. The shadow never writes to the League's ledger (<code>paper_positions</code>, <code>paper_equity</code>), never enters the Pyramid, and never reaches any seat's or court's prompt.</p>
+
+<aside class="tip">Replayed on runs 43–50, the shadow would have held 17 calls, 14 of them settled: +$4,329, or +$4,807 hedged, with 9 of the 14 winning. Those calls covered six names, and four overlapping FICO calls supplied most of the gain. The replay is not recorded and not eligible: its outcomes were known when the rule was written.</aside>
 
 <h2 id="the-trade-history">Click a name: the trade history<a class="anchor" href="#the-trade-history" aria-label="Link to Click a name: the trade history">#</a></h2>
 
@@ -291,7 +324,9 @@ The leaderboard is a scoreboard of paper books. The courts ruled the same way in
 <h2 id="api">API<a class="anchor" href="#api" aria-label="Link to API">#</a></h2>
 
 <dl class="spec">
-  <dt>GET /api/paper/league</dt><dd>every seat: equity (as booked), P&amp;L and % per window, open positions, win rate, last action, <code>clean_pct</code> / <code>clean_hedged_pct</code> / <code>clean_n</code> / <code>clean_unpriced</code>, net exposure now and time-weighted, <code>book_opened</code>; The Bot flagged</dd>
+  <dt>GET /api/paper/league</dt><dd>every seat: equity (as booked), P&amp;L and % per window, open positions, win rate, last action, <code>clean_pct</code> / <code>clean_hedged_pct</code> / <code>clean_n</code> / <code>clean_unpriced</code>, net exposure now and time-weighted, <code>book_opened</code>; The Bot flagged. Beside the list: <code>no_book</code> (the NO BOOK reason, keyed by seat) and <code>shadow_books</code> (no money, no rank)</dd>
+  <dt>GET /api/paper/shadow/decoder</dt><dd>the Decoder's whole shadow book: every call, the reach ledger, the pre-registered test's state and the NO BOOK reason</dd>
+  <dt>decoder_shadow_runs · decoder_shadow_calls · decoder_reach_calls</dt><dd>the shadow's own tables, one call per (run, ticker); the book, its marks and the test read one run per date, the latest-written completed one, so a rebuilt book replaces the one it rebuilt; never <code>paper_positions</code></dd>
   <dt>GET /api/paper/league/history?window=</dt><dd>per-member equity series for the sparklines, capped to a readable length</dd>
   <dt>GET /api/paper/member/{key}</dt><dd>equity curve, open positions, closed-trade log with exit reason and kind, window stats</dd>
   <dt>paper_start_equity</dt><dd>setting, default 100000</dd>
@@ -302,13 +337,13 @@ The leaderboard is a scoreboard of paper books. The courts ruled the same way in
 <nav class="pager" aria-label="Previous and next pages"><a class="prev" rel="prev" href="the-bailiff.html"><small>← Previous</small><b>The Bailiff</b></a><a class="next" rel="next" href="learning-loops.html"><small>Next →</small><b>Learning Loops</b></a></nav>
 </article>
   </main>
-  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-league-is">What the League is</a></li><li class="l2"><a href="#the-rules">The rules, exactly</a></li><li class="l3"><a href="#opening-books">How a book opens</a></li><li class="l3"><a href="#marking-and-closing">Marking and closing</a></li><li class="l3"><a href="#exit-reasons">Why a leg closes</a></li><li class="l2"><a href="#a-day-in-the-league">A day in the League</a></li><li class="l2"><a href="#windows-and-the-table">Windows, win rate and the table</a></li><li class="l3"><a href="#clean-hedged">Clean, hedged: the same picks, measured without the League&#x27;s conventions</a></li><li class="l3"><a href="#league-weight-shadow">The League-weight shadow test</a></li><li class="l2"><a href="#the-trade-history">Click a name: the trade history</a></li><li class="l2"><a href="#against-the-index">Against the index</a></li><li class="l3"><a href="#how-the-benchmark-is-built">How it is built, and what it refuses to claim</a></li><li class="l2"><a href="#the-bot">The Bot</a></li><li class="l2"><a href="#fund-versus-league">The League and the Fund</a></li><li class="l2"><a href="#where-it-feeds">Where the League feeds</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><h2>On this page</h2><ul><li class="l2"><a href="#what-the-league-is">What the League is</a></li><li class="l2"><a href="#the-rules">The rules, exactly</a></li><li class="l3"><a href="#opening-books">How a book opens</a></li><li class="l3"><a href="#marking-and-closing">Marking and closing</a></li><li class="l3"><a href="#exit-reasons">Why a leg closes</a></li><li class="l2"><a href="#a-day-in-the-league">A day in the League</a></li><li class="l2"><a href="#windows-and-the-table">Windows, win rate and the table</a></li><li class="l3"><a href="#clean-hedged">Clean, hedged: the same picks, measured without the League&#x27;s conventions</a></li><li class="l3"><a href="#league-weight-shadow">The League-weight shadow test</a></li><li class="l3"><a href="#decoder-no-book">The Decoder: NO BOOK, and its shadow book</a></li><li class="l2"><a href="#the-trade-history">Click a name: the trade history</a></li><li class="l2"><a href="#against-the-index">Against the index</a></li><li class="l3"><a href="#how-the-benchmark-is-built">How it is built, and what it refuses to claim</a></li><li class="l2"><a href="#the-bot">The Bot</a></li><li class="l2"><a href="#fund-versus-league">The League and the Fund</a></li><li class="l2"><a href="#where-it-feeds">Where the League feeds</a></li><li class="l2"><a href="#honest-limits">Honest limits</a></li><li class="l2"><a href="#api">API</a></li></ul><a class="top" href="#top">↑ Back to top</a></aside>
 </div>
 
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-10-06 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-10-07 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
