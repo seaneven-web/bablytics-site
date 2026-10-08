@@ -540,6 +540,12 @@ p.sub-field { margin-bottom: 6px; }
 .arch-tag { font: 700 9.5px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase;
   border: 1px solid var(--line); border-radius: 3px; padding: 3px 7px; color: var(--muted); }
 .arch-grade { margin-left: auto; font: 800 24px/1 var(--sans); }
+/* The owner, 2026-10-07 (FEATURES-64): an option leg's room median before the
+   W38 cap, beside the grade it was capped to, and the lead's standing in the
+   room's own order. Display only. */
+.arch-room { font: 400 11.5px/1 var(--mono); color: var(--muted); margin-left: 6px; letter-spacing: 0; }
+.arch-standing { font: 700 9.5px/1 var(--mono); letter-spacing: .06em; color: var(--muted);
+  border: 1px solid var(--line); border-radius: 3px; padding: 3px 7px; white-space: nowrap; }
 .arch-rail { height: 6px; background: var(--wash-2); border-radius: 3px; margin: 10px 0 6px; position: relative; }
 .arch-rail i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--accent); border-radius: 3px; }
 .arch-levels { display: grid; grid-template-columns: repeat(auto-fit, minmax(106px, 1fr)); gap: 6px;
