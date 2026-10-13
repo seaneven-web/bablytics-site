@@ -297,6 +297,14 @@
 <li>run 50 as a null judgement (R120).</li>
 </ul>
 Run 52&rsquo;s court found that one MCD mark of unknown age carried most of the book&rsquo;s gain. It ordered that such a leg print <strong>CARRYING LEG</strong> (R124). It also ordered that a seat stamped above 20 of 40 rows OFF-PROMPT at three straight courts sit SHADOW from 2026-10-12 (R126).</dd>
+  <dt>R135&ndash;R143 &mdash; the court of 2026-10-12, and the first board frozen before the open</dt><dd>Run 54 froze at 08:53:04 ET, before the open. Its court sat a day late, on 2026-10-13, beside the next morning&rsquo;s board. It found that every freeze mark was Friday&rsquo;s settled close, so every morning-move baseline was undefined. It ordered:
+<ul>
+<li>a pre-open board to say so on the first line of every prompt (R137);</li>
+<li>W printed beside the 390-minute session, with option ranks advisory until quote ages are served (R136);</li>
+<li>the option column to print what it lost to time value against what it gained in the money (R138);</li>
+<li>a session no court sits on to be a null judgement by default, beginning with run 53 (R135).</li>
+</ul>
+It held the Glazier FILED because the desk had reproduced the seat&rsquo;s own probability table from code before its sheet was read. The desk&rsquo;s failure to serve that table never counts against a seat (R139).</dd>
   <dt>R64 &mdash; the compliance table</dt><dd>Every court packet carries <code>rules_in_force</code>: every rule any court has filed, verbatim, from the court that wrote it (a reused id is keyed <code>&lt;id&gt;@&lt;court&gt;</code>). The desk&rsquo;s compliance disclosure marks each one WIRED, NOT WIRED or NOT APPLICABLE with the key path that proves it. Rows are written by read-only auditors and checked by adversarial verifiers; the disclosure builder resolves every WIRED key path against its file and refuses to build if any rule in force has no row. On 2026-09-25, the first night it ran: 7 of 88 wired, 77 not, 4 not applicable. The orders a court writes for the next packet arrive as <code>court_orders</code> blocks (<code>scripts/boardroom/court_orders.py</code>), each naming what it reads and which clauses it does not execute.</dd>
 </dl>
 
