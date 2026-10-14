@@ -304,7 +304,7 @@ Run 52&rsquo;s court found that one MCD mark of unknown age carried most of the 
 <li>the option column to print what it lost to time value against what it gained in the money (R138);</li>
 <li>a session no court sits on to be a null judgement by default, beginning with run 53 (R135).</li>
 </ul>
-It held the Glazier FILED because the desk had reproduced the seat&rsquo;s own probability table from code before its sheet was read. The desk&rsquo;s failure to serve that table never counts against a seat (R139).</dd>
+It held the Glazier FILED because the desk had reproduced the seat&rsquo;s own probability table from code before its sheet was read. The desk&rsquo;s failure to serve that table never counts against a seat (R139). From the 2026-10-14 morning the desk serves it: every grader prompt ends with a code-generated table of 1&nbsp;&minus;&nbsp;&Phi;(z), and every candidate row that an open option claim touches prints that claim&rsquo;s contract, entry, exits and windfall state (<code>scripts/boardroom/desk_prints.py</code>; R142).</dd>
   <dt>R64 &mdash; the compliance table</dt><dd>Every court packet carries <code>rules_in_force</code>: every rule any court has filed, verbatim, from the court that wrote it (a reused id is keyed <code>&lt;id&gt;@&lt;court&gt;</code>). The desk&rsquo;s compliance disclosure marks each one WIRED, NOT WIRED or NOT APPLICABLE with the key path that proves it. Rows are written by read-only auditors and checked by adversarial verifiers; the disclosure builder resolves every WIRED key path against its file and refuses to build if any rule in force has no row. On 2026-09-25, the first night it ran: 7 of 88 wired, 77 not, 4 not applicable. The orders a court writes for the next packet arrive as <code>court_orders</code> blocks (<code>scripts/boardroom/court_orders.py</code>), each naming what it reads and which clauses it does not execute.</dd>
 </dl>
 
@@ -379,7 +379,7 @@ It held the Glazier FILED because the desk had reproduced the seat&rsquo;s own p
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-10-13 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-10-14 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
