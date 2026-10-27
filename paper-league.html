@@ -137,7 +137,9 @@
 
 <h3 id="marking-and-closing">Marking and closing<a class="anchor" href="#marking-and-closing" aria-label="Link to Marking and closing">#</a></h3>
 
-<p><code>mark_to_market</code> runs from the 18:00 outcomes job, right after realized outcomes are recorded, and on demand. For each member, in order: price any pending entries whose open bar now exists; close any priced position held for <strong>five trading days</strong> — the exit bar is the entry bar's index plus five in the ticker's own daily series, closed at that bar's close once its date has arrived (a missing bar falls back to the last known close); then recompute the member's equity <em>from scratch</em> off the whole position ledger and upsert one snapshot for the day (<code>paper_equity</code> is unique per member and date, so re-marking a day is idempotent and never drifts). Weekends and holidays fall out naturally because prices come from daily bars.</p>
+<p><code>mark_to_market</code> runs from the 18:00 outcomes job, right after realized outcomes are recorded, and on demand. For each member, in order: price any pending entries whose open bar now exists; close any priced position held for <strong>five trading days</strong> — the exit session is the entry session plus five NYSE sessions (four for a book that enters at the next open, so both land on the close of the run bar plus five), closed at that bar's <strong>settled</strong> close; then recompute the member's equity <em>from scratch</em> off the whole position ledger and upsert one snapshot for the day (<code>paper_equity</code> is unique per member and date, so re-marking a day is idempotent and never drifts). Weekends and holidays fall out naturally because prices come from daily bars.</p>
+
+<div class="callout callout-note"><strong>An exit waits for the bell (2026-10-26).</strong> The desk marks the League from the morning packet, before the 16:00 ET close. A mark run before the bell on an exit day now leaves the position open, and the next mark closes it at that day's settled close, dated the exit session. Until then the mark booked the exit from whatever bar the price feed served when it ran. Before the bell, that bar is still forming and its "close" is only the last trade. Read through the 2026-10-26 close, 362 of 817 rule exits differ from their settled close by more than 0.05%, on 17 of 35 exit dates, every one inside its day's range. The error nets from −$740 (the Herald) to +$990 (the Bot) per seat. Separately, a feed that was one session short at the 2026-09-24 mark booked 12 rows from the 2026-09-16 run one session late. The exit session is now counted on the exchange calendar, not on the bars as fetched. Booked rows are not rewritten. <code>scripts/boardroom/league_exit_report.py</code> lists every rule exit that differs from its settled close by more than 0.05%, with the dollar effect per seat, so the owner can decide on a restatement. A full-day halt, with no bar on the exit session, books the last close before it, once a settled bar after it is in the data.</div>
 
 <div class="callout callout-note"><strong>The cash arithmetic, including shorts.</strong> Starting from cash = start equity: a long open spends cash (qty × entry); a short open credits the proceeds. On close a long sale credits cash; a short cover spends it. Anything still open is marked at the current price — a long as an asset, a short as a liability to buy back. Equity = cash + open value. Worked in the module: long 10 shares @ 100 → mark 110 → close 120 gives 100,000 → 100,100 → 100,200; short 10 @ 100 → 90 → cover 80 gives the same +200. Both round trips are commented in the code so the accounting can be checked by hand.</div>
 
@@ -147,7 +149,7 @@
 <table class="data">
   <thead><tr><th>exit_kind</th><th>Who closed it</th><th>When</th><th>Reason recorded</th></tr></thead>
   <tbody>
-    <tr><td><em>(null)</em></td><td>the calendar</td><td>the fifth trading day after entry, at the close</td><td>none — the scheduled hold expired</td></tr>
+    <tr><td><em>(null)</em></td><td>the calendar</td><td>the fifth NYSE session after entry (the fourth for a book that enters at the next open), at the settled close</td><td>none — the scheduled hold expired</td></tr>
     <tr><td><code>midday</code></td><td>the member, at the 12:30 Midday Check-In</td><td>at the midday mark</td><td>the member's own sentence ("stop paying vig", "harvest convexity")</td></tr>
     <tr><td><code>bailiff</code></td><td>the Bailiff, only when enforcement is switched on</td><td>when a written ruling fires on its basis</td><td>the board's written condition, verbatim</td></tr>
   </tbody>
@@ -345,7 +347,7 @@ The leaderboard is a scoreboard of paper books. The courts ruled the same way in
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-10-20 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-10-27 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
