@@ -276,7 +276,7 @@
   <dt>lead_triggers</dt><dd>lead_id, ticker, comparator, price, basis, source_text, confidence, status, fired_at, fired_price</dd>
   <dt>bailiff_events</dt><dd>run_id, lead_id, event, detail_json, created_at</dd>
   <dt>leads.closed_at / close_price / close_reason</dt><dd>the record-only close, written only by an enforcing pass</dd>
-  <dt>paper_positions.exit_kind = "bailiff"</dt><dd>League legs closed by a fired ruling, reason = the written condition</dd>
+  <dt>paper_positions.exit_kind = "bailiff"</dt><dd>League legs closed by a fired ruling, reason = the written condition. A leg whose rule exit is already due at a settled close takes that exit first, and the ruling does not close it</dd>
 </dl>
 
 </div>
@@ -289,7 +289,7 @@
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-10-27 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-11-02 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
