@@ -340,6 +340,7 @@
 
 <h2 id="the-pdf">The PDF<a class="anchor" href="#the-pdf" aria-label="Link to The PDF">#</a></h2>
 <p><strong>Levels in the PDF (2026-11-02).</strong> A LEVELS table follows the Options Desk and the Stock Book: Entry, Now, the direction-signed move from entry, Stop, Target and ATR(14) on every lead, and the premium at the freeze beside its live mark on every option leg. It reads the same <code>/api/levels</code> payload as the strip, stamped with the time of the render. The day's <code>briefing.json</code> carries the same fields and a <code>levels_note</code>. Until that date the record printed a swing-range proxy for its brackets and the PDF printed no levels.</p>
+<p><strong>A pyramid with no seat ranked (2026-11-10).</strong> The desk brief is emitted by code, and it refuses to ship while any token reads UNRESOLVED (R18(b)). On 2026-11-10 the Paper League had gone unmarked for eight days, from 11-02 to 11-10, because no board, court or scheduler run marked it. The pyramid counts a day&rsquo;s P&amp;L only against a mark within four days, so every seat&rsquo;s latest mark had none and all 16 seats read UNRANKED, with no leader. The brief&rsquo;s pyramid line had no wording for that state and refused, which stopped run 64&rsquo;s morning before any prompt was served. It now prints &ldquo;0 of the pyramid&rsquo;s members ranked&rdquo; with the reason and &ldquo;Leader NONE&rdquo;. The desk set the unserved first freeze aside and froze again, and the morning&rsquo;s house rule records both freezes.</p>
 <h3 id="read-pdf">Read PDF — the report, rendered<a class="anchor" href="#read-pdf" aria-label="Link to Read PDF — the report, rendered">#</a></h3>
 
 <p><strong>Read PDF</strong> sits beside Download PDF and opens the same report <em>inside the app</em>, in the platform's own PDF viewer, at a size worth reading. It is a separate route rather than a flag on the export for a concrete reason: <strong>the download is encrypted, and an encrypted PDF cannot be rendered by any viewer</strong>. Reading a report and exporting one are genuinely different operations, so they are two buttons and two endpoints — <code>GET /api/reports/morning/{run_id}/view</code> streams the PDF unencrypted and <code>inline</code>, behind the same session cookie as every other route. Nothing is written to disk, so there is no file to encrypt against.</p>
@@ -382,7 +383,7 @@
 <footer class="footer">
   <div class="wrap">
     <span class="notice">Research tool — not financial advice. Bablytics executes no trades; everything it produces is model output.</span>
-    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-11-08 · <a href="not-financial-advice.html">disclaimer</a></span>
+    <span class="meta">Bablytics Guide · v2.0.0 · built 2026-11-10 · <a href="not-financial-advice.html">disclaimer</a></span>
   </div>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot, full size">
