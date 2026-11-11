@@ -103,7 +103,7 @@
 
 <p>It is <strong>static HTML with no account and no login</strong>. That is a deliberate choice over the alternative. The app's authentication was written for one person on localhost: it hashes properly with pbkdf2, but it has no rate limiting and no abuse handling, and a shared &ldquo;test account&rdquo; on a findable site is a public password with extra steps. A read-only site has nothing to log into and therefore nothing to break into, and a visitor gets a URL rather than a credential.</p>
 
-<div class="callout callout-rule"><strong>It is inherently in step with everything else.</strong> The archive is generated from <code>runs/</code> &mdash; the same folder every briefing, court, close-out book and spotlight already pushes itself into after it is produced. The Claude artifact of a day's briefing is built from that same source. Nothing has to be kept in sync by hand, because there is only one source.</div>
+<div class="callout callout-rule"><strong>It is inherently in step with everything else.</strong> The archive is generated from <code>runs/</code> &mdash; the same folder every briefing, court, close-out book and spotlight already pushes itself into after it is produced. The Claude artifact of a day's briefing is built from that same source. Nothing has to be kept in sync by hand, because there is only one source. The run file also carries each close's nightly ledger record (from 2026-11-10); the archive does not render it, since it reads only the briefing, close-out, midday and court documents.</div>
 
 <h2 id="what-is-not-there">What is not there, and how that is enforced<a class="anchor" href="#what-is-not-there" aria-label="Link to What is not there, and how that is enforced">#</a></h2>
 
